@@ -1,2 +1,2 @@
 # Auction - Maximum Weight Matching Comparison 
-Project based on the comparison of the Auction Algorithm and the Maximum Weight Maching from Boost Library
+Project based on the comparison of the [Auction Algorithm](https://web.mit.edu/dimitrib/www/Auction_Trans.pdf) and the [Maximum Weight Maching](https://www.boost.org/doc/libs/1_79_0/libs/graph/doc/maximum_weighted_matching.html) from Boost Library
