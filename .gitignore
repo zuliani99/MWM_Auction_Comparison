@@ -1,2 +1,21 @@
 
 *.exe
+*.vsidx
+*.lock
+Application/.vs/Application/v17/.suo
+Application/.vs/Application/v17/Browse.VC.db
+*.db-shm
+*.db-wal
+*.opendb
+*.ipch
+*.vcxproj
+*.pdb
+*.tlog
+*.recipe
+*.idb
+*.idb
+*.obj
+*.log
+*.user
+*.filters
+*.ilk
