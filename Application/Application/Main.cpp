@@ -1,5 +1,6 @@
 #include "BG_example.h"
 #include "MWM_example.h"
+#include "Auction.h"
 
 int main(int argc, const char* argv[]){
 	srand((unsigned int)time(0));
