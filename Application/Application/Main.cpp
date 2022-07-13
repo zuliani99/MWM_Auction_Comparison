@@ -1,9 +1,10 @@
-#include <iostream>
 #include "BG_example.h"
+#include "MWM_example.h"
 
-int main(int argc, const char* argv[])
-{
-	std::cout << "Ciao" << std::endl;
-	generate_random_graph();
+int main(int argc, const char* argv[]){
+	srand((unsigned int)time(0));
+
+	UndirectedGraph graph = return_graph();
+	maximum_weight_matching(graph);
 	return 0;
 }

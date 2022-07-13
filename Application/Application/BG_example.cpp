@@ -1,44 +1,38 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <random>
 #include "BG_example.h"
 
 
 int random(int min, int max) {
-    srand(time(0));
     return rand() % (max - min + 1) + min;
 }
 
-random_bipartite_graph return_graph() {
+UndirectedGraph return_graph() {
+    int n_vertices_per_part = random(3, 6); // Generate the number, assign to variable.
 
-    int n_vertices_per_part = random(5, 10); // Generate the number, assign to variable.
-    random_bipartite_graph random_graph(n_vertices_per_part * 2);
-    std::cout << n_vertices_per_part << std::endl;
+    UndirectedGraph random_graph(n_vertices_per_part * 2);
 
-    for (int i = 0; i < n_vertices_per_part; ++i) {
-        int n_connections = random(0, n_vertices_per_part);
-        std::cout << n_connections << std::endl;
-        for (int j = 0; j < n_connections; ++j) {
-            add_edge(i, j, EdgeProperty(random(0, 20)), random_graph);
-        }
-    }
+    // Every left nodes has a connection to every right nodes
+    for (int i = 0; i < n_vertices_per_part; ++i)  // For left verticies
+        /*for (int j = 0; j < random(0, n_vertices_per_part); ++j) {
+            int destination;
+            do {
+                destination = random(n_vertices_per_part, n_vertices_per_part * 2);
+            } while (boost::edge(i, destination, random_graph).second);
+            add_edge(i, destination, random(1, 20), random_graph);
+        }*/
+        for (int j = n_vertices_per_part; j < n_vertices_per_part * 2; ++j)
+            if(i != j)
+                add_edge(i, j, random(1, 20), random_graph);
+    print_edge_graph(random_graph);
     return random_graph;
 }
 
-void print_edge_graph(random_bipartite_graph graph) {
-    std::pair<edge_iterator, edge_iterator> ei = edges(graph);
+void print_edge_graph(UndirectedGraph graph) {
+    EdgeWeightMap Map = get(boost::edge_weight_t(), graph);
 
-    std::cout << "Number of edges = " << num_edges(graph) << "\n";
-    std::cout << "Edge list:\n";
+    std::cout << "Edges weights of a random bipartite graph:" << std::endl;
 
-    std::copy(ei.first, ei.second,
-        std::ostream_iterator<boost::adjacency_list<>::edge_descriptor>{
-        std::cout, "\n"});
-
-    std::cout << std::endl;
-}
-
-void generate_random_graph() {
-    print_edge_graph(return_graph());
+    std::pair<edge_iterator, edge_iterator> edgePair;
+    for (edgePair = edges(graph); edgePair.first != edgePair.second; ++edgePair.first)
+        std::cout << *edgePair.first << " " << Map[*edgePair.first] << std::endl;
+    std::cout << std::endl << std::endl;
 }
