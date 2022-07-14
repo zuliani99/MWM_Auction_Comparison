@@ -4,9 +4,7 @@
 #include "Graph.h"
 #include <random>
 
-int random(int min, int max);
-UndirectedGraph return_graph();
+UndirectedGraph return_graph(double* cost_matrix, int n_vertices_per_part);
 void print_edge_graph(UndirectedGraph graph);
 
-extern const int n_vertices_per_part;
 #endif 

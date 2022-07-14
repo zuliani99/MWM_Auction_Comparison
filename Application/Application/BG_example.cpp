@@ -1,27 +1,21 @@
 #include "BG_example.h"
 
+#define SEED 123456
+std::default_random_engine generator(SEED);
 
-int random(int min, int max) {
-    return rand() % (max - min + 1) + min;
-}
-
-UndirectedGraph return_graph() {
-    int n_vertices_per_part = random(3, 6); // Generate the number, assign to variable.
+UndirectedGraph return_graph(double* cost_matrix, int n_vertices_per_part) {
+    std::uniform_real_distribution<double> distribution(0., 20.0);
 
     UndirectedGraph random_graph(n_vertices_per_part * 2);
 
     // Every left nodes has a connection to every right nodes
     for (int i = 0; i < n_vertices_per_part; ++i)  // For left verticies
-        /*for (int j = 0; j < random(0, n_vertices_per_part); ++j) {
-            int destination;
-            do {
-                destination = random(n_vertices_per_part, n_vertices_per_part * 2);
-            } while (boost::edge(i, destination, random_graph).second);
-            add_edge(i, destination, random(1, 20), random_graph);
-        }*/
         for (int j = n_vertices_per_part; j < n_vertices_per_part * 2; ++j)
-            if(i != j)
-                add_edge(i, j, random(1, 20), random_graph);
+            if (i != j) {
+                double value = distribution(generator);
+                cost_matrix[i * j] = value;
+                add_edge(i, j, value, random_graph);
+            }
     print_edge_graph(random_graph);
     return random_graph;
 }
