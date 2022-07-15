@@ -2,7 +2,9 @@
 #define _Auction_H
 
 #include "Graph.h"
+#include "Items.h"
+#include "Bidders.h"
 
-void auction_algorithm(Matrix* cost_matrix, int n_vertices_per_part, int* item2bidder);
+long long auction_algorithm(double *cost_matrix, int n_vertices_per_part);
 
 #endif

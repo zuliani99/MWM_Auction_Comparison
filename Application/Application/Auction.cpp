@@ -1,99 +1,75 @@
 #include "Auction.h"
-#include <chrono>
-#include "omp.h"
 #include <malloc.h>
+#include <chrono>
 
 
-template<typename Val, typename Int>
-void fill(Val* x, Int n, Val val) {
-    for (Int i = 0; i < n; i++) x[i] = val;
-}
-
-void auction_algorithm(double* cost_matrix, int n_vertices_per_part, int* bidder2item) {
+long long auction_algorithm(double *cost_matrix, int n_vertices_per_part) {
 	const int n_bidders = n_vertices_per_part;
 	const int n_items = n_vertices_per_part;
 	const double eps = 0.1;
-
-
-    double* cost = (double*)malloc(n_items * sizeof(double));
-    double* high_bids = (double*)malloc(n_items * sizeof(double));
-    int* high_bidder = (int*)malloc(n_items * sizeof(int));
-
-    int* item2bidder = (int*)malloc(n_bidders * sizeof(int));
-    
-
-    fill<double>(cost, n_items, 0);
-    fill<double>(high_bids, n_items, -1);
-    fill<int>(high_bidder, n_items, -1);
-    fill<int>(item2bidder, n_items, -1);
-    fill<int>(bidder2item, n_bidders, -1);
-
-    int* idx1 = (int*)malloc(n_bidders * sizeof(int));
-    double* val1 = (double*)malloc(n_bidders * sizeof(double));
-    double* val2 = (double*)malloc(n_bidders * sizeof(double));
-
     int unassigned_bidders = n_bidders;
 
-    int loop_counter = 0;
-
-    fill<int>(idx1, n_bidders, -1);
-    fill<double>(val1, n_bidders, -1);
-    fill<double>(val2, n_bidders, -1);
+    std::unordered_map<int, Bidder> Bidders = retunr_n_bidders(n_bidders);
+    std::unordered_map<int, Item> Items = retunr_n_items(n_items);
+    std::vector<int>bidder2item(n_bidders, -1);
+    std::vector<int>item2bidder(n_bidders, -1);
+ 
+    auto t_start = std::chrono::high_resolution_clock::now();
 
     while (unassigned_bidders > 0) {
-        loop_counter += unassigned_bidders;
-        for (int bidder = 0; bidder < n_bidders; bidder++) {
-            if (bidder2item[bidder] != -1) continue;
+        // --
+        // Bid
 
+        for (auto bidder = Bidders.begin(); bidder != Bidders.end(); ++bidder) {
             int idx1_ = -1; // index of highest payoff item
             double val1_ = -1; // first highest payoff
             double val2_ = -1; // second highest payoff
 
-            for (int item = 0; item < n_items; item++) {
-                double val = cost_matrix[n_bidders * bidder + item] - cost[item]; // A_ij - p_j
-                std::cout << val << " " << val1_ << " " << val2_ << " ";
+            for (auto item = Items.begin(); item != Items.end(); ++item) {
+                double val = cost_matrix[n_bidders * bidder->first + item->first] - item->second.cost; // A_ij - p_j
                 if (val > val1_) {
                     val2_ = val1_;
                     val1_ = val;
-                    idx1_ = item;
+                    idx1_ = item->first;
                 }
-                else if (val > val2_) {
-                    val2_ = val;
-                }
+                else if (val > val2_) val2_ = val;
+            }
+            bidder->second.idx_first_item = idx1_;
+            bidder->second.first_item = val1_;
+            bidder->second.second_item = val2_;
+        }
+
+
+        // --
+        // Compete
+
+        for (auto bidder = Bidders.begin(); bidder != Bidders.end(); ++bidder) {
+            double bid = bidder->second.first_item - bidder->second.second_item + eps;  // (A_ij - p_j) - (A_ik - p_k) + e
+            if (bid > Items.find(bidder->second.idx_first_item)->second.high_bidder) {
+                Items.find(bidder->second.idx_first_item)->second.high_bid = bid;
+                Items.find(bidder->second.idx_first_item)->second.high_bidder = bidder->first;
+                // sostituisxco il bidder con l'attuale
+            }
+        }
+
+
+        // --
+        // Assign
+
+        for (auto item = Items.begin(); item != Items.end(); ++item) {
+            item->second.cost += item->second.high_bid;
+
+            if (item2bidder[item->first] != -1) {
+                bidder2item[item2bidder[item->first]] = -1;
+                unassigned_bidders++;
             }
 
-            idx1[bidder] = idx1_;
-            val2[bidder] = val2_;
-            val1[bidder] = val1_;
+            item2bidder[item->first] = item->second.high_bidder;
+            bidder2item[item->second.high_bidder] = item->first;
+            unassigned_bidders--;
         }
     }
 
-    fill<double>(high_bids, n_items, -1);
-    fill<int>(high_bidder, n_items, -1);
-
-    for (int bidder = 0; bidder < n_bidders; bidder++) {
-        if (bidder2item[bidder] != -1) continue;
-
-        double bid = val1[bidder] - val2[bidder] + eps; // (A_ij - p_j) - (A_ik - p_k) + e
-        std::cout << bidder << " " << bid;
-        if (bid > high_bids[idx1[bidder]]) {
-            high_bids[idx1[bidder]] = bid;
-            high_bidder[idx1[bidder]] = bidder;
-        }
-    }
-
-    for (int item = 0; item < n_items; item++) {
-        if (high_bids[item] == -1) continue;
-
-        cost[item] += high_bids[item];
-
-        if (item2bidder[item] != -1) {
-            bidder2item[item2bidder[item]] = -1;
-            unassigned_bidders++;
-        }
-
-        item2bidder[item] = high_bidder[item];
-        bidder2item[high_bidder[item]] = item;
-        unassigned_bidders--;
-    }
+    //std::cout << "loop_counter=%d | " << loop_counter << std::endl;
+    return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
 }

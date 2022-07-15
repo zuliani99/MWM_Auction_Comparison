@@ -13,7 +13,7 @@ UndirectedGraph return_graph(double *cost_matrix, int n_vertices_per_part) {
         for (int j = n_vertices_per_part; j < n_vertices_per_part * 2; ++j)
             if (i != j) {
                 double value = distribution(generator);
-                cost_matrix[i][j] = int(value);
+                cost_matrix[i * j] = value;
                 add_edge(i, j, value, random_graph);
             }
     print_edge_graph(random_graph);

@@ -19,3 +19,5 @@ Application/.vs/Application/v17/Browse.VC.db
 *.user
 *.filters
 *.ilk
+Application/.vs/Application/v17/fileList.bin
+*.bin
