@@ -1,6 +1,7 @@
 #include "Auction.h"
 #include <chrono>
 #include "omp.h"
+#include <malloc.h>
 
 
 template<typename Val, typename Int>
@@ -50,6 +51,7 @@ void auction_algorithm(double* cost_matrix, int n_vertices_per_part, int* bidder
 
             for (int item = 0; item < n_items; item++) {
                 double val = cost_matrix[n_bidders * bidder + item] - cost[item]; // A_ij - p_j
+                std::cout << val << " " << val1_ << " " << val2_ << " ";
                 if (val > val1_) {
                     val2_ = val1_;
                     val1_ = val;
@@ -73,6 +75,7 @@ void auction_algorithm(double* cost_matrix, int n_vertices_per_part, int* bidder
         if (bidder2item[bidder] != -1) continue;
 
         double bid = val1[bidder] - val2[bidder] + eps; // (A_ij - p_j) - (A_ik - p_k) + e
+        std::cout << bidder << " " << bid;
         if (bid > high_bids[idx1[bidder]]) {
             high_bids[idx1[bidder]] = bid;
             high_bidder[idx1[bidder]] = bidder;

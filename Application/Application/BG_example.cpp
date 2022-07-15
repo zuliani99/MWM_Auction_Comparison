@@ -3,7 +3,7 @@
 #define SEED 123456
 std::default_random_engine generator(SEED);
 
-UndirectedGraph return_graph(double* cost_matrix, int n_vertices_per_part) {
+UndirectedGraph return_graph(double *cost_matrix, int n_vertices_per_part) {
     std::uniform_real_distribution<double> distribution(0., 20.0);
 
     UndirectedGraph random_graph(n_vertices_per_part * 2);
@@ -13,7 +13,7 @@ UndirectedGraph return_graph(double* cost_matrix, int n_vertices_per_part) {
         for (int j = n_vertices_per_part; j < n_vertices_per_part * 2; ++j)
             if (i != j) {
                 double value = distribution(generator);
-                cost_matrix[i * j] = value;
+                cost_matrix[i][j] = int(value);
                 add_edge(i, j, value, random_graph);
             }
     print_edge_graph(random_graph);
