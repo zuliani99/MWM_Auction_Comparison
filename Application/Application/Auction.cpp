@@ -1,6 +1,6 @@
 #include "Auction.h"
 
-std::vector<int> auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int *n_vertices_per_part, long long *time_execution) {
+std::vector<int> execute_auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int *n_vertices_per_part, long long *time_execution) {
 	const int n_bidders = *n_vertices_per_part;
 	const int n_items = *n_vertices_per_part;
 	const double eps = 0.1;
@@ -72,4 +72,12 @@ std::vector<int> auction_algorithm(std::vector<std::vector<float>>* cost_matrix,
     //std::cout << "loop_counter=%d | " << loop_counter << std::endl;
     *time_execution = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
     return bidder2item;
+}
+
+void auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int* n_vertices_per_part, long long* time_execution, float* total_cost_auction) {
+    std::vector<int> bidder_item = execute_auction_algorithm(cost_matrix, n_vertices_per_part, time_execution);
+    for (int bidder = 0; bidder < *n_vertices_per_part; ++bidder) {
+        std::cout << "Bidder: " << bidder << " has item: " << bidder_item[bidder] << std::endl;
+        *total_cost_auction += (*cost_matrix)[bidder][bidder_item[bidder]];
+    }
 }

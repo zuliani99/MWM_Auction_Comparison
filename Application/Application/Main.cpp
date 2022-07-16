@@ -1,14 +1,16 @@
 #include "BG.h"
 #include "MWM.h"
 #include "Auction.h"
+#include "TextTable.h"
+#include <boost/lexical_cast.hpp>
+#include <string>
 
-constexpr auto MAX = 10;
+constexpr auto MAX = 9;
 constexpr auto MIN = 3;
-
 
 int main(int argc, const char* argv[]){
 	srand((unsigned int)time(0));
-	const int vertices_per_part = rand() % (MAX - 3 + MIN) + MIN;
+	const int vertices_per_part = rand() % (MAX - MIN + 1) + MIN;
 
 	long long time_execution_mwm;
 	long long time_execution_auction;
@@ -17,29 +19,32 @@ int main(int argc, const char* argv[]){
 	std::vector<std::vector<float>> *cost_matrix = new std::vector<std::vector<float>>(vertices_per_part * 2, std::vector<float> (vertices_per_part * 2, 0));
 	
 	UndirectedGraph graph = return_graph(cost_matrix, vertices_per_part);
-	//maximum_weight_matching(return_graph(cost_matrix, vertices_per_part));
+
+	TextTable t('-', '|', '+');
+	t.add("Bidder / Item");
+	for(int i = 0; i < vertices_per_part * 2; ++i) t.add(boost::lexical_cast<std::string>(i));
+	t.endOfRow();
 	
 	std::cout << "Edges weigth matrix:\n";
 	for (int i = 0; i < vertices_per_part* 2; ++i) {
+		t.add(std::to_string(i));
 		for (int j = 0; j < vertices_per_part * 2; ++j) {
-			std::cout << (*cost_matrix)[i][j] << "\t";
+			//std::cout << boost::lexical_cast<std::string>((*cost_matrix)[i][j]) << "\t";
+			t.add(boost::lexical_cast<std::string>((*cost_matrix)[i][j]));
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
+		t.endOfRow();
 	}
-	std::cout << "\n\n";
+	t.setAlignment(vertices_per_part, TextTable::Alignment::RIGHT);
+	std::cout << t << "\n\n";
 
 	std::cout << "Execution of Maximum Weight Matching\n";
 	maximum_weight_matching(graph, &time_execution_mwm, &total_cost_mwm);
-	std::cout << "Execution time of Maximum Weight Matching: " << float(time_execution_mwm) / 1000 << ", with total cost: " << total_cost_mwm << std::endl;
-
+	std::cout << "Execution time of Maximum Weight Matching: " << float(time_execution_mwm) / 1000 << ", with total cost: " << total_cost_mwm << "\n\n";
 
 	/*std::cout << "Execution of Auction Algorithm\n";
-	std::vector<int> bidder_item = auction_algorithm(cost_matrix, &vertices_per_part, &time_execution_auction);
-	for (int bidder = 0; bidder < vertices_per_part; ++bidder) {
-		std::cout << "Bidder: " << bidder << " has item: " << bidder_item[bidder] << std::endl;
-		total_cost_auction += (*cost_matrix)[bidder][bidder_item[bidder]];
-	}
-	std::cout << "Execution time of Auction Algorithm: " << float(time_execution_auction) / 1000 << ", with total cost: " << total_cost_auction << std::endl;
+	auction_algorithm(cost_matrix, &vertices_per_part, &time_execution_auction, &total_cost_auction);
+	std::cout << "Execution time of Auction Algorithm: " << float(time_execution_auction) / 1000 << ", with total cost: " << total_cost_auction << "\n\n";
 	*/
 
 	return 0;

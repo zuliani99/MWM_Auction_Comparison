@@ -11,11 +11,12 @@ UndirectedGraph return_graph(std::vector<std::vector<float>> *cost_matrix, int n
     for (int i = 0; i < n_vertices_per_part; ++i)  // For left verticies
         for (int j = n_vertices_per_part; j < n_vertices_per_part * 2; ++j)
             if (i != j) {
-                float value = float(ceilf(distribution(generator) * 1000.0) / 1000.0); //round 3 decimals
+                //float value = float(ceilf(distribution(generator) * 1000.0) / 1000.0); //round 3 decimals
+                float value = float(distribution(generator));
                 (*cost_matrix)[i][j] = (*cost_matrix)[j][i] = value;
                 add_edge(i, j, value, random_graph);
             }
-    print_edge_graph(random_graph);
+    //print_edge_graph(random_graph);
     return random_graph;
 }
 
