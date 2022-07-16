@@ -4,6 +4,7 @@ void maximum_weight_matching(UndirectedGraph graph){
     vertex_iterator vi, vi_end;
 
     std::vector <boost::graph_traits<UndirectedGraph>::vertex_descriptor> mate(boost::num_vertices(graph));
+
     boost::maximum_weighted_matching(graph, &mate[0]);
 
     std::cout << "Found a weighted matching:" << std::endl;

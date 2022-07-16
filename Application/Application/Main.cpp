@@ -11,10 +11,10 @@ int main(int argc, const char* argv[]){
 
 	const int vertices_per_part = rand() % (MAX - 3 + MIN) + MIN;
 
-	std::vector<std::vector<double>> *cost_matrix = new std::vector<std::vector<double>>(vertices_per_part * 2, std::vector<double> (vertices_per_part * 2, 0));
+	std::vector<std::vector<float>> *cost_matrix = new std::vector<std::vector<float>>(vertices_per_part * 2, std::vector<float> (vertices_per_part * 2, 0));
 	
 	//UndirectedGraph graph = return_graph(cost_matrix, vertices_per_part);
-	return_graph(cost_matrix, vertices_per_part);
+	maximum_weight_matching(return_graph(cost_matrix, vertices_per_part));
 	
 	std::cout << "Edges weigth matrix: " << std::endl;
 	for (int i = 0; i < vertices_per_part* 2; ++i) {

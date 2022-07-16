@@ -3,7 +3,7 @@
 #include <chrono>
 
 
-std::pair<long long, std::vector<int>> auction_algorithm(double *cost_matrix, const int *n_vertices_per_part) {
+std::pair<long long, std::vector<int>> auction_algorithm(float *cost_matrix, const int *n_vertices_per_part) {
 	const int n_bidders = *n_vertices_per_part;
 	const int n_items = *n_vertices_per_part;
 	const double eps = 0.1;
