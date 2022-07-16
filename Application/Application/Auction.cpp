@@ -1,9 +1,6 @@
 #include "Auction.h"
-#include <malloc.h>
-#include <chrono>
 
-
-std::pair<long long, std::vector<int>> auction_algorithm(float *cost_matrix, const int *n_vertices_per_part) {
+std::vector<int> auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int *n_vertices_per_part, long long *time_execution) {
 	const int n_bidders = *n_vertices_per_part;
 	const int n_items = *n_vertices_per_part;
 	const double eps = 0.1;
@@ -28,7 +25,7 @@ std::pair<long long, std::vector<int>> auction_algorithm(float *cost_matrix, con
             double val2_ = -1; // second highest payoff
 
             for (auto item = Items.begin(); item != Items.end(); ++item) {
-                double val = cost_matrix[n_bidders * bidder->first + item->first] - item->second.cost; // A_ij - p_j
+                double val = (*cost_matrix)[bidder->first][item->first] - item->second.cost; // A_ij - p_j
                 if (val > val1_) {
                     val2_ = val1_;
                     val1_ = val;
@@ -73,6 +70,6 @@ std::pair<long long, std::vector<int>> auction_algorithm(float *cost_matrix, con
     }
 
     //std::cout << "loop_counter=%d | " << loop_counter << std::endl;
-    long long total_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
-    return std::pair<long long, std::vector<int>> (total_time, bidder2item);
+    *time_execution = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
+    return bidder2item;
 }

@@ -1,8 +1,6 @@
 #ifndef _Bidders_H
 #define _Bidders_H
 
-#include <vector>
-
 class Bidder {
 	public:
 		double first_item;

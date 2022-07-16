@@ -1,8 +1,6 @@
 #ifndef _Items_H
 #define _Items_H
 
-#include <vector>
-
 class Item {
 	public:
 		double cost;

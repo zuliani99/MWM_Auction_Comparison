@@ -11,7 +11,7 @@ UndirectedGraph return_graph(std::vector<std::vector<float>> *cost_matrix, int n
     for (int i = 0; i < n_vertices_per_part; ++i)  // For left verticies
         for (int j = n_vertices_per_part; j < n_vertices_per_part * 2; ++j)
             if (i != j) {
-                float value = ceilf(distribution(generator) * 1000.0) / 1000.0; //round 3 decimals
+                float value = float(ceilf(distribution(generator) * 1000.0) / 1000.0); //round 3 decimals
                 (*cost_matrix)[i][j] = (*cost_matrix)[j][i] = value;
                 add_edge(i, j, value, random_graph);
             }
@@ -22,7 +22,7 @@ UndirectedGraph return_graph(std::vector<std::vector<float>> *cost_matrix, int n
 void print_edge_graph(UndirectedGraph graph) {
     EdgeWeightMap Map = get(boost::edge_weight_t(), graph);
 
-    std::cout << "Edges weights of a random bipartite graph with " << num_vertices(graph) / 2 << " vertices per part\n\n";
+    std::cout << "Edges weights of a random bipartite graph with " << num_vertices(graph) / 2 << " vertices per part\n";
 
     std::pair<edge_iterator, edge_iterator> edgePair;
     for (edgePair = edges(graph); edgePair.first != edgePair.second; ++edgePair.first)

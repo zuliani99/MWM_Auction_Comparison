@@ -1,22 +1,20 @@
 #include "MWM.h"
 
-void maximum_weight_matching(UndirectedGraph graph){
+void maximum_weight_matching(UndirectedGraph graph, long long *time_execution, float *total_cost){
     vertex_iterator vi, vi_end;
 
     std::vector <boost::graph_traits<UndirectedGraph>::vertex_descriptor> mate(boost::num_vertices(graph));
 
+    auto t_start = std::chrono::high_resolution_clock::now();
     boost::maximum_weighted_matching(graph, &mate[0]);
+    *time_execution = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
+    *total_cost = float(boost::matching_weight_sum(graph, &mate[0]));
 
-    std::cout << "Found a weighted matching:" << std::endl;
-    std::cout << "Matching size is " << boost::matching_size(graph, &mate[0])
-        << ", total weight is " << boost::matching_weight_sum(graph, &mate[0])
-        << std::endl;
-    std::cout << std::endl;
 
     std::cout << "The matching is:" << std::endl;
     for (boost::tie(vi, vi_end) = vertices(graph); vi != vi_end; ++vi)
         if (mate[*vi] != boost::graph_traits< UndirectedGraph >::null_vertex()
             && *vi < mate[*vi])
-            std::cout << "{" << *vi << ", " << mate[*vi] << "}" << std::endl;
+            std::cout << "Bidder: " << *vi << " has item " << mate[*vi] << "" << std::endl;
     std::cout << std::endl;
 }

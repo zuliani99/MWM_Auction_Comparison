@@ -5,7 +5,7 @@
 #include "Items.h"
 #include "Bidders.h"
 
-std::pair<long long, std::vector<int>> auction_algorithm(double* cost_matrix, const int *n_vertices_per_part);
+std::vector<int> auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int* n_vertices_per_part, long long *time_execution);
 
 template<typename Class>
 std::unordered_map<int, Class> retunr_n(int n) {
