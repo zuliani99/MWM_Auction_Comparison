@@ -15,12 +15,4 @@ class Item {
 		}
 	};
 
-std::unordered_map<int, Item> retunr_n_items(int n) {
-	std::unordered_map<int, Item> ret;
-	for (int i = 0; i < n; ++i) {
-		ret.insert({ i, Item() });
-	}
-	return ret;
-}
-
 #endif

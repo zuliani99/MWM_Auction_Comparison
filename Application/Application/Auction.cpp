@@ -3,20 +3,22 @@
 #include <chrono>
 
 
-long long auction_algorithm(double *cost_matrix, int n_vertices_per_part) {
-	const int n_bidders = n_vertices_per_part;
-	const int n_items = n_vertices_per_part;
+std::pair<long long, std::vector<int>> auction_algorithm(double *cost_matrix, const int *n_vertices_per_part) {
+	const int n_bidders = *n_vertices_per_part;
+	const int n_items = *n_vertices_per_part;
 	const double eps = 0.1;
     int unassigned_bidders = n_bidders;
 
-    std::unordered_map<int, Bidder> Bidders = retunr_n_bidders(n_bidders);
-    std::unordered_map<int, Item> Items = retunr_n_items(n_items);
+    std::unordered_map<int, Bidder> Bidders = retunr_n<Bidder>(n_bidders);
+    std::unordered_map<int, Item> Items = retunr_n<Item>(n_items);
     std::vector<int>bidder2item(n_bidders, -1);
     std::vector<int>item2bidder(n_bidders, -1);
  
     auto t_start = std::chrono::high_resolution_clock::now();
 
     while (unassigned_bidders > 0) {
+
+        std::cout << unassigned_bidders << std::endl;
         // --
         // Bid
 
@@ -71,5 +73,6 @@ long long auction_algorithm(double *cost_matrix, int n_vertices_per_part) {
     }
 
     //std::cout << "loop_counter=%d | " << loop_counter << std::endl;
-    return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
+    long long total_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
+    return std::pair<long long, std::vector<int>> (total_time, bidder2item);
 }

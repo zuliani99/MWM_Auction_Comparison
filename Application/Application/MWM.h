@@ -1,5 +1,5 @@
-#ifndef _MWM_example_H
-#define _MWM_example_H
+#ifndef _MWM_H
+#define _MWM_H
 
 #include "Graph.h"
 

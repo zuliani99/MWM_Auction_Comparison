@@ -1,4 +1,4 @@
-#include "MWM_example.h"
+#include "MWM.h"
 
 void maximum_weight_matching(UndirectedGraph graph){
     vertex_iterator vi, vi_end;

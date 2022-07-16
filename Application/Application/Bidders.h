@@ -15,13 +15,4 @@ class Bidder {
 		}
 	};
 
-std::unordered_map<int, Bidder> retunr_n_bidders(int n) {
-	std::unordered_map<int, Bidder> ret;
-	for (int i = 0; i < n; ++i) {
-		ret.insert({ i, Bidder() });
-	}
-	return ret;
-}
-
-
 #endif
