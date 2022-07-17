@@ -1,8 +1,8 @@
 #include "Auction.h"
 
-std::vector<int> execute_auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int *n_vertices_per_part, long long *time_execution) {
-	const int n_bidders = *n_vertices_per_part;
-	const int n_items = *n_vertices_per_part;
+std::vector<int> execute_auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int * n_bidders_items, long long *time_execution) {
+	const int n_bidders = *n_bidders_items;
+	const int n_items = *n_bidders_items;
 	const double eps = 0.1;
     int unassigned_bidders = n_bidders;
 

@@ -5,8 +5,8 @@
 #include "Items.h"
 #include "Bidders.h"
 
-std::vector<int> execute_auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int* n_vertices_per_part, long long *time_execution);
-void auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int* n_vertices_per_part, long long* time_execution, float *total_cost_auction);
+std::vector<int> execute_auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int* n_bidders_items, long long *time_execution);
+void auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int* n_bidders_items, long long* time_execution, float *total_cost_auction);
 
 
 template<typename Class>
