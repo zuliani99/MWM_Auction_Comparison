@@ -7,11 +7,6 @@ UndirectedGraph return_graph(std::vector<std::vector<float>> *cost_matrix, int n
 
     UndirectedGraph random_graph;
 
-    for (int i = 0; i < n_bidders_items * 2; ++i)
-        if(i < n_bidders_items) boost::add_vertex(Bidder(), random_graph);
-        else boost::add_vertex(Item(), random_graph);
-
-
     // Every left nodes has a connection to every right nodes
     for (int i = 0; i < n_bidders_items; ++i)  // For left verticies
         for (int j = n_bidders_items; j < n_bidders_items * 2; ++j)
