@@ -7,7 +7,8 @@
 #include <boost/graph/graph_utility.hpp>
 #include <vector>
 #include <chrono>
-
+#include "Items.h" 
+#include "Bidders.h"
 
 using EdgeWeight = boost::property<boost::edge_weight_t, double>;
 using UndirectedGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, boost::no_property, EdgeWeight>;

@@ -5,7 +5,12 @@ std::default_random_engine generator;
 UndirectedGraph return_graph(std::vector<std::vector<float>> *cost_matrix, int n_bidders_items) {
     std::uniform_real_distribution<float> distribution(0., 20.);
 
-    UndirectedGraph random_graph(n_bidders_items * 2);
+    UndirectedGraph random_graph;
+
+    for (int i = 0; i < n_bidders_items * 2; ++i)
+        if(i < n_bidders_items) boost::add_vertex(Bidder(), random_graph);
+        else boost::add_vertex(Item(), random_graph);
+
 
     // Every left nodes has a connection to every right nodes
     for (int i = 0; i < n_bidders_items; ++i)  // For left verticies
@@ -14,7 +19,7 @@ UndirectedGraph return_graph(std::vector<std::vector<float>> *cost_matrix, int n
                 //float value = float(ceilf(distribution(generator) * 1000.0) / 1000.0); //round 3 decimals
                 float value = float(distribution(generator));
                 (*cost_matrix)[i][j % n_bidders_items] = value;
-                add_edge(i, j, value, random_graph);
+                boost::add_edge(i, j, value, random_graph);
             }
     //print_edge_graph(random_graph);
     return random_graph;
