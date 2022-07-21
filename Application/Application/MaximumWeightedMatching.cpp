@@ -1,4 +1,4 @@
-#include "MWM.h"
+#include "MaximumWeightedMatching.h"
 
 void maximum_weight_matching(Graph& graph, long long& time_execution, float& total_cost){
     vertex_iterator vi, vi_end;

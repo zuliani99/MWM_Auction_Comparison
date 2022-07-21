@@ -80,15 +80,27 @@ void execute_auction_algorithm(Graph& graph, const int& n_vertices_per_part, lon
     GraphProp& gp = graph[boost::graph_bundle];
     const double eps = 0.1;
     int unassigned_bidders = n_vertices_per_part;
+    auto a = boost::vertex_bundle_type<Graph>::type();
 
-    while (unassigned_bidders > 0) {
+    //boost::edge(1,2,3).first;
+
+    /*
+    std::function<bool(E)> any_interconnect = boost::keep_all{};
+    std::function<bool(V)> bidders = [graph](V v) -> bool { return boost::get<Bidder>(graph[v]); };
+    std::function<bool(V)> items = [graph](V v) -> bool { return boost::get<Item>(graph[v]); };
+    */
+
+
+
+
+    //while (unassigned_bidders > 0) {
 
         // 1 Bid
 
         // 2 Compete
 
         // 3 Assign
-    }
+    //}
 
 }
 
@@ -97,7 +109,7 @@ void auction_algorithm(Graph &graph, long long& time_execution, float& total_cos
 
     execute_auction_algorithm(graph, n_vertices_per_part, time_execution);
     for (int bidder = 0; bidder < n_vertices_per_part; ++bidder) {
-        std::cout << "Bidder: " << bidder << " has item: " << graph[boost::graph_bundle].bidder2item[bidder] << std::endl;
+        //std::cout << "Bidder: " << bidder << " has item: " << graph[boost::graph_bundle].bidder2item[bidder] << std::endl;
         //total_cost_auction += (*cost_matrix)[bidder][bidder_item[bidder]];
     }
 }

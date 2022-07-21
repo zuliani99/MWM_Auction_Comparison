@@ -1,4 +1,4 @@
-#include "BG.h"
+#include "BipartiteGraph.h"
 
 std::default_random_engine generator;
 
