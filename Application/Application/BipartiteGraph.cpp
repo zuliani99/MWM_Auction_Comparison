@@ -2,15 +2,13 @@
 
 std::default_random_engine generator;
 
-Data generateData(int N) {
-    Data data;
-    auto& [cm, g] = data;
+Graph generateData(int N) {
+    Graph g;
 
-    data.cost_matrix.assign(N, Matrix::value_type(N, 0));
     std::uniform_real_distribution<float> distribution(0., 30.);
 
     for (int i = 0; i < N; ++i) boost::add_vertex(Bidder{ i }, g);
-    for (int i = 0; i < N; ++i) boost::add_vertex(Item{ N + i }, g);
+    for (int i = 0; i < N; ++i) boost::add_vertex(Item{ i }, g);
 
     GraphProp& gp = g[boost::graph_bundle];
     gp.bidder2item.assign(N, -1);
@@ -20,12 +18,11 @@ Data generateData(int N) {
     for (int bidder = 0; bidder < N; ++bidder) {
         for (int item = 0; item < N; ++item) {
             float value = distribution(generator);
-            data.cost_matrix[bidder][item] = value;
             boost::add_edge(bidder, N + item, value, g);
         }
     }
 
-    return data;
+    return g;
 }
 
 

@@ -19,17 +19,17 @@ namespace Nodes {
     struct Bidder {
         int    id;
         int    best_item = -1;
-        double val_first_best_item = -1.;
-        double val_second_best_item = -1.;
+        float val_first_best_item = -1.;
+        float val_second_best_item = -1.;
     };
 
     struct Item {
         int    id;
-        double cost = 0.;
+        float cost = 0.;
         int    high_bidder = -1;
-        double high_bid = -1.;
+        float high_bid = -1.;
     };
-
+    
     static inline std::ostream& operator<<(std::ostream& os, Bidder const& b) {
         return os << "BIDDER:" << b.id << "|best_item:" << b.best_item
             << "|best1:" << b.val_first_best_item
@@ -61,12 +61,9 @@ using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirected
 using vertex_iterator = boost::graph_traits<Graph>::vertex_iterator;
 using V = Graph::vertex_descriptor;
 using E = Graph::edge_descriptor;
-
-using Matrix = std::vector<std::vector<float>>;
-struct Data {
-    Matrix cost_matrix;
-    Graph  graph;
-};
+using VertexFilter = std::function<bool(V)>;
+using EdgeFilter = std::function<bool(E)>;
+using FMap = boost::filtered_graph<Graph, EdgeFilter, VertexFilter>;
 
 
 #endif

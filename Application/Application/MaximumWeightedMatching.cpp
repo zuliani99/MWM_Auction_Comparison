@@ -16,6 +16,5 @@ void maximum_weight_matching(Graph& graph, long long& time_execution, float& tot
         if (mate[*vi] != boost::graph_traits< Graph>::null_vertex()
             && *vi < mate[*vi])
             std::cout << "Bidder: " << *vi << " has item " << mate[*vi] % (boost::num_vertices(graph) / 2) << std::endl;
-    std::cout << std::endl;
     
 }

@@ -4,7 +4,7 @@
 #include "Graph.h"
 #include <random>
 
-Data generateData(int N);
+Graph generateData(int N);
 void printGraph(Graph& g);
 
 
