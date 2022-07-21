@@ -3,6 +3,6 @@
 
 #include "Graph.h"
 
-void maximum_weight_matching(UndirectedGraph graph, long long* time_execution, float* total_cost);
+void maximum_weight_matching(Graph& graph, long long& time_execution, float& total_cost);
 
 #endif 

@@ -1,5 +1,6 @@
 #include "Auction.h"
 
+/*
 std::vector<int> execute_auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int * n_bidders_items, long long *time_execution) {
 	const int n_bidders = *n_bidders_items;
 	const int n_items = *n_bidders_items;
@@ -73,11 +74,30 @@ std::vector<int> execute_auction_algorithm(std::vector<std::vector<float>>* cost
     *time_execution = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
     return bidder2item;
 }
+*/
 
-void auction_algorithm(std::vector<std::vector<float>>* cost_matrix, const int* n_vertices_per_part, long long* time_execution, float* total_cost_auction) {
-    std::vector<int> bidder_item = execute_auction_algorithm(cost_matrix, n_vertices_per_part, time_execution);
-    for (int bidder = 0; bidder < *n_vertices_per_part; ++bidder) {
-        std::cout << "Bidder: " << bidder << " has item: " << bidder_item[bidder] << std::endl;
-        *total_cost_auction += (*cost_matrix)[bidder][bidder_item[bidder]];
+void execute_auction_algorithm(Graph& graph, const int& n_vertices_per_part, long long& time_execution) {
+    GraphProp& gp = graph[boost::graph_bundle];
+    const double eps = 0.1;
+    int unassigned_bidders = n_vertices_per_part;
+
+    while (unassigned_bidders > 0) {
+
+        // 1 Bid
+
+        // 2 Compete
+
+        // 3 Assign
+    }
+
+}
+
+void auction_algorithm(Graph &graph, long long& time_execution, float& total_cost_auction) {
+    int n_vertices_per_part = int(boost::num_vertices(graph) / 2);
+
+    execute_auction_algorithm(graph, n_vertices_per_part, time_execution);
+    for (int bidder = 0; bidder < n_vertices_per_part; ++bidder) {
+        std::cout << "Bidder: " << bidder << " has item: " << graph[boost::graph_bundle].bidder2item[bidder] << std::endl;
+        //total_cost_auction += (*cost_matrix)[bidder][bidder_item[bidder]];
     }
 }
