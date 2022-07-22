@@ -12,11 +12,12 @@ int main(int argc, const char* argv[]) {
 		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n_bidders_items << " per part\n";
 
 		//long long time_execution_mwm;
-		long long time_execution_auction;
+		//long long time_execution_auction;
 		//float total_cost_mwm = 0.;
-		float total_cost_auction = 0.;
+		//float total_cost_auction = 0.;
+		bool fully_connected = true;
 
-		Graph graph = generateData(n_bidders_items);
+		Graph graph = generateData(n_bidders_items, fully_connected);
 		printGraph(graph);
         
 		//std::cout << "The graph is bipartite? ";
@@ -28,11 +29,11 @@ int main(int argc, const char* argv[]) {
 		//maximum_weight_matching(graph, time_execution_mwm, total_cost_mwm);
 		//std::cout << "Execution time of Maximum Weight Matching: " << float(time_execution_mwm) / 1000 << " milliseconds, with total cost: " << total_cost_mwm << "\n\n";
 
-		//AUCTION ALGOROTHM
-		std::cout << "\nExecution of Auction Algorithm\n";
-		auction_algorithm(graph, time_execution_auction, total_cost_auction);
-		std::cout << "Execution time of Maximum Weight Matching: " << float(time_execution_auction) / 1000 << " milliseconds, with total cost: " << total_cost_auction << "\n\n";
-		printGraph(graph);
+		//AUCTION ALGOROTHM, done
+		//std::cout << "\nExecution of Auction Algorithm\n";
+		//auction_algorithm(graph, time_execution_auction, total_cost_auction);
+		//std::cout << "Execution time of Maximum Weight Matching: " << float(time_execution_auction) / 1000 << " milliseconds, with total cost: " << total_cost_auction << "\n\n";
+		//printGraph(graph);
 	}
 
 	return 0;
