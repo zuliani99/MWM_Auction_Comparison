@@ -83,7 +83,7 @@ void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execu
     }
 
     auto t_end = std::chrono::high_resolution_clock::now();
-    time_execution = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
+    time_execution = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
 }
 
 void auction_algorithm(Graph &graph, long long& time_execution, float& total_cost_auction) {

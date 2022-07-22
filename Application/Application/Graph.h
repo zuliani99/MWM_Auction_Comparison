@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <chrono>
+#include <string>
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/maximum_weighted_matching.hpp>
@@ -13,6 +14,8 @@
 #include <boost/property_map/function_property_map.hpp>
 #include <boost/property_map/transform_value_property_map.hpp>
 #include <boost/variant.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/graph/bipartite.hpp>
 
 
 namespace Nodes {
@@ -56,7 +59,7 @@ struct GraphProp {
     std::vector<int> item2bidder;
 };
 
-using EdgeProp = boost::property<boost::edge_weight_t, float, boost::property<boost::edge_index_t, int>>;
+using EdgeProp = boost::property<boost::edge_weight_t, float, boost::property<boost::edge_index_t, float>>;
 using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, VertexProp, EdgeProp, GraphProp>;
 using vertex_iterator = boost::graph_traits<Graph>::vertex_iterator;
 using V = Graph::vertex_descriptor;
@@ -64,6 +67,5 @@ using E = Graph::edge_descriptor;
 using VertexFilter = std::function<bool(V)>;
 using EdgeFilter = std::function<bool(E)>;
 using FMap = boost::filtered_graph<Graph, EdgeFilter, VertexFilter>;
-
 
 #endif

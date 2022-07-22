@@ -3,7 +3,6 @@
 
 #include "Graph.h"
 #include <random>
-
 Graph generateData(int N);
 void printGraph(Graph& g);
 
