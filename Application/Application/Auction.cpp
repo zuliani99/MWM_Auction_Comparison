@@ -1,4 +1,5 @@
 #include "Auction.h"
+#include "BipartiteGraph.h"
 
 void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execution) {
     const float eps = .1;
@@ -32,8 +33,8 @@ void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execu
                 float val = weight - item->cost;
 
                 if (val > val_item1) {
-                    val_item1 = val;
                     val_item2 = val_item1;
+                    val_item1 = val;
                     id_item1 = item->id;
                 }
                 else if (val > val_item2) {
@@ -46,13 +47,13 @@ void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execu
             bidder->val_second_best_item = val_item2;
 
         }
-
+        //printGraph(graph);
 
         // 2 Compete
 
         for (auto uncasted_bidder : boost::make_iterator_range(boost::vertices(map_bidders))) {
             Bidder* bidder = boost::get<Bidder>(&graph[uncasted_bidder]);
-            if (gp.item2bidder[bidder->id] != -1) continue;
+            if (gp.bidder2item[bidder->id] != -1) continue;
 
             float bid = bidder->val_first_best_item - bidder->val_second_best_item + eps;
             auto best_item = boost::get<Item>(&graph[bidder->best_item]);
@@ -60,8 +61,9 @@ void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execu
                 best_item->high_bid = bid;
                 best_item->high_bidder = bidder->id;
             }
-        }
 
+        }
+        //printGraph(graph);
 
         // 3 Assign
 
@@ -80,6 +82,8 @@ void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execu
             gp.bidder2item[gp.item2bidder[item->id]] = item->id;
             unassigned_bidders--;
         }
+        //printGraph(graph);
+    
     }
 
     auto t_end = std::chrono::high_resolution_clock::now();

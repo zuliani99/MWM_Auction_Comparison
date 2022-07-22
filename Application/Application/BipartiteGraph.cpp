@@ -1,11 +1,11 @@
 #include "BipartiteGraph.h"
 
-//std::default_random_engine generator;
+std::default_random_engine generator;
 
 Graph generateData(int N) {
     Graph g;
 
-    //std::uniform_real_distribution<float> distribution(0., 20.);
+    std::uniform_real_distribution<float> distribution(0., 20.);
 
     for (int i = 0; i < N; ++i) boost::add_vertex(Bidder{ i }, g);
     for (int i = 0; i < N; ++i) boost::add_vertex(Item{ i }, g);
@@ -17,9 +17,9 @@ Graph generateData(int N) {
     // Every left nodes has a connection to every right nodes
     for (int bidder = 0; bidder < N; ++bidder) {
         for (int item = 0; item < N; ++item) {
-            //float value = distribution(generator);
+            float value = distribution(generator);
 
-            float value = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (40 - 1)));
+            //float value = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (5 - 1)));
             boost::add_edge(bidder, N + item, value, g);
         }
     }
