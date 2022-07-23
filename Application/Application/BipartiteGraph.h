@@ -3,6 +3,8 @@
 
 #include "Graph.h"
 #include <random>
+
+
 Graph generateData(int N, bool fully_connected);
 void printGraph(Graph& g);
 bool check_graph(Graph& g, int N);

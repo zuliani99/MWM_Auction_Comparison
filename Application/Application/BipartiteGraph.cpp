@@ -22,7 +22,7 @@ Graph generateData(int N, bool fully_connected) {
     // Every left nodes has a connection to every right nodes
     for (int bidder = 0; bidder < N; ++bidder) {
         for (int item = 0; item < N; ++item) {
-            if (!fully_connected) 
+            if (!fully_connected)
                 if (!int_dist(generator)) continue;
             boost::add_edge(bidder, N + item, float_dist(generator), g);
         }
@@ -39,6 +39,7 @@ Graph generateData(int N, bool fully_connected) {
 
     return g;
 }
+
 
 bool check_graph(Graph& g, int N) {
     for (int i = 0; i < N; ++i) {
@@ -64,6 +65,7 @@ void sanitize_edge_bidder(Graph& g, int N, std::uniform_real_distribution<float>
     }
 }
 
+
 void sanitize_edge_item(Graph& g, int N, std::uniform_real_distribution<float> float_dist, std::uniform_int_distribution<int> int_dist_addedge) {
     for (int item = 0; item < N; ++item) {
         int count_item = 0;
@@ -74,7 +76,6 @@ void sanitize_edge_item(Graph& g, int N, std::uniform_real_distribution<float> f
         if (count_item == 0) boost::add_edge(int_dist_addedge(generator), item + N, float_dist(generator), g);
     }
 }
-
 
 
 void printGraph(Graph& g) {
