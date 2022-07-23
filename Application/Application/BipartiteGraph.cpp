@@ -4,14 +4,15 @@ std::default_random_engine generator;
 
 Graph generateData(int N, bool fully_connected) {
     Graph g;
-    float value;
 
     std::uniform_real_distribution<float> float_dist(0., 20.);
     std::uniform_int_distribution<int> int_dist(0, 1);
-    std::uniform_int_distribution<int> int_dist_addedge(0, N);
+    std::uniform_int_distribution<int> int_dist_addedge(0, N - 1);
 
     for (int i = 0; i < N; ++i) boost::add_vertex(Bidder{ i }, g);
     for (int i = 0; i < N; ++i) boost::add_vertex(Item{ i }, g);
+
+    //printGraph(g);
 
     GraphProp& gp = g[boost::graph_bundle];
     gp.bidder2item.assign(N, -1);
@@ -21,12 +22,13 @@ Graph generateData(int N, bool fully_connected) {
     // Every left nodes has a connection to every right nodes
     for (int bidder = 0; bidder < N; ++bidder) {
         for (int item = 0; item < N; ++item) {
-            value = float_dist(generator);
             if (!fully_connected) 
-                if (!int_dist(generator)) value = .0;
-            boost::add_edge(bidder, N + item, value, g);
+                if (!int_dist(generator)) continue;
+            boost::add_edge(bidder, N + item, float_dist(generator), g);
         }
     }
+
+    //printGraph(g);
 
     if (!fully_connected) {
         while (!check_graph(g, N)) {
@@ -45,6 +47,7 @@ bool check_graph(Graph& g, int N) {
             if (boost::edge(i, j + N, g).second) count_bidder++;
             if (boost::edge(i + N, j, g).second) count_item++;
         }
+        //std::cout << "check" << count_bidder << " " << count_item << "\n";
         if (count_bidder == 0 || count_item == 0) return false;
     }
     return true;
@@ -56,6 +59,7 @@ void sanitize_edge_bidder(Graph& g, int N, std::uniform_real_distribution<float>
         for (int item = 0; item < N; ++item) {
             if (boost::edge(bidder, item + N, g).second) count_bidder++;
         }
+        //std::cout << "check" << count_bidder << "\n";
         if (count_bidder == 0) boost::add_edge(bidder, N + int_dist_addedge(generator), float_dist(generator), g);
     }
 }
@@ -66,7 +70,8 @@ void sanitize_edge_item(Graph& g, int N, std::uniform_real_distribution<float> f
         for (int bidder = 0; bidder < N; ++bidder) {
             if (boost::edge(item + N, bidder, g).second) count_item++;
         }
-        if (count_item == 0) boost::add_edge(item + N, int_dist_addedge(generator), float_dist(generator), g);
+        //std::cout << "check" << count_item << "\n";
+        if (count_item == 0) boost::add_edge(int_dist_addedge(generator), item + N, float_dist(generator), g);
     }
 }
 
