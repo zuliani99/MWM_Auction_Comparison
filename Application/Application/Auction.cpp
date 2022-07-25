@@ -1,8 +1,8 @@
 #include "Auction.h"
 #include "BipartiteGraph.h"
 
-void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execution) {
-    const float eps = .1;
+void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
+    const Weight eps = 1;
     int unassigned_bidders = n;
     GraphProp& gp = graph[boost::graph_bundle];
 
@@ -13,7 +13,7 @@ void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execu
     FMap map_bidders = FMap(graph, any_interconnect, bidders);
     FMap map_items = FMap(graph, any_interconnect, items);    
     
-    auto t_start = std::chrono::high_resolution_clock::now();
+    auto t_start = now();
     
     while (unassigned_bidders > 0) {
 
@@ -24,13 +24,13 @@ void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execu
             if(gp.bidder2item[bidder->id] != -1) continue;
 
             int id_item1 = -1;
-            float val_item1 = -1.;
-            float val_item2 = -1.;
+            Weight val_item1 = -1;
+            Weight val_item2 = -1;
 
             for (auto uncasted_item : boost::make_iterator_range(boost::vertices(map_items))) {
                 Item* item = boost::get<Item>(&graph[uncasted_item]);
-                float weight = boost::get(boost::edge_weight_t(), graph, (boost::edge(uncasted_bidder, uncasted_item, graph)).first);
-                float val = weight - item->cost;
+                Weight weight = boost::get(boost::edge_weight_t(), graph, (boost::edge(uncasted_bidder, uncasted_item, graph)).first);
+                Weight val = weight - item->cost;
 
                 if (val > val_item1) {
                     val_item2 = val_item1;
@@ -55,7 +55,7 @@ void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execu
             Bidder* bidder = boost::get<Bidder>(&graph[uncasted_bidder]);
             if (gp.bidder2item[bidder->id] != -1) continue;
 
-            float bid = bidder->val_first_best_item - bidder->val_second_best_item + eps;
+            Weight bid = bidder->val_first_best_item - bidder->val_second_best_item + eps;
             auto best_item = boost::get<Item>(&graph[bidder->best_item]);
             if (bid > best_item->high_bid) {
                 best_item->high_bid = bid;
@@ -86,18 +86,22 @@ void execute_auction_algorithm(Graph& graph, const int& n, long long& time_execu
     
     }
 
-    auto t_end = std::chrono::high_resolution_clock::now();
-    time_execution = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
+    elapsed = now() - t_start;
 }
 
-void auction_algorithm(Graph &graph, long long& time_execution, float& total_cost_auction) {
+Weight perform_au(Graph& graph, duration& elapsed) {
     int n = int(boost::num_vertices(graph) / 2);
+    Weight total_cost_auction = 0;
 
-    execute_auction_algorithm(graph, n, time_execution);
-    std::cout << "The matching is:" << std::endl;
+    auction_algorithm(graph, n, elapsed);
+
+    std::cout << "The matching is:";
     for (int bidder = 0; bidder < n; ++bidder) {
-        std::cout << "Bidder: " << bidder << " has item: " << graph[boost::graph_bundle].bidder2item[bidder] << std::endl;
+        std::cout << "(" << bidder << "," << graph[boost::graph_bundle].bidder2item[bidder] << ")";
+        //std::cout << "Bidder: " << bidder << " has item: " << graph[boost::graph_bundle].bidder2item[bidder] << std::endl;
         int item = graph[boost::graph_bundle].bidder2item[bidder];
         total_cost_auction += boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, item + n, graph)).first);
     }
+    std::cout << "\n";
+    return total_cost_auction;
 }

@@ -1,23 +1,21 @@
 #include "MaximumWeightedMatching.h"
 
-void maximum_weight_matching(Graph& graph, long long& time_execution, float& total_cost){
-    vertex_iterator vi, vi_end;
+Weight perform_mwm(Graph const& graph, duration& elapsed) {
+    auto const N = num_vertices(graph);
+    std::vector<V> mate(N);
 
-    std::vector <boost::graph_traits<Graph>::vertex_descriptor> mate(boost::num_vertices(graph));
+    auto t_start = now();
+    maximum_weighted_matching(graph, &mate[0]);
+    elapsed = now() - t_start;
 
-    /*std::cout << "Has the graph a solution? ";
-    bool success = boost::checked_edmonds_maximum_cardinality_matching(graph, &mate[0]);
-    success ? std::cout << "Yes\n" : std::cout << "No\n";*/
-    
-    auto t_start = std::chrono::high_resolution_clock::now();
-    boost::maximum_weighted_matching(graph, &mate[0], boost::get(boost::vertex_index, graph));
-    time_execution = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t_start).count();
-    total_cost = float(boost::matching_weight_sum(graph, &mate[0]));
+    Weight cost = matching_weight_sum(graph, &mate[0]);
 
+    std::cout << "The matching is: ";
 
-    std::cout << "The matching is:" << std::endl;
-    for (boost::tie(vi, vi_end) = boost::vertices(graph); vi != vi_end; ++vi)
-        if (mate[*vi] != boost::graph_traits<Graph>::null_vertex() && *vi < mate[*vi])
-            std::cout << "Bidder: " << *vi << " has item " << mate[*vi] % (boost::num_vertices(graph) / 2) << std::endl;
-    
+    for (V v : boost::make_iterator_range(vertices(graph)))
+        if (mate[v] != Graph::null_vertex() && v < mate[v])
+            std::cout << "(" << v << "," << (mate[v] - (N / 2)) << ")";
+    std::cout << "\n";
+
+    return cost;
 }
