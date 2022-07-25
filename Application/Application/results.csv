@@ -1,0 +1,5 @@
+Edge per part, Time Execution MWM, Total Cost MWM, Time Execution AU, Total Cost AU, Same Result
+3, 1.4994 ms, 87.9883, 16.809 ms, 87.9883, true
+4, 2.6123 ms, 144.868, 33.5284 ms, 144.868, true
+5, 3.9885 ms, 145.498, 80.0095 ms, 145.498, true
+6, 7.423 ms, 163.379, 126.839 ms, 157.672, false
