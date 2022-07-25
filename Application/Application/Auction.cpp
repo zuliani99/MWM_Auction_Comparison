@@ -17,6 +17,7 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
     
     while (unassigned_bidders > 0) {
 
+
         // 1 Bid
 
         for (auto uncasted_bidder : boost::make_iterator_range(boost::vertices(map_bidders))) {
@@ -47,7 +48,7 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
             bidder->val_second_best_item = val_item2;
 
         }
-        //printGraph(graph);
+
 
         // 2 Compete
 
@@ -63,7 +64,7 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
             }
 
         }
-        //printGraph(graph);
+
 
         // 3 Assign
 
@@ -82,7 +83,6 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
             gp.bidder2item[gp.item2bidder[item->id]] = item->id;
             unassigned_bidders--;
         }
-        //printGraph(graph);
     
     }
 
@@ -98,7 +98,6 @@ Weight perform_au(Graph& graph, duration& elapsed) {
     std::cout << "The matching is:";
     for (int bidder = 0; bidder < n; ++bidder) {
         std::cout << "(" << bidder << "," << graph[boost::graph_bundle].bidder2item[bidder] << ")";
-        //std::cout << "Bidder: " << bidder << " has item: " << graph[boost::graph_bundle].bidder2item[bidder] << std::endl;
         int item = graph[boost::graph_bundle].bidder2item[bidder];
         total_cost_auction += boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, item + n, graph)).first);
     }
