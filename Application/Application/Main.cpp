@@ -16,10 +16,11 @@ int main(int argc, const char* argv[]) {
 
 	int min, max;
 	std::fstream stream;
+
 	check_empty_file();
 
 	stream.open("results.csv", std::ios::out | std::ios::app);
-	stream << "Edge per part, Time Execution MWM, Total Cost MWM, Time Execution AU, Total Cost AU, Same Result\n";
+	stream << "Edge per part, Time Execution MWM, Total Cost MWM, Time Execution AU, Total Cost AU, Winner\n";
 
 	std::cout << "-------- MAXIMUM WEIGHTED MATCHING - AUCTION ALGORITHM BECHMARCK --------\n\n";
 	std::cout << "Please specify the starting number of verticies per part: ";
@@ -58,8 +59,9 @@ int main(int argc, const char* argv[]) {
 		std::cout << "Same solution? ";
 		(total_cost_mwm == total_cost_au) ? std::cout << "Yes" : std::cout << "No";
 
-		stream << n << ", " << fmt{ elapsed_mwm } << ", " << (total_cost_mwm / 10'000.0) << ", " <<
-			fmt{ elapsed_au } << ", " << (total_cost_au / 10'000.0) << ", " << std::boolalpha << (total_cost_mwm == total_cost_au) << "\n";
+		stream << n << ", " << fmt{elapsed_mwm} << ", " << (total_cost_mwm / 10'000.0) << ", " <<
+			fmt{elapsed_au} << ", " << (total_cost_au / 10'000.0) << ", " <<
+			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm == total_cost_au) ? "MWM" : "AU") << "\n";
 	}
 
 	return 0;
