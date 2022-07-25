@@ -38,7 +38,8 @@ int main(int argc, const char* argv[]) {
 		Graph graph = generateData(n, fully_connected);
 		assert(boost::num_vertices(graph) == 2 * n);
 		assert(boost::num_edges(graph) == n * n);
-		printGraph(graph);
+		
+		//printGraph(graph);
         
 		//std::cout << "The graph is bipartite? ";
 		//boost::is_bipartite(graph) ? std::cout << "Yes\n" : std::cout << "No\n";
@@ -55,13 +56,14 @@ int main(int argc, const char* argv[]) {
 		std::cout << "Execution time of Auction Algorithm: " << std::fixed
 			<< fmt{elapsed_au} << ", with total cost: " << (total_cost_au / 10'000.0)
 			<< "\n\n";
-
+		
 		std::cout << "Same solution? ";
 		(total_cost_mwm == total_cost_au) ? std::cout << "Yes" : std::cout << "No";
-
+		
 		stream << n << ", " << fmt{elapsed_mwm} << ", " << (total_cost_mwm / 10'000.0) << ", " <<
 			fmt{elapsed_au} << ", " << (total_cost_au / 10'000.0) << ", " <<
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm == total_cost_au) ? "MWM" : "AU") << "\n";
+		
 	}
 
 	return 0;
