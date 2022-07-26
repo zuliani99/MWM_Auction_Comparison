@@ -23,3 +23,7 @@ Application/.vs/Application/v17/fileList.bin
 *.bin
 *.bin
 *.bin
+
+Application/Application/.vscode/
+
+*.out

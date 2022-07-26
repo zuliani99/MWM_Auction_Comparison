@@ -56,8 +56,8 @@ int main(int argc, const char* argv[]) {
 
 		//AUCTION ALGOROTHM
 		std::cout << "Execution time of Auction Algorithm";
-		//total_cost_au = perform_au(graph, elapsed_au);
-		total_cost_au = perform_au_array(cost_matrix, n, elapsed_au);
+		total_cost_au = perform_au(graph, elapsed_au);
+		//total_cost_au = perform_au_array(cost_matrix, n, elapsed_au);
 		std::cout << std::fixed
 			<< fmt{elapsed_au} << ", with total cost: " << (total_cost_au / 10'000.0)
 			<< "\n\n";
@@ -70,6 +70,8 @@ int main(int argc, const char* argv[]) {
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm == total_cost_au) ? "MWM" : "AU") << "\n";
 		
 	}
+
+	std::cout << "\n";
 
 	return 0;
 }
