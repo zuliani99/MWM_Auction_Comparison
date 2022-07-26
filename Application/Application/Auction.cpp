@@ -13,10 +13,10 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
     FMap map_bidders = FMap(graph, any_interconnect, bidders);
     FMap map_items = FMap(graph, any_interconnect, items);    
     
-    auto t_start = now();
     auto iterator_bidder = boost::make_iterator_range(boost::vertices(map_bidders));
     auto iterator_item = boost::make_iterator_range(boost::vertices(map_items));
-    
+    auto t_start = now();
+
     while (unassigned_bidders > 0) {
 
         // 1 Bid
@@ -89,7 +89,7 @@ Weight perform_au(Graph& graph, duration& elapsed) {
 
     auction_algorithm(graph, n, elapsed);
 
-    std::cout << "The matching is: ";
+    std::cout << "\nThe matching is: ";
     for (int bidder = 0; bidder < n; ++bidder) {
         std::cout << "(" << bidder << "," << graph[boost::graph_bundle].bidder2item[bidder] << ")";
         int item = graph[boost::graph_bundle].bidder2item[bidder];

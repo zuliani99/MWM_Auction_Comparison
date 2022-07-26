@@ -6,7 +6,7 @@
 
 using Distribution = std::uniform_int_distribution<int64_t>;
 
-Graph generateData(int N, bool fully_connected);
+Data generateData(int N, bool fully_connected);
 void printGraph(Graph& g);
 bool check_graph(Graph& g, int N);
 void sanitize_edge_bidder(Graph& g, int N, Distribution dist, Distribution int_dist_addedge);

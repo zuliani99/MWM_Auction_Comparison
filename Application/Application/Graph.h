@@ -84,4 +84,10 @@ struct fmt {
     }
 };
 
+using Matrix = std::vector<std::vector<Weight>>;
+struct Data {
+    Matrix cost_matrix;
+    Graph  graph;
+};
+
 #endif

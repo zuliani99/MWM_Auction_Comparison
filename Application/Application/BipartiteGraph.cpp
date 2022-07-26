@@ -1,7 +1,10 @@
 #include "BipartiteGraph.h"
 
-Graph generateData(int N, bool fully_connected) {
-    Graph g;
+Data generateData(int N, bool fully_connected) {
+    Data data;
+    auto& [cm, g] = data;
+
+    cm.assign(N, Matrix::value_type(N, 0));
 
     Distribution dist(10'000, 400'000);
     Distribution int_dist(0, 1);
@@ -22,7 +25,9 @@ Graph generateData(int N, bool fully_connected) {
         for (int item = 0; item < N; ++item) {
             if (!fully_connected)
                 if (!int_dist(prng)) continue;
-            add_edge(bidder, N + item, dist(prng), g);
+            auto value = dist(prng);
+            cm[bidder][item] = value;
+            add_edge(bidder, N + item, value, g);
         }
     }
 
@@ -35,7 +40,7 @@ Graph generateData(int N, bool fully_connected) {
         }
     }
 
-    return g;
+    return data;
 }
 
 
