@@ -17,6 +17,8 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
     auto iterator_item = boost::make_iterator_range(boost::vertices(map_items));
     auto t_start = now();
 
+    //TODO: try to optimize the function using other data structure like MAP
+
     while (unassigned_bidders > 0) {
 
         // 1 Bid

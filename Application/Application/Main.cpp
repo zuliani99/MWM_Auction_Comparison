@@ -2,6 +2,7 @@
 #include "MaximumWeightedMatching.h"
 #include "Auction.h"
 #include "Auction_Array.h"
+#define VERBOSE false
 
 void check_empty_file() {
 	std::ifstream file;
@@ -34,17 +35,13 @@ int main(int argc, const char* argv[]) {
 
 		duration elapsed_mwm, elapsed_au;
 		Weight total_cost_mwm, total_cost_au;
-		bool fully_connected = true;
 
-		auto [cost_matrix, graph] = generateData(n, fully_connected);
+		auto [cost_matrix, graph] = generateData(n);
 		assert(boost::num_vertices(graph) == 2 * n);
 		assert(boost::num_edges(graph) == n * n);
 		std::cout << "done\n";
 		
-		//printGraph(graph);
-        
-		//std::cout << "The graph is bipartite? ";
-		//boost::is_bipartite(graph) ? std::cout << "Yes\n" : std::cout << "No\n";
+		if (VERBOSE) printGraph(graph);
 
 		//MAXIMUM WEIGHTED MATCHING
 		std::cout << "Execution time of Maximum Weight Matching";

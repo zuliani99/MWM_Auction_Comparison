@@ -75,13 +75,14 @@ struct fmt {
     duration const& _d;
 
     friend std::ostream& operator<<(std::ostream& os, fmt f) {
-        if (f._d >= 1min) return os << (f._d / 1min) << " min " << (f._d % 1min) / 1s << " s";
-        else if (f._d >= 1s) return os << (f._d / 1.0s) << " s";
-        else if (f._d >= 1ms) return os << (f._d / 1.0ms) << " ms";
-        else return os << (f._d / 1.0us) << " us";
+        if (f._d >= 1min) return os << (f._d / 1min) << "min " << (f._d % 1min) / 1s << "s";
+        else if (f._d >= 1s) return os << (f._d / 1.0s) << "s";
+        else if (f._d >= 1ms) return os << (f._d / 1.0ms) << "ms";
+        else return os << (f._d / 1.0us) << "us";
     }
 };
 
+// For the original and semplified version of auction algorithm
 using Matrix = std::vector<std::vector<Weight>>;
 struct Data {
     Matrix cost_matrix;
