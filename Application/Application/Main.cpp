@@ -5,10 +5,10 @@
 
 void check_empty_file() {
 	std::ifstream file;
-	file.open("results2.csv");
+	file.open("results.csv");
 	if (file) {
 		std::ofstream ofs;
-		ofs.open("results2.csv", std::ofstream::out | std::ofstream::trunc);
+		ofs.open("results.csv", std::ofstream::out | std::ofstream::trunc);
 		ofs.close();
 	}
 }
@@ -20,7 +20,7 @@ int main(int argc, const char* argv[]) {
 
 	check_empty_file();
 
-	stream.open("results2.csv", std::ios::out | std::ios::app);
+	stream.open("results.csv", std::ios::out | std::ios::app);
 	stream << "Edge per part, Time Execution MWM, Total Cost MWM, Time Execution AU, Total Cost AU, Winner\n";
 
 	std::cout << "-------- MAXIMUM WEIGHTED MATCHING - AUCTION ALGORITHM BECHMARCK --------\n\n";

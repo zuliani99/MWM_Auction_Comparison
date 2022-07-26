@@ -2,7 +2,7 @@
 
 void auction(Matrix& cost_matrix, const int& n, duration& elapsed, std::vector<int>& bidder2item) {
 
-    const Weight eps = 1;
+    Weight eps = 1;
 
     std::vector<Weight> cost(n, 0);
     std::vector<Weight> high_bids(n, -1);
@@ -17,59 +17,64 @@ void auction(Matrix& cost_matrix, const int& n, duration& elapsed, std::vector<i
 
     auto t_start = now();
 
-    while (unassigned_bidders > 0) {
+    while (eps > 1 / n) {
+        while (unassigned_bidders > 0) {
 
-        for (int bidder = 0; bidder < n; bidder++) {
-            if (bidder2item[bidder] != -1) continue;
+            for (int bidder = 0; bidder < n; bidder++) {
+                if (bidder2item[bidder] != -1) continue;
 
-            int idx1_ = -1;
-            Weight val1_ = -1;
-            Weight val2_ = -1; 
+                int idx1_ = -1;
+                Weight val1_ = -1;
+                Weight val2_ = -1;
+
+                for (int item = 0; item < n; item++) {
+                    Weight val = cost_matrix[bidder][item] - cost[item]; // A_ij - p_j
+                    if (val > val1_) {
+                        val2_ = val1_;
+                        val1_ = val;
+                        idx1_ = item;
+                    }
+                    else if (val > val2_) {
+                        val2_ = val;
+                    }
+                }
+
+                idx1[bidder] = idx1_;
+                val2[bidder] = val2_;
+                val1[bidder] = val1_;
+
+
+                // Copmete
+
+                Weight bid = val1[bidder] - val2[bidder] + eps;
+                if (bid > high_bids[idx1[bidder]]) {
+                    high_bids[idx1[bidder]] = bid;
+                    high_bidder[idx1[bidder]] = bidder;
+                }
+
+            }
+
+            // Assign
 
             for (int item = 0; item < n; item++) {
-                Weight val = cost_matrix[bidder][item] - cost[item]; // A_ij - p_j
-                if (val > val1_) {
-                    val2_ = val1_;
-                    val1_ = val;
-                    idx1_ = item;
+                if (high_bids[item] == -1) continue;
+
+                cost[item] += high_bids[item];
+
+                if (item2bidder[item] != -1) {
+                    bidder2item[item2bidder[item]] = -1;
+                    unassigned_bidders++;
                 }
-                else if (val > val2_) {
-                    val2_ = val;
-                }
+
+                item2bidder[item] = high_bidder[item];
+                bidder2item[high_bidder[item]] = item;
+                unassigned_bidders--;
             }
-
-            idx1[bidder] = idx1_;
-            val2[bidder] = val2_;
-            val1[bidder] = val1_;
-
-
-            // Copmete
-
-            Weight bid = val1[bidder] - val2[bidder] + eps;
-            if (bid > high_bids[idx1[bidder]]) {
-                high_bids[idx1[bidder]] = bid;
-                high_bidder[idx1[bidder]] = bidder;
-            }
-
         }
 
-        // Assign
-
-        for (int item = 0; item < n; item++) {
-            if (high_bids[item] == -1) continue;
-
-            cost[item] += high_bids[item];
-
-            if (item2bidder[item] != -1) { 
-                bidder2item[item2bidder[item]] = -1;
-                unassigned_bidders++;
-            }
-
-            item2bidder[item] = high_bidder[item]; 
-            bidder2item[high_bidder[item]] = item;
-            unassigned_bidders--;
-        }
+        eps = eps * .25;
     }
+    
     elapsed = now() - t_start;
 }
 
