@@ -14,13 +14,14 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
     FMap map_items = FMap(graph, any_interconnect, items);    
     
     auto t_start = now();
+    auto iterator_bidder = boost::make_iterator_range(boost::vertices(map_bidders));
+    auto iterator_item = boost::make_iterator_range(boost::vertices(map_items));
     
     while (unassigned_bidders > 0) {
 
-
         // 1 Bid
 
-        for (auto uncasted_bidder : boost::make_iterator_range(boost::vertices(map_bidders))) {
+        for (auto uncasted_bidder : iterator_bidder) {
             Bidder* bidder = boost::get<Bidder>(&graph[uncasted_bidder]);
             if(gp.bidder2item[bidder->id] != -1) continue;
 
@@ -28,11 +29,9 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
             Weight val_item1 = -1;
             Weight val_item2 = -1;
 
-            for (auto uncasted_item : boost::make_iterator_range(boost::vertices(map_items))) {
+            for (auto uncasted_item : iterator_item) {
                 Item* item = boost::get<Item>(&graph[uncasted_item]);
-                //if (!boost::edge(uncasted_bidder, uncasted_item, graph).second) continue;
-                Weight weight = boost::get(boost::edge_weight_t(), graph, (boost::edge(uncasted_bidder, uncasted_item, graph)).first);
-                Weight val = weight - item->cost;
+                Weight val = boost::get(boost::edge_weight_t(), graph, (boost::edge(uncasted_bidder, uncasted_item, graph)).first) - item->cost;
 
                 if (val > val_item1) {
                     val_item2 = val_item1;
@@ -61,26 +60,9 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
         }
 
 
-        // 2 Compete
-
-        /*
-        for (auto uncasted_bidder : boost::make_iterator_range(boost::vertices(map_bidders))) {
-            Bidder* bidder = boost::get<Bidder>(&graph[uncasted_bidder]);
-            if (gp.bidder2item[bidder->id] != -1) continue;
-
-            Weight bid = bidder->val_first_best_item - bidder->val_second_best_item + eps;
-            auto best_item = boost::get<Item>(&graph[bidder->best_item]);
-            if (bid > best_item->high_bid) {
-                best_item->high_bid = bid;
-                best_item->high_bidder = bidder->id;
-            }
-
-        }*/
-
-
         // 3 Assign
 
-        for (auto uncasted_item : boost::make_iterator_range(boost::vertices(map_items))) {
+        for (auto uncasted_item : iterator_item) {
             Item* item = boost::get<Item>(&graph[uncasted_item]);
             if (item->high_bid == -1) continue;
 
