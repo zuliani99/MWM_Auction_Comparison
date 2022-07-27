@@ -1,4 +1,4 @@
-#include "BipartiteGraph.h"
+#include "../include/BipartiteGraph.h"
 
 //Data generateData(int N, bool fully_connected)
 Data generateData(int N) {

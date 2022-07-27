@@ -1,5 +1,5 @@
-#include "Auction.h"
-#include "BipartiteGraph.h"
+#include "../include/Auction.h"
+#include "../include/BipartiteGraph.h"
 
 void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
     const Weight eps = 1;
