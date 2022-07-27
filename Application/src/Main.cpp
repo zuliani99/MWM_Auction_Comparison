@@ -5,10 +5,10 @@
 
 void check_empty_file() {
 	std::ifstream file;
-	file.open("results.csv");
+	file.open("../data/results.csv");
 	if (file) {
 		std::ofstream ofs;
-		ofs.open("results.csv", std::ofstream::out | std::ofstream::trunc);
+		ofs.open("../data/results.csv", std::ofstream::out | std::ofstream::trunc);
 		ofs.close();
 	}
 }
@@ -20,8 +20,8 @@ int main(int argc, const char* argv[]) {
 
 	check_empty_file();
 
-	stream.open("results.csv", std::ios::out | std::ios::app);
-	stream << "Edge per part, Time Execution MWM, Total Cost MWM, Time Execution AU, Total Cost AU, Winner\n";
+	stream.open("../data/results.csv", std::ios::out | std::ios::app);
+	stream << "Edge per part,Time Execution MWM,Total Cost MWM,Time Execution AU,Total Cost AU,Winner\n";
 
 	std::cout << "-------- MAXIMUM WEIGHTED MATCHING - AUCTION ALGORITHM BECHMARCK --------\n\n";
 	std::cout << "Please specify the starting number of verticies per part: ";
@@ -62,8 +62,8 @@ int main(int argc, const char* argv[]) {
 		std::cout << "Same solution? ";
 		(total_cost_mwm == total_cost_au) ? std::cout << "Yes" : std::cout << "No";
 		
-		stream << n << ", " << fmt{elapsed_mwm} << ", " << (total_cost_mwm / 10'000.0) << ", " <<
-			fmt{elapsed_au} << ", " << (total_cost_au / 10'000.0) << ", " <<
+		stream << n << "," << fmt{elapsed_mwm} << "," << (total_cost_mwm / 10'000.0) << "," <<
+			fmt{elapsed_au} << "," << (total_cost_au / 10'000.0) << "," <<
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm == total_cost_au) ? "MWM" : "AU") << "\n";
 		
 	}
