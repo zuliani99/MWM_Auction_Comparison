@@ -1,7 +1,6 @@
 #include "BipartiteGraph.h"
 #include "MaximumWeightedMatching.h"
 #include "Auction.h"
-#include "Auction_Array.h"
 #define VERBOSE false
 
 void check_empty_file() {
@@ -30,6 +29,8 @@ int main(int argc, const char* argv[]) {
 	std::cout << "Please specify the ending number of verticies per part: ";
 	std::cin >> max;
 
+	assert(("The starting number must be greater or equal to the ending number", min <= max));
+
 	for (int n = min; n <= max; ++n) {
 		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " per part: ";
 
@@ -37,8 +38,8 @@ int main(int argc, const char* argv[]) {
 		Weight total_cost_mwm, total_cost_au;
 
 		auto [cost_matrix, graph] = generateData(n);
-		assert(boost::num_vertices(graph) == 2 * n);
-		assert(boost::num_edges(graph) == n * n);
+		assert(("Number of verticies not correct", boost::num_vertices(graph) == 2 * n));
+		assert(("Number of edges not correct", boost::num_edges(graph) == n * n));
 		std::cout << "done\n";
 		
 		if (VERBOSE) printGraph(graph);
@@ -54,7 +55,6 @@ int main(int argc, const char* argv[]) {
 		//AUCTION ALGOROTHM
 		std::cout << "Execution time of Auction Algorithm";
 		total_cost_au = perform_au(graph, elapsed_au);
-		//total_cost_au = perform_au_array(cost_matrix, n, elapsed_au);
 		std::cout << std::fixed
 			<< fmt{elapsed_au} << ", with total cost: " << (total_cost_au / 10'000.0)
 			<< "\n\n";

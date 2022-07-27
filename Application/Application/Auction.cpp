@@ -21,18 +21,19 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
 
     while (unassigned_bidders > 0) {
 
-        // 1 Bid
-
         for (auto uncasted_bidder : iterator_bidder) {
+            if (gp.bidder2item[static_cast<int>(uncasted_bidder)] != -1) continue;
             Bidder* bidder = boost::get<Bidder>(&graph[uncasted_bidder]);
-            if(gp.bidder2item[bidder->id] != -1) continue;
+
+            
+            // 1 Bid
 
             int id_item1 = -1;
             Weight val_item1 = -1;
             Weight val_item2 = -1;
 
             for (auto uncasted_item : iterator_item) {
-                Item* item = boost::get<Item>(&graph[uncasted_item]);
+                Item* item = boost::get<Item>(&graph[static_cast<int>(uncasted_item)]);
                 Weight val = boost::get(boost::edge_weight_t(), graph, (boost::edge(uncasted_bidder, uncasted_item, graph)).first) - item->cost;
 
                 if (val > val_item1) {
@@ -84,6 +85,8 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
 
     elapsed = now() - t_start;
 }
+
+
 
 Weight perform_au(Graph& graph, duration& elapsed) {
     int n = int(boost::num_vertices(graph) / 2);

@@ -27,3 +27,6 @@ Application/.vs/Application/v17/fileList.bin
 Application/Application/.vscode/
 
 *.out
+*.sarif
+*.txt
+*.bin
