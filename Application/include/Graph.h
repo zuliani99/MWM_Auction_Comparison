@@ -82,4 +82,11 @@ struct fmt {
     }
 };
 
+// For the original and semplified version of auction algorithm
+using Matrix = std::vector<std::vector<Weight>>;
+struct Data {
+    Matrix cost_matrix;
+    Graph  graph;
+};
+
 #endif
