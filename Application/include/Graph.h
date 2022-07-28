@@ -63,13 +63,10 @@ struct GraphProp {
 };
 
 using EdgeProp = boost::property<boost::edge_weight_t, Weight>;
-using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, VertexProp, EdgeProp, GraphProp>;
+using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, VertexProp, EdgeProp, GraphProp>;
 using vertex_iterator = Graph::vertex_iterator;
 using V = Graph::vertex_descriptor;
 using E = Graph::edge_descriptor;
-using VertexFilter = std::function<bool(V)>;
-using EdgeFilter = std::function<bool(E)>;
-using FMap = boost::filtered_graph<Graph, EdgeFilter, VertexFilter>;
 
 struct fmt {
     duration const& _d;
