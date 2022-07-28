@@ -1,1 +1,4 @@
 .vscode/
+Application/bin/app
+
+*.csv
