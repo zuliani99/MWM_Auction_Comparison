@@ -33,7 +33,7 @@ int main(int argc, const char* argv[]) {
 	assert(("The starting number must be greater or equal to the ending number", min <= max));
 
 	for (int n = min; n <= max; ++n) {
-		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " per part: ";
+		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " verticies per part: ";
 
 		duration elapsed_mwm, elapsed_au, elapsed_aua;
 		Weight total_cost_mwm, total_cost_au, total_cost_aua;
