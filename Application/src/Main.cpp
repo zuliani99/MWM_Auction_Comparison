@@ -43,7 +43,7 @@ int main(int argc, const char* argv[]) {
 		//auto [cost_matrix, graph] = generateData(n);
 		assert(("Number of verticies not correct", boost::num_vertices(graph) == 2 * n));
 		assert(("Number of edges not correct", boost::num_edges(graph) == n * n));
-		std::cout << "done\n";
+		std::cout << "done\n\n";
 		
 		if (VERBOSE) printGraph(graph);
 

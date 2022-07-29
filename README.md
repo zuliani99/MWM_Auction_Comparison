@@ -30,7 +30,6 @@ Start the .exe file by typing ```./app```, next you have to specify the starting
 After pressing enter, at each random bipartite graphs the application pass them respectively to:
 * **Maximum Weighted Matching**
 * **Auction Algorithm**
-* **Auction Algorithm (Array Version)**
 
 ![](images/console_2.png)
 
