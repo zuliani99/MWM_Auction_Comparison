@@ -3,6 +3,6 @@
 
 #include "Graph.h"
 
-Weight perform_au(Graph& graph, duration& elapsed);
+Weight perform_au(Graph& graph, duration& elapsed, int& n_iteration_au);
 
 #endif

@@ -1,7 +1,7 @@
 #include "../include/Auction.h"
 #include "../include/BipartiteGraph.h"
 
-void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
+void auction_algorithm(Graph& graph, const int& n, duration& elapsed, int& n_iteration_au) {
     const Weight eps = 1;
     int unassigned_bidders = n;
     GraphProp& gp = graph[boost::graph_bundle];
@@ -73,6 +73,8 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
             gp.bidder2item[gp.item2bidder[item->id]] = item->id;
             unassigned_bidders--;
         }
+
+		n_iteration_au += 1;
     
     }
 
@@ -81,11 +83,11 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed) {
 
 
 
-Weight perform_au(Graph& graph, duration& elapsed) {
+Weight perform_au(Graph& graph, duration& elapsed, int& n_iteration_au) {
     int n = int(boost::num_vertices(graph) / 2);
     Weight total_cost_auction = 0;
 
-    auction_algorithm(graph, n, elapsed);
+    auction_algorithm(graph, n, elapsed, n_iteration_au);
 
     std::cout << "\nThe matching is: ";
     for (int bidder = 0; bidder < n; ++bidder) {

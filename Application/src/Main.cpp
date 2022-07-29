@@ -23,7 +23,7 @@ int main(int argc, const char* argv[]) {
 
 	stream.open("../data/results.csv", std::ios::out | std::ios::app);
 	//stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,Execution Time AU,Seconds AU,Total Cost AU,Execution Time AU-A,Seconds AU-A,Total Cost AU-A,Winner Execution Time,Winner Total Cost\n";
-	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,Execution Time AU,Seconds AU,Total Cost AU,Winner Execution Time,Winner Total Cost\n";
+	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,Execution Time AU,Seconds AU,Total Cost AU,Iterations AU,Winner Execution Time,Winner Total Cost\n";
 
 	std::cout << "-------- MAXIMUM WEIGHTED MATCHING - AUCTION ALGORITHM BECHMARCK --------\n\n";
 	std::cout << "Please specify the starting number of verticies per part: ";
@@ -38,6 +38,7 @@ int main(int argc, const char* argv[]) {
 
 		duration elapsed_mwm, elapsed_au;//, elapsed_aua;
 		Weight total_cost_mwm, total_cost_au;//, total_cost_aua;
+		int n_iteration_au = 0;
 
 		Graph graph = generateData(n);
 		//auto [cost_matrix, graph] = generateData(n);
@@ -57,10 +58,10 @@ int main(int argc, const char* argv[]) {
 
 		//AUCTION ALGOROTHM
 		std::cout << "Execution time of Auction Algorithm";
-		total_cost_au = perform_au(graph, elapsed_au);
+		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au);
 		std::cout << std::fixed
 			<< fmt{elapsed_au} << ", with total cost: " << (total_cost_au / 10'000.0)
-			<< "\n\n";
+			<< " and " << n_iteration_au << " iterations" << "\n\n";
 
 		//AUCTION ARRAY ALGOROTHM
 		/*std::cout << "Execution time of Auction Algorithm";
@@ -73,7 +74,7 @@ int main(int argc, const char* argv[]) {
 		//(total_cost_mwm == total_cost_au) ? std::cout << "Yes" : std::cout << "No";
 		
 		stream << n << "," << fmt{elapsed_mwm} << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm / 10'000.0) << "," <<
-			fmt{elapsed_au} << "," << (elapsed_au / 1.0s) << "," << (total_cost_au / 10'000.0) << "," <<
+			fmt{elapsed_au} << "," << (elapsed_au / 1.0s) << "," << (total_cost_au / 10'000.0) << "," << n_iteration_au << "," <<
 			//fmt{elapsed_aua} << "," << (elapsed_aua / 1.0s) << "," << (total_cost_aua / 10'000.0) << "," <<
 			((elapsed_mwm / 1.0s) == (elapsed_au / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (elapsed_au / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm > total_cost_au) ? "MWM" : "AU") << "\n";
