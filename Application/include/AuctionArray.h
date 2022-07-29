@@ -3,6 +3,6 @@
 
 #include "Graph.h"
 
-Weight perform_au_array(Matrix& cost_matrix, int& n, duration& elapsed);
+//Weight perform_au_array(Matrix& cost_matrix, int& n, duration& elapsed);
 
 #endif

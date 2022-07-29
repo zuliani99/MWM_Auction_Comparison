@@ -1,12 +1,12 @@
 #include "../include/BipartiteGraph.h"
 
-//Graph generateData(int N) {
-    //Graph g;
-Data generateData(int N) {
-    Data data;
-    auto& [cm, g] = data;
+Graph generateData(int N) {
+    Graph g;
+//Data generateData(int N) {
+    //Data data;
+    //auto& [cm, g] = data;
 
-	cm.assign(N, Matrix::value_type(N, 0));
+	//cm.assign(N, Matrix::value_type(N, 0));
 
     Distribution dist(10'000, 400'000);
     Distribution int_dist(0, 1);
@@ -25,17 +25,17 @@ Data generateData(int N) {
     // Every left nodes has a connection to every right nodes
     for (int bidder = 0; bidder < N; ++bidder) {
         for (int item = 0; item < N; ++item) {
-            //add_edge(bidder, N + item, dist(prng), g);
-			auto value = dist(prng);
+            add_edge(bidder, N + item, dist(prng), g);
+			/*auto value = dist(prng);
             cm[bidder][item] = value;
-            add_edge(bidder, N + item, value, g);
+            add_edge(bidder, N + item, value, g);*/
         }
     }
 
     //printGraph(g);
 
-    //return g;
-	return data;
+    return g;
+	//return data;
 }
 
 
