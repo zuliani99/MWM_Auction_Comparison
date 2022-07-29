@@ -6,7 +6,8 @@
 
 using Distribution = std::uniform_int_distribution<int64_t>;
 
-Data generateData(int N);
+//Data generateData(int N);
+Graph generateData(int N);
 void printGraph(Graph& g);
 
 #endif 
