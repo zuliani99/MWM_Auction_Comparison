@@ -26,15 +26,15 @@ int main(int argc, const char* argv[]) {
 	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,Execution Time AU,Seconds AU,Total Cost AU,Iterations AU,Winner Execution Time,Winner Total Cost\n";
 
 	std::cout << "-------- MAXIMUM WEIGHTED MATCHING - AUCTION ALGORITHM BECHMARCK --------\n\n";
-	std::cout << "Please specify the starting number of verticies per part: ";
+	std::cout << "Please specify the starting number of vertices per part: ";
 	std::cin >> min;
-	std::cout << "Please specify the ending number of verticies per part: ";
+	std::cout << "Please specify the ending number of vertices per part: ";
 	std::cin >> max;
 
 	assert(("The starting number must be greater or equal to the ending number", min <= max));
 
 	for (int n = min; n <= max; ++n) {
-		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " verticies per part: ";
+		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " vertices per part: ";
 
 		duration elapsed_mwm, elapsed_au;//, elapsed_aua;
 		Weight total_cost_mwm, total_cost_au;//, total_cost_aua;
@@ -42,7 +42,7 @@ int main(int argc, const char* argv[]) {
 
 		Graph graph = generateData(n);
 		//auto [cost_matrix, graph] = generateData(n);
-		assert(("Number of verticies not correct", boost::num_vertices(graph) == 2 * n));
+		assert(("Number of vertices not correct", boost::num_vertices(graph) == 2 * n));
 		assert(("Number of edges not correct", boost::num_edges(graph) == n * n));
 		std::cout << "done\n\n";
 		
