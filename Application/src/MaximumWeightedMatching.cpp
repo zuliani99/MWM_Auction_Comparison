@@ -10,7 +10,7 @@ Weight perform_mwm(Graph const& graph, duration& elapsed) {
 
     Weight cost = matching_weight_sum(graph, &mate[0]);
 
-    std::cout << "\nThe matching is: ";
+    std::cout << " Finished \nThe matching is: ";
 
     for (V v : boost::make_iterator_range(vertices(graph)))
         if (mate[v] != Graph::null_vertex() && v < mate[v])

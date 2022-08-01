@@ -12,12 +12,12 @@ sudo apt-get install libboost-all-dev
 After that, to compile the project, you have to jump into the */src* folder and type the following line in your console:
 
 ```
-g++ -std=c++2a -o ../bin/app BipartiteGraph.cpp MaximumWeightedMatching.cpp Auction.cpp AuctionArray.cpp Main.cpp
+g++ -std=c++2a -o ../bin/app BipartiteGraph.cpp MaximumWeightedMatching.cpp Auction.cpp Main.cpp
 ```
 
 For compier optimization instead type:
 ```
-g++ -std=c++2a -Ofast -o ../bin/app BipartiteGraph.cpp MaximumWeightedMatching.cpp Auction.cpp AuctionArray.cpp Main.cpp
+g++ -std=c++2a -Ofast -o ../bin/app BipartiteGraph.cpp MaximumWeightedMatching.cpp Auction.cpp Main.cpp
 ```
 
 The *.exe* file will be inserted into the */bin* directory.
