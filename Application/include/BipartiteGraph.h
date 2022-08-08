@@ -1,10 +1,10 @@
 #ifndef _BG_H
 #define _BG_H
 
-#include "Graph.h"
+#include "Graph.hpp"
 #include <random>
 
-using Distribution = std::uniform_int_distribution<int64_t>;
+using Distribution = std::uniform_int_distribution<Weight>;
 
 //Data generateData(int N);
 Graph generateData(int N);

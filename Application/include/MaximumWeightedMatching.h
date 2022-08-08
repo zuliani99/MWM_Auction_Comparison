@@ -1,9 +1,8 @@
 ﻿#ifndef _MWM_H
 #define _MWM_H
 
-#include "Graph.h"
+#include "Graph.hpp"
 
-Weight perform_mwm(Graph const& graph, duration& elapsed);
-
+Weight perform_mwm(Graph const& graph, Duration& elapsed);
 
 #endif 

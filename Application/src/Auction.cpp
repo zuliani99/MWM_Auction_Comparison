@@ -1,7 +1,8 @@
 #include "../include/Auction.h"
 #include "../include/BipartiteGraph.h"
+#include "../include/AuctionAlgorithm.hpp"
 
-void auction_algorithm(Graph& graph, const int& n, duration& elapsed, int& n_iteration_au) {
+void auction_algorithm_bundle_prop(Graph& graph, const int& n, Duration& elapsed, int& n_iteration_au) {
     const Weight eps = (1 / n) * 10'000;
     int unassigned_bidders = n;
     GraphProp& gp = graph[boost::graph_bundle];
@@ -83,17 +84,25 @@ void auction_algorithm(Graph& graph, const int& n, duration& elapsed, int& n_ite
 
 
 
-Weight perform_au(Graph& graph, duration& elapsed, int& n_iteration_au) {
+Weight perform_au(Graph& graph, Duration& elapsed, int& n_iteration_au) {
     int n = int(boost::num_vertices(graph) / 2);
     Weight total_cost_auction = 0;
+	std::vector<int> assignments(n , -1);
 
-    auction_algorithm(graph, n, elapsed, n_iteration_au);
+    //auction_algorithm_bundle_prop(graph, n, elapsed, n_iteration_au);
+
+	auto t_start = now();
+    auction_algorithm<Graph, Weight>(graph, Weight((1 / n) * 10'000), assignments, n, n_iteration_au);
+    elapsed = now() - t_start;
 	
     std::cout << " Finished \nThe matching is: ";
     for (int bidder = 0; bidder < n; ++bidder) {
-        std::cout << "(" << bidder << "," << graph[boost::graph_bundle].bidder2item[bidder] << ")";
+        /*std::cout << "(" << bidder << "," << graph[boost::graph_bundle].bidder2item[bidder] << ")";
         int item = graph[boost::graph_bundle].bidder2item[bidder];
-        total_cost_auction += boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, item + n, graph)).first);
+        total_cost_auction += boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, item + n, graph)).first);*/
+		std::cout << "(" << bidder << "," << assignments[bidder] << ")";
+        total_cost_auction += boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, assignments[bidder] + n, graph)).first);
+
     }
     std::cout << "\n";
     return total_cost_auction;

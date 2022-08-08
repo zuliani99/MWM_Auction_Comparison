@@ -30,55 +30,55 @@ int main(int argc, const char* argv[]) {
 	std::cout << "Please specify the ending number of vertices per part: ";
 	std::cin >> max;
 
-	assert(("The starting number must be greater or equal to the ending number", min <= max));
+	if (min > max)
+		throw("The starting number must be greater or equal to the ending number");
 
 	for (int n = min; n <= max; ++n) {
 		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " vertices per part: ";
 
-		duration elapsed_mwm, elapsed_au;
+		Duration elapsed_mwm, elapsed_au;
 		Weight total_cost_mwm, total_cost_au;
 		int n_iteration_au = 0;
 
 		Graph graph = generateData(n);
-		assert(("Number of vertices not correct", boost::num_vertices(graph) == 2 * n));
-		assert(("Number of edges not correct", boost::num_edges(graph) == n * n));
+		if (boost::num_vertices(graph) != 2 * n || boost::num_edges(graph) != n * n)
+			throw("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
-		
-		if (VERBOSE){
+
+		if (VERBOSE) {
 			printGraph(graph);
-			std::cout <<"\n";
+			std::cout << "\n";
 		}
+
 
 		//MAXIMUM WEIGHTED MATCHING
 		std::cout << "Execution of Maximum Weighted Matching...";
 		total_cost_mwm = perform_mwm(graph, elapsed_mwm);
 		std::cout << std::fixed
-			<< "It took: " << fmt{elapsed_mwm} << ", with total cost: " << (total_cost_mwm / 10'000.0)
+			<< "It took: " << fmt{ elapsed_mwm } << ", with total cost: " << (total_cost_mwm / 10'000.0)
 			<< "\n\n";
-		
+
 
 		//AUCTION ALGOROTHM
 		std::cout << "Execution of Auction Algorithm...";
 		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au);
 		std::cout << std::fixed
-			<< "It took: " << fmt{elapsed_au} << ", with total cost: " << (total_cost_au / 10'000.0)
+			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au / 10'000.0)
 			<< " and " << n_iteration_au << " iterations";// << "\n\n";
 
 
-		if(VERBOSE) {
+		if (VERBOSE) {
 			std::cout << "\nThe resulting Bundle Proprieties of Bidders and Items vertices are:\n";
 			printGraph(graph);
 		}
 		std::cout << "\n\n";
 
-		//std::cout << "Same solution? ";
-		//(total_cost_mwm == total_cost_au) ? std::cout << "Yes" : std::cout << "No";
-		
-		stream << n << "," << fmt{elapsed_mwm} << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm / 10'000.0) << "," <<
-			fmt{elapsed_au} << "," << (elapsed_au / 1.0s) << "," << (total_cost_au / 10'000.0) << "," << n_iteration_au << "," <<
+
+		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm / 10'000.0) << "," <<
+			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au / 10'000.0) << "," << n_iteration_au << "," <<
 			((elapsed_mwm / 1.0s) == (elapsed_au / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (elapsed_au / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm > total_cost_au) ? "MWM" : "AU") << "\n";
-		
+
 	}
 
 	std::cout << "\n";

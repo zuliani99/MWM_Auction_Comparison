@@ -2,7 +2,6 @@
 #define _Graph_H
 
 #include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/bipartite.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/maximum_weighted_matching.hpp>
 #include <boost/graph/properties.hpp>
@@ -11,7 +10,7 @@
 #include <chrono>
 using namespace std::chrono_literals;
 static auto now = std::chrono::high_resolution_clock::now;
-using duration = std::chrono::high_resolution_clock::duration;
+using Duration = std::chrono::high_resolution_clock::duration;
 
 #include <random>
 static std::mt19937 prng{ std::random_device{}() };
@@ -64,12 +63,13 @@ struct GraphProp {
 
 using EdgeProp = boost::property<boost::edge_weight_t, Weight>;
 using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, VertexProp, EdgeProp, GraphProp>;
+typedef boost::graph_traits<Graph>::adjacency_iterator AdjacencyIterator;
 using vertex_iterator = Graph::vertex_iterator;
 using V = Graph::vertex_descriptor;
 using E = Graph::edge_descriptor;
 
 struct fmt {
-    duration const& _d;
+    Duration const& _d;
 
     friend std::ostream& operator<<(std::ostream& os, fmt f) {
         if (f._d >= 1min) return os << (f._d / 1min) << "min " << (f._d % 1min) / 1s << "s";
