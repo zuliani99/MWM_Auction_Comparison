@@ -92,7 +92,7 @@ Weight perform_au(Graph& graph, Duration& elapsed, int& n_iteration_au) {
     //auction_algorithm_bundle_prop(graph, n, elapsed, n_iteration_au);
 
 	auto t_start = now();
-    auction_algorithm<Graph, Weight>(graph, Weight((1 / n) * 10'000), assignments, n, n_iteration_au);
+    auction_algorithm2<Graph, Weight>(graph, Weight((1 / n) * 10'000), assignments, n, n_iteration_au);
     elapsed = now() - t_start;
 	
     std::cout << " Finished \nThe matching is: ";
