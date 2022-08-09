@@ -15,11 +15,11 @@ bool is_assignment_problem(Graph& graph, int vertices)
         boost::tie(ai, a_end) = boost::adjacent_vertices(v1, graph);
         if (ai == a_end) return false;
         else
-			for (auto v2 : boost::make_iterator_range(ai, a_end))
-				if ((v1 < vertices && v2 < vertices) || (v1 > vertices && v2 > vertices))
-                    return false;            
-	}
-                
+            for (auto v2 : boost::make_iterator_range(ai, a_end))
+                if ((v1 < vertices && v2 < vertices) || (v1 > vertices && v2 > vertices))
+                    return false;
+    }
+
     return true;
 }
 
@@ -66,22 +66,23 @@ void auction_algorithm(Graph& graph, Type eps, std::vector<int>& assignments, in
                 highBids[IDFirstBestItem[bidder]] = bid;
                 highBidder[IDFirstBestItem[bidder]] = bidder;
             }
+        
+        }
 
-            for (int item = 0; item < vertices; item++)
-            {
-                if (highBids[item] == -1) continue;
+        for (int item = 0; item < vertices; item++)
+        {
+            if (highBids[item] == -1) continue;
 
-                cost[item] += highBids[item];
+            cost[item] += highBids[item];
 
-                if (item2bidder[item] != -1) {
-                    assignments[item2bidder[item]] = -1;
-                    unassigned_bidders++;
-                }
-
-                item2bidder[item] = highBidder[item];
-                assignments[highBidder[item]] = item;
-                unassigned_bidders--;
+            if (item2bidder[item] != -1) {
+                assignments[item2bidder[item]] = -1;
+                unassigned_bidders++;
             }
+
+            item2bidder[item] = highBidder[item];
+            assignments[highBidder[item]] = item;
+            unassigned_bidders--;
         }
 
         n_iteration_au += 1;
@@ -90,43 +91,42 @@ void auction_algorithm(Graph& graph, Type eps, std::vector<int>& assignments, in
 
 
 template<typename Graph, typename Type>
-void auction_algorithm2(Graph& graph, Type eps, std::vector<int>& assignments, int vertices, int& n_iteration_au)
+void auction_algorithm2(const Graph& graph, const Type eps, const int& vertices, int& n_iteration_au, std::vector<int>& ass)
 {
     if (!is_assignment_problem(graph, vertices)) throw("Not an assignment problem");
 
-	struct Bidder {
+    struct Bidder {
         int best_item = -1;
         Type val_first_best_item = -1;
         Type val_second_best_item = -1;
     };
 
-	struct Item {
+    struct Item {
         Type cost = 0;
         int high_bidder = -1;
         Type high_bid = -1;
     };
-	
 
-	std::unordered_map<int, Bidder> unassigned_bidder;
-	std::unordered_map<int, Bidder> assigned_bidder;
-	std::unordered_map<int, Item> item_map;
-	for(int i = 0; i < vertices; ++i)
-	{
-		unassigned_bidder[i] = Bidder{};
-		item_map[i] = Item{};
-	}
-	
+    std::unordered_map<int, Bidder> unassigned_bidder;
+    std::unordered_map<int, Bidder> assigned_bidder;
+    std::unordered_map<int, Item> item_map;
+    for(int i : boost::irange(0, vertices))
+    {
+        unassigned_bidder.insert(std::make_pair(i, Bidder{}));
+        item_map.insert(std::make_pair(i, Item{}));
+    }
+
 
     while (unassigned_bidder.size() > 0)
     {
-		for (std::pair<int, Bidder> bidder : unassigned_bidder)
+        for (auto& bidder : unassigned_bidder)
         {
 
             int id_item1 = -1;
             Type val_item1 = -1;
             Type val_item2 = -1;
-			
-			for (std::pair<int, Item> item : item_map)
+
+            for (auto& item : item_map)
             {
                 Type val = boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, item.first + vertices, graph)).first) - item.second.cost;
                 if (val > val_item1)
@@ -138,42 +138,46 @@ void auction_algorithm2(Graph& graph, Type eps, std::vector<int>& assignments, i
                 else if (val > val_item2) val_item2 = val;
             }
 
-			bidder.second.best_item = id_item1;
-			bidder.second.val_second_best_item = val_item2;
-			bidder.second.val_first_best_item = val_item1;
+            bidder.second.best_item = id_item1;
+            bidder.second.val_second_best_item = val_item2;
+            bidder.second.val_first_best_item = val_item1;
 
             Type bid = bidder.second.val_first_best_item - bidder.second.val_second_best_item + eps;
-			
-			if (bid > item_map[bidder.second.best_item].high_bid)
+
+            if (bid > item_map[bidder.second.best_item].high_bid)
             {
-				item_map[bidder.second.best_item].high_bid = bid;
-				item_map[bidder.second.best_item].high_bidder = bidder.first;
+                item_map[bidder.second.best_item].high_bid = bid;
+                item_map[bidder.second.best_item].high_bidder = bidder.first;
             }
 
+        }
 
-            for (std::pair<int, Item> item : item_map)
+        for (auto& item : item_map)
+        {
+
+            if (item.second.high_bid == -1) continue;
+            item.second.cost += item.second.high_bid;
+
+            std::vector<int> id_to_remove;
+
+
+            for (auto& ass_bidr : assigned_bidder)
+                if (ass_bidr.second.best_item == item.first)
+                    id_to_remove.push_back(ass_bidr.first);
+
+            for (int id : id_to_remove)
             {
-                if (item.second.high_bid == -1) continue;
-                item.second.cost += item.second.high_bid;
-				std::vector<int> id_to_move;
-
-				for (std::pair<int, Bidder> ass_b : assigned_bidder)
-					if (ass_b.second.best_item == item.first)
-						id_to_move.push_back(ass_b.first);
-
-				for (int id : id_to_move)
-				{
-					unassigned_bidder[id] = assigned_bidder[id];
-					assigned_bidder.erase(id);
-				}
-					
-				assigned_bidder[item.second.high_bidder] = unassigned_bidder[item.second.high_bidder];
-				unassigned_bidder.erase(item.second.high_bidder);
+                unassigned_bidder.insert(std::make_pair(id, assigned_bidder[id]));
+                assigned_bidder.erase(id);
             }
+            assigned_bidder.insert(std::make_pair(item.second.high_bidder, unassigned_bidder[item.second.high_bidder]));
+            unassigned_bidder.erase(item.second.high_bidder);
         }
 
         n_iteration_au += 1;
     }
+
+    for (auto& a : assigned_bidder) ass.push_back(a.second.best_item);
 }
 
 #endif
