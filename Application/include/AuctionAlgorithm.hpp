@@ -24,7 +24,7 @@ bool is_assignment_problem(Graph& graph, int vertices)
 }
 
 template<typename Graph, typename Type>
-void auction_algorithm(Graph& graph, Type eps, std::vector<int>& assignments, int vertices, int& n_iteration_au)
+void auction_algorithm(Graph& graph, Type eps, int vertices, int& n_iteration_au, std::vector<int>& assignments)
 {
     if (!is_assignment_problem(graph, vertices)) throw("Not an assignment problem");
 
@@ -87,6 +87,7 @@ void auction_algorithm(Graph& graph, Type eps, std::vector<int>& assignments, in
 
         n_iteration_au += 1;
     }
+
 }
 
 
@@ -177,7 +178,8 @@ void auction_algorithm2(const Graph& graph, const Type eps, const int& vertices,
         n_iteration_au += 1;
     }
 
-    for (auto& a : assigned_bidder) ass.push_back(a.second.best_item);
+    for (auto& a : assigned_bidder) ass[a.first] = a.second.best_item;
+
 }
 
 #endif

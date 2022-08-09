@@ -6,7 +6,6 @@
 
 using Distribution = std::uniform_int_distribution<Weight>;
 
-//Data generateData(int N);
 Graph generateData(int N);
 void printGraph(Graph& g);
 
