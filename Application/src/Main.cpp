@@ -1,8 +1,9 @@
-#include "BipartiteGraph.hpp"
-#include "MaximumWeightedMatching.hpp"
-#include "Auction.h"
+#include "../include/BipartiteGraph.h"
+#include "../include/MaximumWeightedMatching.h"
+#include "../include/Auction.h"
+#include <iostream>
 
-#define VERBOSE false
+#define VERBOSE true
 
 void check_empty_file()
 {
