@@ -1,0 +1,39 @@
+---
+title: "benchmarck_graphs"
+author: "Zuliani Riccardo"
+date: "10/8/2022"
+output: html_document
+---
+
+
+```{r}
+library(ggplot2)
+#library(hrbrthemes)
+```
+
+
+Loading .csv
+```{r}
+#res_2_99 <- read.csv("C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_exam/Auction-MWM-Comparison/benchmarck_graphs/")
+#res_100_999 <- read.csv(" C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_exam/Auction-MWM-Comparison/benchmarck_graphs/")
+#res_1000_1999 <- read.csv(" C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_exam/Auction-MWM-Comparison/benchmarck_graphs/")
+```
+
+
+Data Manipulation
+```{r}
+xValue <- 1:10
+yValue <- cumsum(rnorm(10))
+data <- data.frame(xValue,yValue)
+```
+
+
+Lineplots for graphs between x and y vertices per part
+```{r}
+ggplot(data, aes(x=xValue, y=yValue)) +
+  xlab("Number of Vertices per part") +
+  ylab("Totoal Cost") +
+  geom_line(color="cornflowerblue", size=1, alpha=1, linetype=1) +
+  ggtitle("Evolution of something") +
+  theme(plot.title = element_text(size=20, hjust = 0.5))
+```

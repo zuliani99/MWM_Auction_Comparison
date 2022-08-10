@@ -1,10 +1,11 @@
-#include "../include/BipartiteGraph.h"
-#include "../include/MaximumWeightedMatching.h"
-#include "../include/Auction.h"
+#include "BipartiteGraph.hpp"
+#include "MaximumWeightedMatching.hpp"
+#include "Auction.h"
 
 #define VERBOSE false
 
-void check_empty_file() {
+void check_empty_file()
+{
 	std::ifstream file;
 	file.open("../data/results.csv");
 	if (file) {
@@ -14,7 +15,8 @@ void check_empty_file() {
 	}
 }
 
-int main(int argc, const char* argv[]) {
+int main(int argc, const char* argv[])
+{
 
 	int min, max;
 	std::fstream stream;
@@ -33,7 +35,8 @@ int main(int argc, const char* argv[]) {
 	if (min > max)
 		throw("The starting number must be greater or equal to the ending number");
 
-	for (int n = min; n <= max; ++n) {
+	for (int n = min; n <= max; ++n)
+	{
 		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " vertices per part: ";
 
 		Duration elapsed_mwm, elapsed_au;
@@ -45,10 +48,10 @@ int main(int argc, const char* argv[]) {
 			throw("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
 
-		if (VERBOSE) {
+		/*if (VERBOSE) {
 			printGraph(graph);
 			std::cout << "\n";
-		}
+		}*/
 
 
 		//MAXIMUM WEIGHTED MATCHING
@@ -61,16 +64,16 @@ int main(int argc, const char* argv[]) {
 
 		//AUCTION ALGOROTHM
 		std::cout << "Execution of Auction Algorithm...";
-		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au);
+		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au, VERBOSE);
 		std::cout << std::fixed
 			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au / 10'000.0)
 			<< " and " << n_iteration_au << " iterations";// << "\n\n";
 
 
-		if (VERBOSE) {
+		/*if (VERBOSE) {
 			std::cout << "\nThe resulting Bundle Proprieties of Bidders and Items vertices are:\n";
 			printGraph(graph);
-		}
+		}*/
 		std::cout << "\n\n";
 
 

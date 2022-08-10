@@ -16,7 +16,7 @@ using Duration = std::chrono::high_resolution_clock::duration;
 static std::mt19937 prng{ std::random_device{}() };
 
 
-namespace Nodes {
+/*namespace Nodes {
     using Weight = int64_t;
 
     struct Bidder {
@@ -59,14 +59,15 @@ using Nodes::VertexProp;
 struct GraphProp {
     std::vector<int> bidder2item;
     std::vector<int> item2bidder;
-};
-
+};*/
+using Weight = int64_t;
 using EdgeProp = boost::property<boost::edge_weight_t, Weight>;
-using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, VertexProp, EdgeProp, GraphProp>;
-typedef boost::graph_traits<Graph>::adjacency_iterator AdjacencyIterator;
-using vertex_iterator = Graph::vertex_iterator;
+//using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, VertexProp, EdgeProp, GraphProp>;
+using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, EdgeProp>;
+//using AdjacencyIterator = boost::graph_traits<Graph>::adjacency_iterator;
+//using vertex_iterator = Graph::vertex_iterator;
 using V = Graph::vertex_descriptor;
-using E = Graph::edge_descriptor;
+//using E = Graph::edge_descriptor;
 
 struct fmt {
     Duration const& _d;
@@ -78,5 +79,3 @@ struct fmt {
         else return os << (f._d / 1.0us) << "us";
     }
 };
-
-#endif

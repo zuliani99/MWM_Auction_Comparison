@@ -5,9 +5,67 @@
 #include <unordered_map>
 #include <boost/graph/adjacency_list.hpp>
 
-template<typename Graph>
-bool is_assignment_problem(Graph& graph, int vertices)
+template<typename Graph, typename Type>
+class Auction
 {
+    private:
+        struct Bidder {
+            int best_item = -1;
+            Type val_first_best_item = -1;
+            Type val_second_best_item = -1;
+        };
+
+        struct Item {
+            Type cost = 0;
+            int high_bidder = -1;
+            Type high_bid = -1;
+        };
+
+        int n_iteration_au = 0;
+        int vertices = 0;
+
+        std::unordered_map<int, Bidder> unassigned_bidder;
+        std::unordered_map<int, Bidder> assigned_bidder;
+        std::unordered_map<int, Item> item_map;
+        
+        bool is_assignment_problem(const Graph& graph);
+        
+    public:
+        void auction_algorithm(const Graph& graph, const Type eps, std::vector<int>& ass);
+        int getNIterationAu();
+        Type getTotalCost(const Graph& graph);
+        void printProprieties();
+
+        Auction(int vertices)
+        {
+            this->vertices = vertices;
+            for (int i : boost::irange(0, vertices))
+            {
+                this->unassigned_bidder.insert(std::make_pair(i, Bidder{}));
+                this->item_map.insert(std::make_pair(i, Item{}));
+            }
+        }
+};
+
+template<typename Graph, typename Type>
+int Auction<Graph, Type>::getNIterationAu() { return n_iteration_au; }
+
+
+template<typename Graph, typename Type>
+Type Auction<Graph, Type>::getTotalCost(const Graph& graph)
+{
+    Type total_cost_auction = 0;
+    for (int bidder = 0; bidder < vertices; ++bidder) 
+        total_cost_auction += boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, assigned_bidder[bidder].best_item + vertices, graph)).first);
+    return total_cost_auction;
+}
+
+template<typename Graph, typename Type>
+bool Auction<Graph, Type>::is_assignment_problem(const Graph& graph)
+{
+    using AdjacencyIterator = boost::graph_traits<Graph>::adjacency_iterator;
+    using vertex_iterator = Graph::vertex_iterator;
+
     vertex_iterator i, end;
     for (auto v1 : boost::make_iterator_range(boost::vertices(graph)))
     {
@@ -23,80 +81,13 @@ bool is_assignment_problem(Graph& graph, int vertices)
     return true;
 }
 
-template<typename Graph, typename Type>
-void auction_algorithm(Graph& graph, Type eps, int vertices, int& n_iteration_au, std::vector<int>& assignments)
-{
-    if (!is_assignment_problem(graph, vertices)) throw("Not an assignment problem");
-
-    size_t unassigned_bidders = vertices;
-
-    std::vector<Type> cost(vertices, 0), highBids(vertices, static_cast<Type>(-1)), firstBestVal(vertices, static_cast<Type>(-1)), secondBestVal(vertices, static_cast<Type>(-1));
-    std::vector<int> highBidder(vertices, -1), item2bidder(vertices, -1), IDFirstBestItem(vertices, -1);
-
-    while (unassigned_bidders > 0)
-    {
-        for (int bidder = 0; bidder < vertices; bidder++) // for each unassigned bidder
-        {
-            if (assignments[bidder] != -1) continue;
-
-            int id_item1 = -1;
-            Type val_item1 = -1;
-            Type val_item2 = -1;
-
-            for (int item = 0; item < vertices; item++)
-            {
-                Type val = boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, item + vertices, graph)).first) - cost[item];
-                if (val > val_item1)
-                {
-                    val_item2 = val_item1;
-                    val_item1 = val;
-                    id_item1 = item;
-                }
-                else if (val > val_item2)
-                    val_item2 = val;
-            }
-
-            IDFirstBestItem[bidder] = id_item1;
-            secondBestVal[bidder] = val_item2;
-            firstBestVal[bidder] = val_item1;
-
-            Type bid = firstBestVal[bidder] - secondBestVal[bidder] + eps;
-            if (bid > highBids[IDFirstBestItem[bidder]])
-            {
-                highBids[IDFirstBestItem[bidder]] = bid;
-                highBidder[IDFirstBestItem[bidder]] = bidder;
-            }
-        
-        }
-
-        for (int item = 0; item < vertices; item++)
-        {
-            if (highBids[item] == -1) continue;
-
-            cost[item] += highBids[item];
-
-            if (item2bidder[item] != -1) {
-                assignments[item2bidder[item]] = -1;
-                unassigned_bidders++;
-            }
-
-            item2bidder[item] = highBidder[item];
-            assignments[highBidder[item]] = item;
-            unassigned_bidders--;
-        }
-
-        n_iteration_au += 1;
-    }
-
-}
-
 
 template<typename Graph, typename Type>
-void auction_algorithm2(const Graph& graph, const Type eps, const int& vertices, int& n_iteration_au, std::vector<int>& ass)
+void Auction<Graph, Type>::auction_algorithm(const Graph& graph, const Type eps, std::vector<int>& ass)
 {
-    if (!is_assignment_problem(graph, vertices)) throw("Not an assignment problem");
+    if (!is_assignment_problem(graph)) throw("Not an assignment problem");
 
-    struct Bidder {
+    /*struct Bidder {
         int best_item = -1;
         Type val_first_best_item = -1;
         Type val_second_best_item = -1;
@@ -115,7 +106,7 @@ void auction_algorithm2(const Graph& graph, const Type eps, const int& vertices,
     {
         unassigned_bidder.insert(std::make_pair(i, Bidder{}));
         item_map.insert(std::make_pair(i, Item{}));
-    }
+    }*/
 
 
     while (unassigned_bidder.size() > 0)
@@ -182,4 +173,81 @@ void auction_algorithm2(const Graph& graph, const Type eps, const int& vertices,
 
 }
 
+template<typename Graph, typename Type>
+void Auction<Graph, Type>::printProprieties() 
+{
+    for (auto& bidder : assigned_bidder)
+        std::cout << "Bidder: " << bidder.first << "\tBest item: " << bidder.second.best_item << "\tValue first best item: " << bidder.second.val_first_best_item << "\tValue second best item: " << bidder.second.val_second_best_item << "\n";
+    for (auto& item : item_map)
+        std::cout << "Item: " << item.first << "\tCost: " << item.second.cost << "\tHigher bidder: " << item.second.high_bidder << "\tHigher bid: " << item.second.high_bid << "\n";
+}
+
 #endif
+
+
+/*template<typename Graph, typename Type>
+void auction_algorithm(Graph& graph, Type eps, int vertices, int& n_iteration_au, std::vector<int>& assignments)
+{
+    if (!is_assignment_problem(graph, vertices)) throw("Not an assignment problem");
+
+    size_t unassigned_bidders = vertices;
+
+    std::vector<Type> cost(vertices, 0), highBids(vertices, static_cast<Type>(-1)), firstBestVal(vertices, static_cast<Type>(-1)), secondBestVal(vertices, static_cast<Type>(-1));
+    std::vector<int> highBidder(vertices, -1), item2bidder(vertices, -1), IDFirstBestItem(vertices, -1);
+
+    while (unassigned_bidders > 0)
+    {
+        for (int bidder = 0; bidder < vertices; bidder++) // for each unassigned bidder
+        {
+            if (assignments[bidder] != -1) continue;
+
+            int id_item1 = -1;
+            Type val_item1 = -1;
+            Type val_item2 = -1;
+
+            for (int item = 0; item < vertices; item++)
+            {
+                Type val = boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, item + vertices, graph)).first) - cost[item];
+                if (val > val_item1)
+                {
+                    val_item2 = val_item1;
+                    val_item1 = val;
+                    id_item1 = item;
+                }
+                else if (val > val_item2)
+                    val_item2 = val;
+            }
+
+            IDFirstBestItem[bidder] = id_item1;
+            secondBestVal[bidder] = val_item2;
+            firstBestVal[bidder] = val_item1;
+
+            Type bid = firstBestVal[bidder] - secondBestVal[bidder] + eps;
+            if (bid > highBids[IDFirstBestItem[bidder]])
+            {
+                highBids[IDFirstBestItem[bidder]] = bid;
+                highBidder[IDFirstBestItem[bidder]] = bidder;
+            }
+
+        }
+
+        for (int item = 0; item < vertices; item++)
+        {
+            if (highBids[item] == -1) continue;
+
+            cost[item] += highBids[item];
+
+            if (item2bidder[item] != -1) {
+                assignments[item2bidder[item]] = -1;
+                unassigned_bidders++;
+            }
+
+            item2bidder[item] = highBidder[item];
+            assignments[highBidder[item]] = item;
+            unassigned_bidders--;
+        }
+
+        n_iteration_au += 1;
+    }
+
+}*/

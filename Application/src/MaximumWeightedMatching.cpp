@@ -1,14 +1,13 @@
 #include "../include/MaximumWeightedMatching.h"
 
-Weight perform_mwm(Graph const& graph, Duration& elapsed) {
+Weight perform_mwm(Graph const& graph, Duration& elapsed)
+{
     auto const N = num_vertices(graph);
     std::vector<V> mate(N);
 
     auto t_start = now();
     maximum_weighted_matching(graph, &mate[0]);
     elapsed = now() - t_start;
-
-    Weight cost = matching_weight_sum(graph, &mate[0]);
 
     std::cout << " Finished \nThe matching is: ";
 
@@ -17,5 +16,5 @@ Weight perform_mwm(Graph const& graph, Duration& elapsed) {
             std::cout << "(" << v << "," << (mate[v] - (N / 2)) << ")";
     std::cout << "\n";
 
-    return cost;
+    return matching_weight_sum(graph, &mate[0]);
 }
