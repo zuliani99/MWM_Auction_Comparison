@@ -79,3 +79,5 @@ struct fmt {
         else return os << (f._d / 1.0us) << "us";
     }
 };
+
+#endif
