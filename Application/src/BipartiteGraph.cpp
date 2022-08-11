@@ -26,11 +26,11 @@ Graph generateData(int N)
     return g;
 }
 
-/*void printGraph(Graph& g)
+void printGraph(Graph& g)
 {
     boost::dynamic_properties dp;
     dp.property("node_id", get(boost::vertex_index, g));
-    dp.property("label", get(boost::vertex_bundle, g));
+    //dp.property("label", get(boost::vertex_bundle, g));
     dp.property("weight", get(boost::edge_weight, g));
     boost::write_graphviz_dp(std::cout, g, dp);
-}*/
+}

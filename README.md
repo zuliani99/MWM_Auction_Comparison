@@ -34,3 +34,7 @@ After pressing enter, at each random bipartite graphs the application pass them 
 ![](images/console_2.png)
 
 When the benchmark is finished the application generate a *.csv* file stored into the */data* directory, in order to have a look on the complete score of all of three algorithm.
+
+Th default value of the VERBOSE option is *false*, to change it you have to modify line 6 of the main file. The result of this change is the following:
+
+![](images/console_3.png)

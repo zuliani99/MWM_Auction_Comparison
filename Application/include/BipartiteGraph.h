@@ -8,6 +8,6 @@ template<typename T>
 using Distribution = std::uniform_int_distribution<T>;
 
 Graph generateData(int N);
-//void printGraph(Graph& g);
+void printGraph(Graph& g);
 
 #endif 

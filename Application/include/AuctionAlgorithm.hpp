@@ -177,9 +177,9 @@ template<typename Graph, typename Type>
 void Auction<Graph, Type>::printProprieties() 
 {
     for (auto& bidder : assigned_bidder)
-        std::cout << "Bidder: " << bidder.first << "\tBest item: " << bidder.second.best_item << "\tValue first best item: " << bidder.second.val_first_best_item << "\tValue second best item: " << bidder.second.val_second_best_item << "\n";
+        std::cout << "|Bidder:" << bidder.first << "|Best item:" << bidder.second.best_item << "|Value first best item:" << bidder.second.val_first_best_item << "|Value second best item:" << bidder.second.val_second_best_item << "|\n";
     for (auto& item : item_map)
-        std::cout << "Item: " << item.first << "\tCost: " << item.second.cost << "\tHigher bidder: " << item.second.high_bidder << "\tHigher bid: " << item.second.high_bid << "\n";
+        std::cout << "|Item:" << item.first << "|Cost:" << item.second.cost << "|Higher bidder:" << item.second.high_bidder << "|Higher bid:" << item.second.high_bid << "|\n";
 }
 
 #endif
