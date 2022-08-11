@@ -45,7 +45,7 @@ int main(int argc, const char* argv[])
 		int n_iteration_au = 0;
 
 		Graph graph = generateData(n);
-		if (boost::num_vertices(graph) != 2 * n || boost::num_edges(graph) != n * n)
+		if (boost::num_vertices(graph) != 2 * n /*|| boost::num_edges(graph) != n * n*/)
 			throw("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
 
