@@ -13,69 +13,105 @@ library(ggplot2)
 
 Loading .csv
 ```{r}
-res_2_99 <- read.csv("C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_exam/Auction-MWM-Comparison/benchmarck_graphs/res_2_99.csv")
-res_100_999 <- read.csv("C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_exam/Auction-MWM-Comparison/benchmarck_graphs/res_100_999.csv")
-#res_1000_1999 <- read.csv(" C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_exam/Auction-MWM-Comparison/benchmarck_graphs/")
+res <- read.csv("C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_exam/Auction-MWM-Comparison/benchmarck_graphs/results.csv")
+
 ```
 
 
-Data Manipulation
+# Data Manipulation
 ```{r}
-#xValue <- 1:10
-#yValue <- cumsum(rnorm(10))
-#data <- data.frame(xValue,yValue)
+res_2_50 <- res[0:49,]
+res_51_300 <- res[50:299,]
+res_301_999 <- res[300:998,]
 ```
 
 
-Lineplots for graphs between 2 and 99 vertices per part
+# Lineplots for graphs between 2 and 50 vertices per part
 ```{r}
-ggplot(res_2_99, aes(Edge.per.part)) +
+df <- res_2_50
+title_vertices <- " for 2 - 50 vertices"
+  
+ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Seconds") +
   geom_line(aes(y = Seconds.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
   geom_line(aes(y = Seconds.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle("MWM & AA execution time for 2 - 99 vertices") +
+  ggtitle(paste("MWM & AA execution time", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 
-ggplot(res_2_99, aes(Edge.per.part)) +
+ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Total Cost") +
   geom_line(aes(y = Total.Cost.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
   geom_line(aes(y = Total.Cost.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle("MWM & AA total cost for 2 - 99 vertices") +
+  ggtitle(paste("MWM & AA total cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 
-ggplot(res_2_99, aes(Edge.per.part)) +
+ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Iterations") +
   geom_line(aes(y = Iterations.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle("AA iterations for 2 - 99 vertices") +
+  ggtitle(paste("AA iterations", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
 
-Lineplots for graphs between 100 and 1999 vertices per part
+# Lineplots for graphs between 51 and 300 vertices per part
 ```{r}
-ggplot(res_100_999, aes(Edge.per.part)) +
+df <- res_51_300
+title_vertices <- " for 51 - 300 vertices"
+
+ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Seconds") +
   geom_line(aes(y = Seconds.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
   geom_line(aes(y = Seconds.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle("MWM & AA execution time for 100 - 999 vertices") +
+  ggtitle(paste("MWM & AA execution time", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 
-ggplot(res_100_999, aes(Edge.per.part)) +
+ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Total Cost") +
   geom_line(aes(y = Total.Cost.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
   geom_line(aes(y = Total.Cost.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle("MWM & AA total cost for 100 - 999 vertices") +
+  ggtitle(paste("MWM & AA total cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 
-ggplot(res_100_999, aes(Edge.per.part)) +
+ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Iterations") +
   geom_line(aes(y = Iterations.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle("AA iterations for 100 - 999 vertices") +
+  ggtitle(paste("AA iterations", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
+
+# Lineplots for graphs between 301 and 999 vertices per part
+```{r}
+df <- res_301_999
+title_vertices <- " for 300 - 999 vertices"
+
+ggplot(df, aes(Edge.per.part)) +
+  xlab("Number of Vertices per part") +
+  ylab("Seconds") +
+  geom_line(aes(y = Seconds.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
+  geom_line(aes(y = Seconds.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
+  ggtitle(paste("MWM & AA execution time", title_vertices)) +
+  theme(plot.title = element_text(size=20, hjust = 0.5))
+
+ggplot(df, aes(Edge.per.part)) +
+  xlab("Number of Vertices per part") +
+  ylab("Total Cost") +
+  geom_line(aes(y = Total.Cost.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
+  geom_line(aes(y = Total.Cost.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
+  ggtitle(paste("MWM & AA total cost", title_vertices)) +
+  theme(plot.title = element_text(size=20, hjust = 0.5))
+
+ggplot(df, aes(Edge.per.part)) +
+  xlab("Number of Vertices per part") +
+  ylab("Iterations") +
+  geom_line(aes(y = Iterations.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
+  ggtitle(paste("AA iterations", title_vertices)) +
+  theme(plot.title = element_text(size=20, hjust = 0.5))
+```
+
+
