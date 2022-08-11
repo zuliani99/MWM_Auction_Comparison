@@ -49,10 +49,10 @@ int main(int argc, const char* argv[])
 			throw("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
 
-		/*if (VERBOSE) {
+		if (VERBOSE) {
 			printGraph(graph);
 			std::cout << "\n";
-		}*/
+		}
 
 
 		//MAXIMUM WEIGHTED MATCHING
