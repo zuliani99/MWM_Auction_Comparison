@@ -119,15 +119,18 @@ void Auction<Graph, Type>::auction_algorithm(const Graph& graph, const Type eps,
             Type val_item2 = -1;
 
             for (auto& item : item_map)
-            {
-                Type val = boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, item.first + vertices, graph)).first) - item.second.cost;
-                if (val > val_item1)
-                {
-                    val_item2 = val_item1;
-                    val_item1 = val;
-                    id_item1 = item.first;
-                }
-                else if (val > val_item2) val_item2 = val;
+            {   
+                //if (boost::edge(bidder.first, item.first + vertices, graph).second)
+                //{
+                    Type val = boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, item.first + vertices, graph)).first) - item.second.cost;
+                    if (val > val_item1)
+                    {
+                        val_item2 = val_item1;
+                        val_item1 = val;
+                        id_item1 = item.first;
+                    }
+                    else if (val > val_item2) val_item2 = val;
+                //}
             }
 
             bidder.second.best_item = id_item1;
@@ -167,7 +170,7 @@ void Auction<Graph, Type>::auction_algorithm(const Graph& graph, const Type eps,
         }
 
         n_iteration_au += 1;
-    }
+    }    
 
     for (auto& a : assigned_bidder) ass[a.first] = a.second.best_item;
 

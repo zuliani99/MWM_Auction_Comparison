@@ -60,7 +60,7 @@ struct GraphProp {
     std::vector<int> bidder2item;
     std::vector<int> item2bidder;
 };*/
-using Weight = int64_t;
+using Weight = int;
 using EdgeProp = boost::property<boost::edge_weight_t, Weight>;
 //using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, VertexProp, EdgeProp, GraphProp>;
 using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, EdgeProp>;

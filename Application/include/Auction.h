@@ -3,6 +3,6 @@
 
 #include "Graph.hpp"
 
-Weight perform_au(Graph& graph, Duration& elapsed, int& n_iteration_au, bool verbose);
+double perform_au(Graph& graph, Duration& elapsed, int& n_iteration_au, bool verbose);
 
 #endif

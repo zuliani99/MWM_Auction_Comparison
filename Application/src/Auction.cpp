@@ -84,7 +84,7 @@
 
 
 
-Weight perform_au(Graph& graph, Duration& elapsed, int& n_iteration_au, bool verbose)
+double perform_au(Graph& graph, Duration& elapsed, int& n_iteration_au, bool verbose)
 {
     int n = int(boost::num_vertices(graph) / 2);
     //Weight total_cost_auction = 0;
@@ -98,10 +98,9 @@ Weight perform_au(Graph& graph, Duration& elapsed, int& n_iteration_au, bool ver
     //auction_algorithm2<Graph, Weight>(graph, Weight((1 / n) * 10'000), n_iteration_au, assignments);
     //elapsed = now() - t_start;
 
-    Auction<Graph, Weight> auction_problem(n);
-
+    Auction<Graph, double> auction_problem(n);
     auto t_start = now();
-    auction_problem.auction_algorithm(graph, static_cast<Weight>((1 / n) * 10'000), assignments);
+    auction_problem.auction_algorithm(graph, static_cast<double>(1.0 / n + 1)/* * 10'000.0)*/, assignments);
     elapsed = now() - t_start;
 
     std::cout << " Finished \nThe matching is: ";
