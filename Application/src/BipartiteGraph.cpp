@@ -26,6 +26,13 @@ Graph generateData(int N, bool fully_connected)
 	{	
 		if (fully_connected)
 		{
+			for (int item = 0; item < N; ++item)
+			{
+				add_edge(bidder, N + item, dist(prng), g);
+			}
+		}
+		else
+		{
 			Distribution<int> random_first_connection(0, static_cast<int>(free_items.size()) - 1);
 			int pos = random_first_connection(prng);
 			add_edge(bidder, N + free_items[pos], dist(prng), g);
@@ -39,13 +46,6 @@ Graph generateData(int N, bool fully_connected)
 				if (map_first_conenction[bidder] != item)
 					if (dist_edge(prng))
 						add_edge(bidder, N + item, dist(prng), g);
-			}
-		}
-		else
-		{
-			for (int item = 0; item < N; ++item)
-			{
-				add_edge(bidder, N + item, dist(prng), g);
 			}
 		}
 		

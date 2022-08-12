@@ -3,6 +3,6 @@
 
 #include "Graph.hpp"
 
-Weight perform_mwm(Graph const& graph, Duration& elapsed);
+Weight perform_mwm(const Graph& graph, Duration& elapsed);
 
 #endif 

@@ -3,7 +3,7 @@
 #include "../include/Auction.h"
 #include <iostream>
 
-#define VERBOSE true
+#define VERBOSE false
 
 void check_empty_file()
 {
@@ -45,8 +45,8 @@ int main(int argc, const char* argv[])
 		double total_cost_au;
 		int n_iteration_au = 0;
 
-		Graph graph = generateData(n, false);
-		if (boost::num_vertices(graph) != 2 * n || boost::num_edges(graph) != n * n)
+		Graph graph = generateData(n, true);
+		if (boost::num_vertices(graph) != 2 * n /* || boost::num_edges(graph) != n * n*/)
 			throw("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
 

@@ -1,6 +1,6 @@
 #include "../include/MaximumWeightedMatching.h"
 
-Weight perform_mwm(Graph const& graph, Duration& elapsed)
+Weight perform_mwm(const Graph& graph, Duration& elapsed)
 {
     auto const N = num_vertices(graph);
     std::vector<V> mate(N);
