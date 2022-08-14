@@ -3,12 +3,12 @@
 #include "../include/AuctionAlgorithm.hpp"
 
 
-double perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, bool verbose)
+Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, bool verbose)
 {
     int n = int(boost::num_vertices(graph) / 2);
     std::vector<int> assignments(n);
 
-    Auction<Graph, double> auction_problem(n);
+    Auction<Graph, Weight> auction_problem(n);
     auto t_start = now();
     auction_problem.auction_algorithm(graph, assignments);
     elapsed = now() - t_start;

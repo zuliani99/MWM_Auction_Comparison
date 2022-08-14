@@ -42,8 +42,7 @@ int main(int argc, const char* argv[])
 		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " vertices per part: ";
 
 		Duration elapsed_mwm, elapsed_au;
-		Weight total_cost_mwm;
-		double total_cost_au;
+		Weight total_cost_mwm, total_cost_au;
 		int n_iteration_au = 0;
 
 		Graph graph = generateData(n, true);
