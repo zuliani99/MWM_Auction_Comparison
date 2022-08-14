@@ -5,7 +5,6 @@ Graph generateData(int N, bool fully_connected)
 {
     Graph g;
 
-    //Distribution<Weight>dist(10'000, 100'000); // 1 - 10
 	Distribution<Weight>dist(1, 50);
     Distribution<int>dist_edge(0, 1);
 	std::map<int, int> map_first_conenction;
@@ -14,23 +13,12 @@ Graph generateData(int N, bool fully_connected)
 	for(int i = 0; i < N; ++i)
 		free_items.push_back(i);
 
-    //for (int i = 0; i < N; ++i) boost::add_vertex(Bidder{ i }, g);
-    //for (int i = 0; i < N; ++i) boost::add_vertex(Item{ i }, g);
-
-    //GraphProp& gp = g[boost::graph_bundle];
-    //gp.bidder2item.assign(N, -1);
-    //gp.item2bidder.assign(N, -1);
-
 
 	for (int bidder = 0; bidder < N; ++bidder)
 	{	
 		if (fully_connected)
-		{
 			for (int item = 0; item < N; ++item)
-			{
 				add_edge(bidder, N + item, dist(prng), g);
-			}
-		}
 		else
 		{
 			Distribution<int> random_first_connection(0, static_cast<int>(free_items.size()) - 1);
@@ -40,16 +28,9 @@ Graph generateData(int N, bool fully_connected)
 			free_items.erase(std::find(free_items.begin(), free_items.end(), free_items[pos]));
 
 			for (int item = 0; item < N; ++item)
-			{
-				//if ((map_first_conenction[bidder] != item) && (dist_edge(prng)))
-					//add_edge(bidder, N + item, dist(prng), g);
-				if (map_first_conenction[bidder] != item)
-					if (dist_edge(prng))
-						add_edge(bidder, N + item, dist(prng), g);
-			}
+				if (map_first_conenction[bidder] != item && dist_edge(prng))
+					add_edge(bidder, N + item, dist(prng), g);
 		}
-		
-			
 	}
 
     return g;
@@ -59,7 +40,6 @@ void printGraph(Graph& g)
 {
     boost::dynamic_properties dp;
     dp.property("node_id", get(boost::vertex_index, g));
-    //dp.property("label", get(boost::vertex_bundle, g));
     dp.property("weight", get(boost::edge_weight, g));
     boost::write_graphviz_dp(std::cout, g, dp);
 }

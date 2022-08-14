@@ -6,13 +6,7 @@
 double perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, bool verbose)
 {
     int n = int(boost::num_vertices(graph) / 2);
-    //Weight total_cost_auction = 0;
     std::vector<int> assignments(n);
-
-
-    //auto t_start = now();
-    //auction_algorithm2<Graph, Weight>(graph, Weight((1 / n) * 10'000), n_iteration_au, assignments);
-    //elapsed = now() - t_start;
 
     Auction<Graph, double> auction_problem(n);
     auto t_start = now();

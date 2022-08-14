@@ -6,7 +6,6 @@
 #include <boost/graph/adjacency_list.hpp>
 
 
-
 template<typename T>
 using AdjacencyIterator = boost::graph_traits<T>::adjacency_iterator;
 
@@ -35,6 +34,7 @@ class Auction
         std::unordered_map<int, Item> item_map;
         
         bool is_assignment_problem(const Graph& graph);
+        void auctionRound(const Graph& graph, const Type& eps, const auto& vertex_idMap);
         
     public:
         void auction_algorithm(const Graph& graph, std::vector<int>& ass);
@@ -57,7 +57,7 @@ class Auction
 
 
 template<typename Graph, typename Type>
-int Auction<Graph, Type>::getNIterationAu() { return n_iteration_au; }
+inline int Auction<Graph, Type>::getNIterationAu() { return n_iteration_au; }
 
 
 template<typename Graph, typename Type>
@@ -84,6 +84,7 @@ Type Auction<Graph, Type>::getMaximumEdge(const Graph& graph)
     for (edge_iterator edge_iter = ei.first; edge_iter != ei.second; ++edge_iter)
         if (boost::get(boost::edge_weight_t(), graph, *edge_iter) > max)
             max = boost::get(boost::edge_weight_t(), graph, *edge_iter);
+        
     return max;
 }
 
@@ -127,90 +128,111 @@ void Auction<Graph, Type>::printProprieties()
 
 
 template<typename Graph, typename Type>
+void Auction<Graph, Type>::auctionRound(const Graph& graph, const Type& eps, const auto& vertex_idMap)
+{
+    for (auto& bidder : unassigned_bidder)
+    {
+
+        int id_item1 = -1;
+        Type val_item1 = -1;
+        Type val_item2 = -1;
+
+        AdjacencyIterator<Graph> ai, a_end;
+        boost::tie(ai, a_end) = boost::adjacent_vertices(vertex_idMap[bidder.first], graph);
+
+        for (auto item : boost::make_iterator_range(ai, a_end)) // itero iniziando da quelli che hanno meno vertici?
+        {
+            Type val = (boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, static_cast<int>(item), graph)).first)) // * (vertices))
+                - item_map[static_cast<int>(item) - vertices].cost;
+            if (val > val_item1)
+            {
+                val_item2 = val_item1;
+                val_item1 = val;
+                id_item1 = static_cast<int>(item) - vertices;
+            }
+            else if (val > val_item2) val_item2 = val;
+        }
+
+        bidder.second.best_item = id_item1;
+        bidder.second.val_second_best_item = val_item2;
+        bidder.second.val_first_best_item = val_item1;
+
+        Type bid = bidder.second.val_first_best_item - bidder.second.val_second_best_item + eps;
+
+        if (item_map.find(bidder.second.best_item) != item_map.end())
+        {
+            if (bid > item_map[bidder.second.best_item].high_bid)
+            {
+                item_map[bidder.second.best_item].high_bid = bid;
+                item_map[bidder.second.best_item].high_bidder = bidder.first;
+            }
+        }
+        /*else
+        {
+            throw std::runtime_error("Loop");
+        }*/
+
+    }
+    
+    for (auto& item : item_map)
+    {
+        if (item.second.high_bid == -1) continue;
+
+        std::vector<int> id_to_remove;
+
+        for (auto& ass_bidr : assigned_bidder)
+            if (ass_bidr.second.best_item == item.first)
+                id_to_remove.push_back(ass_bidr.first);
+                
+
+        for (int id : id_to_remove)
+        {
+            unassigned_bidder.insert(std::make_pair(id, assigned_bidder[id]));
+            assigned_bidder.erase(id);
+        }
+        assigned_bidder.insert(std::make_pair(item.second.high_bidder, unassigned_bidder[item.second.high_bidder]));
+        unassigned_bidder.erase(item.second.high_bidder);
+
+        item.second.cost += item.second.high_bid;
+    }
+}
+
+
+template<typename Graph, typename Type>
 void Auction<Graph, Type>::auction_algorithm(const Graph& graph, std::vector<int>& ass)
 {
     if (!is_assignment_problem(graph)) throw("Not an assignment problem");
 
     auto vertex_idMap = boost::get(boost::vertex_index, graph);
-    Type eps = 0;
-    Type k = 0;
-    Type C = getMaximumEdge(graph);
-    Type delta = (C / 5 + C / 2) / 2;
-    Type theta = 7.0;
-    eps = std::max<Type>(static_cast<Type>(1), delta / std::pow(theta, k));
 
-    while (eps >= 1)
+    /*Type eps = 0;
+    Type k = 0;
+    const Type C = getMaximumEdge(graph);
+
+    // HYPERPARAMETERS
+    const Type delta = (C / 5 + C / 2) / 2;
+    const Type theta = 7.0;
+    
+    eps = std::max<Type>(static_cast<Type>(1), delta / std::pow(theta, k));*/
+
+    Type eps = static_cast<Type>(1.0 / (vertices + 1));
+    //Type eps = 1;
+
+    /*while (eps >= 1)//(eps > 1.0 / vertices)
     {
+        reset();*/
+
         while (unassigned_bidder.size() > 0)
         {
-            reset();
-
-            for (auto& bidder : unassigned_bidder)
-            {
-
-                int id_item1 = -1;
-                Type val_item1 = -1;
-                Type val_item2 = -1;
-
-                AdjacencyIterator<Graph> ai, a_end;
-                boost::tie(ai, a_end) = boost::adjacent_vertices(vertex_idMap[bidder.first], graph);
-
-                for (auto item : boost::make_iterator_range(ai, a_end))
-                {
-                    Type val = boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, static_cast<int>(item), graph)).first)
-                        + ((vertices * 2) + 1)
-                        - item_map[static_cast<int>(item) - vertices].cost;
-                    if (val > val_item1)
-                    {
-                        val_item2 = val_item1;
-                        val_item1 = val;
-                        id_item1 = static_cast<int>(item) - vertices;
-                    }
-                    else if (val > val_item2) val_item2 = val;
-                }
-
-                bidder.second.best_item = id_item1;
-                bidder.second.val_second_best_item = val_item2;
-                bidder.second.val_first_best_item = val_item1;
-
-                Type bid = bidder.second.val_first_best_item - bidder.second.val_second_best_item + eps;
-
-                if (bid > item_map[bidder.second.best_item].high_bid)
-                {
-                    item_map[bidder.second.best_item].high_bid = bid;
-                    item_map[bidder.second.best_item].high_bidder = bidder.first;
-                }
-
-            }
-
-            for (auto& item : item_map)
-            {
-
-                if (item.second.high_bid == -1) continue;
-                item.second.cost += item.second.high_bid;
-
-                std::vector<int> id_to_remove;
-
-
-                for (auto& ass_bidr : assigned_bidder)
-                    if (ass_bidr.second.best_item == item.first)
-                        id_to_remove.push_back(ass_bidr.first);
-
-                for (int id : id_to_remove)
-                {
-                    unassigned_bidder.insert(std::make_pair(id, assigned_bidder[id]));
-                    assigned_bidder.erase(id);
-                }
-                assigned_bidder.insert(std::make_pair(item.second.high_bidder, unassigned_bidder[item.second.high_bidder]));
-                unassigned_bidder.erase(item.second.high_bidder);
-            }
+            auctionRound(graph, eps, vertex_idMap);
 
             n_iteration_au += 1;
         }
 
-        k += 1;
+        /*k += 1;
         eps = (delta / std::pow(theta, k));
-    }
+        eps *= 0.25;
+    }*/
 
     for (auto& a : assigned_bidder) ass[a.first] = a.second.best_item;
 

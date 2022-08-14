@@ -2,8 +2,9 @@
 #include "../include/MaximumWeightedMatching.h"
 #include "../include/Auction.h"
 #include <iostream>
+#include <stdexcept>
 
-#define VERBOSE false
+#define VERBOSE true
 
 void check_empty_file()
 {
@@ -34,7 +35,7 @@ int main(int argc, const char* argv[])
 	std::cin >> max;
 
 	if (min > max)
-		throw("The starting number must be greater or equal to the ending number");
+		throw std::invalid_argument("The starting number must be greater or equal to the ending number");
 
 	for (int n = min; n <= max; ++n)
 	{
@@ -47,20 +48,21 @@ int main(int argc, const char* argv[])
 
 		Graph graph = generateData(n, true);
 		if (boost::num_vertices(graph) != 2 * n /* || boost::num_edges(graph) != n * n*/)
-			throw("Number of vertices or edges not correct");
+			throw std::invalid_argument("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
 
-		/*if (VERBOSE) {
+
+		if (VERBOSE) {
 			printGraph(graph);
 			std::cout << "\n";
-		}*/
+		}
 
 
 		//MAXIMUM WEIGHTED MATCHING
 		std::cout << "Execution of Maximum Weighted Matching...";
 		total_cost_mwm = perform_mwm(graph, elapsed_mwm);
 		std::cout << std::fixed
-			<< "It took: " << fmt{ elapsed_mwm } << ", with total cost: " << (total_cost_mwm) // / 10'000.0
+			<< "It took: " << fmt{ elapsed_mwm } << ", with total cost: " << (total_cost_mwm)
 			<< "\n\n";
 
 
@@ -68,19 +70,12 @@ int main(int argc, const char* argv[])
 		std::cout << "Execution of Auction Algorithm...";
 		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au, VERBOSE);
 		std::cout << std::fixed
-			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au) // / 10'000.0
-			<< " and " << n_iteration_au << " iterations";// << "\n\n";
+			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au)
+			<< " and " << n_iteration_au << " iterations" << "\n\n";
 
 
-		/*if (VERBOSE) {
-			std::cout << "\nThe resulting Bundle Proprieties of Bidders and Items vertices are:\n";
-			printGraph(graph);
-		}*/
-		std::cout << "\n\n";
-
-
-		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm) << "," <<  // / 10'000.0
-			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au) << "," << n_iteration_au << "," <<  //  / 10'000.0
+		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm) << "," <<
+			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au) << "," << n_iteration_au << "," <<
 			((elapsed_mwm / 1.0s) == (elapsed_au / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (elapsed_au / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm > total_cost_au) ? "MWM" : "AU") << "\n";
 
