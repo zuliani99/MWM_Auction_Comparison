@@ -90,7 +90,7 @@ Type Auction<Graph, Type>::getMaximumEdge(const Graph& graph)
 
 
 template<typename Graph, typename Type>
-Type Auction<Graph, Type>::getTotalCost(const Graph& graph)
+inline Type Auction<Graph, Type>::getTotalCost(const Graph& graph)
 {
     Type total_cost_auction = 0;
     for (int bidder = 0; bidder < vertices; ++bidder) 
@@ -118,7 +118,7 @@ bool Auction<Graph, Type>::is_assignment_problem(const Graph& graph)
 
 
 template<typename Graph, typename Type>
-void Auction<Graph, Type>::printProprieties()
+inline void Auction<Graph, Type>::printProprieties()
 {
     for (auto& bidder : assigned_bidder)
         std::cout << "|Bidder:" << bidder.first << "|Best item:" << bidder.second.best_item << "|Value first best item:" << bidder.second.val_first_best_item << "|Value second best item:" << bidder.second.val_second_best_item << "|\n";
@@ -178,22 +178,27 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const Type& eps, con
     {
         if (item.second.high_bid == -1) continue;
 
-        std::vector<int> id_to_remove;
+        item.second.cost += item.second.high_bid;
+        int id_to_remove = -1;
 
         for (auto& ass_bidr : assigned_bidder)
-            if (ass_bidr.second.best_item == item.first)
-                id_to_remove.push_back(ass_bidr.first);
-                
-
-        for (int id : id_to_remove)
         {
-            unassigned_bidder.insert(std::make_pair(id, assigned_bidder[id]));
-            assigned_bidder.erase(id);
+            if (ass_bidr.second.best_item == item.first)
+            {
+                id_to_remove = ass_bidr.first;
+                break;
+            }
+        } 
+                
+        if (id_to_remove != -1)
+        {
+            unassigned_bidder.insert(std::make_pair(id_to_remove, assigned_bidder[id_to_remove]));
+            assigned_bidder.erase(id_to_remove);
         }
+
         assigned_bidder.insert(std::make_pair(item.second.high_bidder, unassigned_bidder[item.second.high_bidder]));
         unassigned_bidder.erase(item.second.high_bidder);
 
-        item.second.cost += item.second.high_bid;
     }
 }
 

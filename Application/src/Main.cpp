@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#define VERBOSE true
+#define VERBOSE false
 
 void check_empty_file()
 {

@@ -1,5 +1,4 @@
 #include "../include/BipartiteGraph.h"
-#include <map>
 
 Graph generateData(int N, bool fully_connected)
 {

@@ -3,6 +3,7 @@
 
 #include "Graph.hpp"
 #include <random>
+#include <map>
 
 template<typename T>
 using Distribution = std::uniform_int_distribution<T>;
