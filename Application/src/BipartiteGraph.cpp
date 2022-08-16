@@ -27,8 +27,9 @@ Graph generateData(int N, bool fully_connected)
 			free_items.erase(std::find(free_items.begin(), free_items.end(), free_items[pos]));
 
 			for (int item = 0; item < N; ++item)
-				if (map_first_conenction[bidder] != item && dist_edge(prng))
-					add_edge(bidder, N + item, dist(prng), g);
+				if (map_first_conenction[bidder] != item)
+					if (dist_edge(prng)) add_edge(bidder, N + item, dist(prng), g);
+					else add_edge(bidder, N + item, static_cast<Weight>(0), g);
 		}
 	}
 

@@ -45,7 +45,7 @@ int main(int argc, const char* argv[])
 		Weight total_cost_mwm, total_cost_au;
 		int n_iteration_au = 0;
 
-		Graph graph = generateData(n, true);
+		Graph graph = generateData(n, false);
 		if (boost::num_vertices(graph) != 2 * n /* || boost::num_edges(graph) != n * n*/)
 			throw std::invalid_argument("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
@@ -77,7 +77,7 @@ int main(int argc, const char* argv[])
 			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au) << "," << n_iteration_au << "," <<
 			((elapsed_mwm / 1.0s) == (elapsed_au / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (elapsed_au / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm > total_cost_au) ? "MWM" : "AU") << "\n";
-
+		
 	}
 
 	std::cout << "\n";
