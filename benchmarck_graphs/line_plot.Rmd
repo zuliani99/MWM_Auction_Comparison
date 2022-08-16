@@ -41,10 +41,9 @@ ggplot(df, aes(Edge.per.part)) +
 
 ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
-  ylab("Total Cost") +
-  geom_line(aes(y = Total.Cost.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
-  geom_line(aes(y = Total.Cost.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("MWM & AA total cost", title_vertices)) +
+  ylab("Difference of Totoal Cost") +
+  geom_line(aes(y = Total.Cost.MWM - Total.Cost.AU, colour = "AU"), color="cornflowerblue", size=1, alpha=1, linetype=1) +
+  ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 
 ggplot(df, aes(Edge.per.part)) +
@@ -71,10 +70,9 @@ ggplot(df, aes(Edge.per.part)) +
 
 ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
-  ylab("Total Cost") +
-  geom_line(aes(y = Total.Cost.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
-  geom_line(aes(y = Total.Cost.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("MWM & AA total cost", title_vertices)) +
+  ylab("Difference of Totoal Cost") +
+  geom_line(aes(y = Total.Cost.MWM - Total.Cost.AU, colour = "AU"), color="cornflowerblue", size=1, alpha=1, linetype=1) +
+  ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 
 ggplot(df, aes(Edge.per.part)) +
@@ -100,10 +98,9 @@ ggplot(df, aes(Edge.per.part)) +
 
 ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
-  ylab("Total Cost") +
-  geom_line(aes(y = Total.Cost.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
-  geom_line(aes(y = Total.Cost.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("MWM & AA total cost", title_vertices)) +
+  ylab("Difference of Totoal Cost") +
+  geom_line(aes(y = Total.Cost.MWM - Total.Cost.AU, colour = "AU"), color="cornflowerblue", size=1, alpha=1, linetype=1) +
+  ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 
 ggplot(df, aes(Edge.per.part)) +
