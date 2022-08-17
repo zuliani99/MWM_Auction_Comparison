@@ -11,7 +11,7 @@ Graph generateData(int N, const char* fully_connected)
 	std::vector<int> free_items;
 	for(int i = 0; i < N; ++i)
 		free_items.push_back(i);
-	std::cout << "fully connected" << *fully_connected << std::endl;
+
 	if (*fully_connected == '1')
 	{
 		for (int bidder = 0; bidder < N; ++bidder)

@@ -19,7 +19,6 @@ int main(int argc, const char* argv[])
 {
 	const char* verbose = argv[1];
 	const char* fully_connected = argv[2];
-	//std::cout << verbose << " " << fully_connected;
 
 	if ((*verbose != '0' && *verbose!= '1') || (*fully_connected != '0' && *fully_connected != '1'))
 		throw std::invalid_argument("Invalid Option, verbose and fully_connected accept only 0 or 1 values");
