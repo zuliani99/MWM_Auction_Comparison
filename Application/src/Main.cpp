@@ -4,8 +4,6 @@
 #include <iostream>
 #include <stdexcept>
 
-#define VERBOSE false
-
 void check_empty_file()
 {
 	std::ifstream file;
@@ -19,6 +17,12 @@ void check_empty_file()
 
 int main(int argc, const char* argv[])
 {
+	const char* verbose = argv[1];
+	const char* fully_connected = argv[2];
+	//std::cout << verbose << " " << fully_connected;
+
+	if ((*verbose != '0' && *verbose!= '1') || (*fully_connected != '0' && *fully_connected != '1'))
+		throw std::invalid_argument("Invalid Option, verbose and fully_connected accept only 0 or 1 values");
 
 	int min, max;
 	std::fstream stream;
@@ -45,13 +49,13 @@ int main(int argc, const char* argv[])
 		Weight total_cost_mwm, total_cost_au;
 		int n_iteration_au = 0;
 
-		Graph graph = generateData(n, true);
+		Graph graph = generateData(n, fully_connected);
 		if (boost::num_vertices(graph) != 2 * n /* || boost::num_edges(graph) != n * n*/)
 			throw std::invalid_argument("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
 
 
-		if (VERBOSE) {
+		if (*verbose == '1') {
 			printGraph(graph);
 			std::cout << "\n";
 		}
@@ -67,7 +71,7 @@ int main(int argc, const char* argv[])
 
 		//AUCTION ALGOROTHM
 		std::cout << "Execution of Auction Algorithm...";
-		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au, VERBOSE);
+		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au, verbose);
 		std::cout << std::fixed
 			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au)
 			<< " and " << n_iteration_au << " iterations" << "\n\n";

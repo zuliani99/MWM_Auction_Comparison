@@ -9,6 +9,11 @@
 template<typename T>
 using AdjacencyIterator = boost::graph_traits<T>::adjacency_iterator;
 
+template<typename T>
+using vertex_idMap = boost::property_map<T,boost::vertex_index_t>::type;
+
+template<typename T>
+using edge_iterator = boost::graph_traits<T>::edge_iterator;
 
 template<typename Graph, typename Type>
 class Auction
@@ -34,7 +39,7 @@ class Auction
         std::unordered_map<int, Item> item_map;
         
         bool is_assignment_problem(const Graph& graph);
-        void auctionRound(const Graph& graph, const double& eps, const auto& vertex_idMap);
+        void auctionRound(const Graph& graph, const double& eps, const vertex_idMap<Graph>& vertex_idMap);
         
     public:
         void auction_algorithm(const Graph& graph, std::vector<int>& ass);
@@ -78,10 +83,9 @@ template<typename Graph, typename Type>
 Type Auction<Graph, Type>::getMaximumEdge(const Graph& graph)
 {
     Type max = 0;
-    typedef boost::graph_traits<Graph>::edge_iterator edge_iterator;
 
-    std::pair<edge_iterator, edge_iterator> ei = boost::edges(graph);
-    for (edge_iterator edge_iter = ei.first; edge_iter != ei.second; ++edge_iter)
+    std::pair<edge_iterator<Graph>, edge_iterator<Graph>> ei = boost::edges(graph);
+    for (edge_iterator<Graph> edge_iter = ei.first; edge_iter != ei.second; ++edge_iter)
         if (boost::get(boost::edge_weight_t(), graph, *edge_iter) > max)
             max = boost::get(boost::edge_weight_t(), graph, *edge_iter);
         
@@ -128,7 +132,7 @@ inline void Auction<Graph, Type>::printProprieties()
 
 
 template<typename Graph, typename Type>
-void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, const auto& vertex_idMap)
+void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, const vertex_idMap<Graph>& V_Map)
 {
     for (auto& bidder : unassigned_bidder)
     {
@@ -138,7 +142,7 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
         double val_item2 = -1;
 
         AdjacencyIterator<Graph> ai, a_end;
-        boost::tie(ai, a_end) = boost::adjacent_vertices(vertex_idMap[bidder.first], graph);
+        boost::tie(ai, a_end) = boost::adjacent_vertices(V_Map[bidder.first], graph);
 
         for (auto item : boost::make_iterator_range(ai, a_end)) // itero iniziando da quelli che hanno meno vertici?
         {
@@ -208,7 +212,7 @@ void Auction<Graph, Type>::auction_algorithm(const Graph& graph, std::vector<int
 {
     if (!is_assignment_problem(graph)) throw("Not an assignment problem");
 
-    auto vertex_idMap = boost::get(boost::vertex_index, graph);
+	vertex_idMap<Graph> V_Map = boost::get(boost::vertex_index, graph);
 
     /*Type eps = 0;
     Type k = 0;
@@ -229,7 +233,7 @@ void Auction<Graph, Type>::auction_algorithm(const Graph& graph, std::vector<int
 
         while (unassigned_bidder.size() > 0)
         {
-            auctionRound(graph, eps, vertex_idMap);
+            auctionRound(graph, eps, V_Map);
 
             n_iteration_au += 1;
         }

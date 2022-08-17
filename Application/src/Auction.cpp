@@ -3,7 +3,7 @@
 #include "../include/AuctionAlgorithm.hpp"
 
 
-Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, bool verbose)
+Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, const char* verbose)
 {
     int n = int(boost::num_vertices(graph) / 2);
     bool solved = true;
@@ -24,7 +24,7 @@ Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, bo
     if (!solved)
     {
         std::cout << " Finished \nNo matching found\n";
-        if (verbose) auction_problem.printProprieties();
+        if (*verbose == '1') auction_problem.printProprieties();
         n_iteration_au = -1;
 
         return static_cast<Weight>(-1);
@@ -38,7 +38,7 @@ Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, bo
             std::cout << "(" << bidder << "," << assignments[bidder] << "," << (boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, assignments[bidder] + n, graph)).first)) << ")";
         std::cout << "\n";
 
-        if (verbose) auction_problem.printProprieties();
+        if (*verbose == '1') auction_problem.printProprieties();
         n_iteration_au = auction_problem.getNIterationAu();
 
         return auction_problem.getTotalCost(graph);

@@ -23,7 +23,7 @@ g++ -std=c++2a -Ofast -o ../bin/app BipartiteGraph.cpp MaximumWeightedMatching.c
 The *.exe* file will be inserted into the */bin* directory.
 
 ## Usage
-Start the .exe file by typing ```./app```, next you have to specify the starting and ending number of verticies per part of the bipartite graphs.
+Start the application by typing ```./app _ _```, where the two _ correspond to the two options, verbose and fully_connected, they accept only 0,1 values. Next you have to specify the starting and ending number of verticies per part of the bipartite graphs.
 
 ![](images/console_1.png)
 
