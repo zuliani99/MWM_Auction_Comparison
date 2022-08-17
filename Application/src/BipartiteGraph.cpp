@@ -4,7 +4,7 @@ Graph generateData(int N, bool fully_connected)
 {
     Graph g;
 
-	Distribution<Weight>dist(1, 50);
+	Distribution<Weight>dist(1, 50'000);
     Distribution<int>dist_edge(0, 1);
 	std::map<int, int> map_first_conenction;
 
@@ -12,13 +12,15 @@ Graph generateData(int N, bool fully_connected)
 	for(int i = 0; i < N; ++i)
 		free_items.push_back(i);
 
-
-	for (int bidder = 0; bidder < N; ++bidder)
-	{	
-		if (fully_connected)
+	if (fully_connected)
+	{
+		for (int bidder = 0; bidder < N; ++bidder)
 			for (int item = 0; item < N; ++item)
 				add_edge(bidder, N + item, dist(prng), g);
-		else
+	}
+	else
+	{
+		for (int bidder = 0; bidder < N; ++bidder)
 		{
 			Distribution<int> random_first_connection(0, static_cast<int>(free_items.size()) - 1);
 			int pos = random_first_connection(prng);
@@ -32,6 +34,7 @@ Graph generateData(int N, bool fully_connected)
 					else add_edge(bidder, N + item, static_cast<Weight>(0), g);
 		}
 	}
+	
 
     return g;
 }

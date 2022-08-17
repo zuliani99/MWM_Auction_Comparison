@@ -14,7 +14,6 @@ library(ggplot2)
 Loading .csv
 ```{r}
 res <- read.csv("C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_exam/Auction-MWM-Comparison/benchmarck_graphs/results.csv")
-
 ```
 
 

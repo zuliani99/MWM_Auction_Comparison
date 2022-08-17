@@ -45,7 +45,7 @@ int main(int argc, const char* argv[])
 		Weight total_cost_mwm, total_cost_au;
 		int n_iteration_au = 0;
 
-		Graph graph = generateData(n, false);
+		Graph graph = generateData(n, true);
 		if (boost::num_vertices(graph) != 2 * n /* || boost::num_edges(graph) != n * n*/)
 			throw std::invalid_argument("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
