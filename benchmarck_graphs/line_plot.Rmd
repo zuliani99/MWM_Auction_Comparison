@@ -1,5 +1,5 @@
 ---
-title: "benchmarck_graphs"
+title: "Analysis Graphs"
 author: "Zuliani Riccardo"
 date: "10/8/2022"
 output: html_document
@@ -13,7 +13,9 @@ library(ggplot2)
 
 Loading .csv
 ```{r}
-res <- read.csv("C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_exam/Auction-MWM-Comparison/benchmarck_graphs/results.csv")
+res <- read.csv("./results.csv")
+res$Total.Cost.MWM <- res$Total.Cost.MWM / 10000
+res$Total.Cost.AU <- res$Total.Cost.AU / 10000
 ```
 
 
@@ -21,7 +23,7 @@ res <- read.csv("C:/Users/ricca/Desktop/UNI/Magistrale/Anno1/AA/Modulo2/project_
 ```{r}
 res_2_50 <- res[0:49,]
 res_51_300 <- res[50:299,]
-res_301_999 <- res[300:998,]
+res_301_1000 <- res[300:999,]
 ```
 
 
@@ -29,27 +31,38 @@ res_301_999 <- res[300:998,]
 ```{r}
 df <- res_2_50
 title_vertices <- " for 2 - 50 vertices"
-  
+```
+
+```{r}
 ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Seconds") +
-  geom_line(aes(y = Seconds.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
-  geom_line(aes(y = Seconds.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("MWM & AA execution time", title_vertices)) +
+  geom_line(aes(y = Seconds.MWM, colour = "MWM"), size=1, alpha=1, linetype=1) + 
+  geom_line(aes(y = Seconds.AU, colour = "AU"), size=1, alpha=1, linetype=1) +
+  scale_colour_manual("", 
+                      breaks = c("MWM", "AU"),
+                      values = c("cornflowerblue", "red")) +
+  ggtitle(paste("MWM & AU execution time", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
+```
 
-ggplot(df, aes(Edge.per.part)) +
+```{r}
+ggplot(df, aes(x=Edge.per.part, y=Total.Cost.MWM - Total.Cost.AU)) +
   xlab("Number of Vertices per part") +
   ylab("Difference of Totoal Cost") +
-  geom_line(aes(y = Total.Cost.MWM - Total.Cost.AU, colour = "AU"), color="cornflowerblue", size=1, alpha=1, linetype=1) +
+  geom_point() +
+  geom_smooth(method='lm', se=TRUE, color='forestgreen') +
   ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
+```
 
-ggplot(df, aes(Edge.per.part)) +
+```{r}
+ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
   xlab("Number of Vertices per part") +
   ylab("Iterations") +
-  geom_line(aes(y = Iterations.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("AA iterations", title_vertices)) +
+  geom_point() +
+  geom_smooth(method='lm', se=TRUE, color='goldenrod') +
+  ggtitle(paste("AU iterations", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
@@ -58,55 +71,77 @@ ggplot(df, aes(Edge.per.part)) +
 ```{r}
 df <- res_51_300
 title_vertices <- " for 51 - 300 vertices"
+```
 
+```{r}
 ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Seconds") +
-  geom_line(aes(y = Seconds.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
-  geom_line(aes(y = Seconds.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("MWM & AA execution time", title_vertices)) +
-  theme(plot.title = element_text(size=20, hjust = 0.5))
-
-ggplot(df, aes(Edge.per.part)) +
-  xlab("Number of Vertices per part") +
-  ylab("Difference of Totoal Cost") +
-  geom_line(aes(y = Total.Cost.MWM - Total.Cost.AU, colour = "AU"), color="cornflowerblue", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
-  theme(plot.title = element_text(size=20, hjust = 0.5))
-
-ggplot(df, aes(Edge.per.part)) +
-  xlab("Number of Vertices per part") +
-  ylab("Iterations") +
-  geom_line(aes(y = Iterations.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("AA iterations", title_vertices)) +
+  geom_line(aes(y = Seconds.MWM, colour = "MWM"), size=1, alpha=1, linetype=1) + 
+  geom_line(aes(y = Seconds.AU, colour = "AU"), size=1, alpha=1, linetype=1) +
+  scale_colour_manual("", 
+                      breaks = c("MWM", "AU"),
+                      values = c("cornflowerblue", "red")) +
+  ggtitle(paste("MWM & AU execution time", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
-# Lineplots for graphs between 301 and 999 vertices per part
 ```{r}
-df <- res_301_999
-title_vertices <- " for 300 - 999 vertices"
+ggplot(df, aes(x=Edge.per.part, y=Total.Cost.MWM - Total.Cost.AU)) +
+  xlab("Number of Vertices per part") +
+  ylab("Difference of Totoal Cost") +
+  geom_point() +
+  geom_smooth(method='lm', se=TRUE, color='forestgreen') +
+  ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
+  theme(plot.title = element_text(size=20, hjust = 0.5))
+```
 
+```{r}
+ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
+  xlab("Number of Vertices per part") +
+  ylab("Iterations") +
+  geom_point() +
+  geom_smooth(method='lm', se=TRUE, color='goldenrod') +
+  ggtitle(paste("AU iterations", title_vertices)) +
+  theme(plot.title = element_text(size=20, hjust = 0.5))
+```
+
+# Lineplots for graphs between 301 and 1000 vertices per part
+```{r}
+df <- res_301_1000
+title_vertices <- " for 300 - 1000 vertices"
+```
+
+```{r}
 ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Seconds") +
-  geom_line(aes(y = Seconds.MWM, colour = "MWM"), color="cornflowerblue", size=1, alpha=1, linetype=1) + 
-  geom_line(aes(y = Seconds.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("MWM & AA execution time", title_vertices)) +
+  geom_line(aes(y = Seconds.MWM, colour = "MWM"), size=1, alpha=1, linetype=1) + 
+  geom_line(aes(y = Seconds.AU, colour = "AU"), size=1, alpha=1, linetype=1) +
+  scale_colour_manual("", 
+                      breaks = c("MWM", "AU"),
+                      values = c("cornflowerblue", "red")) +
+  ggtitle(paste("MWM & AU execution time", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
+```
 
-ggplot(df, aes(Edge.per.part)) +
+```{r}
+ggplot(df, aes(x=Edge.per.part, y=Total.Cost.MWM - Total.Cost.AU)) +
   xlab("Number of Vertices per part") +
   ylab("Difference of Totoal Cost") +
-  geom_line(aes(y = Total.Cost.MWM - Total.Cost.AU, colour = "AU"), color="cornflowerblue", size=1, alpha=1, linetype=1) +
+  geom_point() +
+  geom_smooth(method='lm', se=TRUE, color='forestgreen') +
   ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
+```
 
-ggplot(df, aes(Edge.per.part)) +
+```{r}
+ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
   xlab("Number of Vertices per part") +
   ylab("Iterations") +
-  geom_line(aes(y = Iterations.AU, colour = "AU"), color="red", size=1, alpha=1, linetype=1) +
-  ggtitle(paste("AA iterations", title_vertices)) +
+  geom_point() +
+  geom_smooth(method='lm', se=TRUE, color='goldenrod') +
+  ggtitle(paste("AU iterations", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
