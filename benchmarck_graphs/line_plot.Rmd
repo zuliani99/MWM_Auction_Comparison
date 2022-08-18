@@ -47,12 +47,12 @@ ggplot(df, aes(Edge.per.part)) +
 ```
 
 ```{r}
-ggplot(df, aes(x=Edge.per.part, y=Total.Cost.MWM - Total.Cost.AU)) +
+ggplot(df, aes(x=Edge.per.part, y=100 - ((100 * Total.Cost.AU) / Total.Cost.MWM))) +
   xlab("Number of Vertices per part") +
-  ylab("Difference of Totoal Cost") +
+  ylab("% Difference of Totoal Cost") +
   geom_point() +
   geom_smooth(method='lm', se=TRUE, color='forestgreen') +
-  ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
+  ggtitle(paste("% Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
@@ -87,12 +87,12 @@ ggplot(df, aes(Edge.per.part)) +
 ```
 
 ```{r}
-ggplot(df, aes(x=Edge.per.part, y=Total.Cost.MWM - Total.Cost.AU)) +
+ggplot(df, aes(x=Edge.per.part, y=100 - ((100 * Total.Cost.AU) / Total.Cost.MWM))) +
   xlab("Number of Vertices per part") +
-  ylab("Difference of Totoal Cost") +
+  ylab("% Difference of Totoal Cost") +
   geom_point() +
   geom_smooth(method='lm', se=TRUE, color='forestgreen') +
-  ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
+  ggtitle(paste("% Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
@@ -126,12 +126,12 @@ ggplot(df, aes(Edge.per.part)) +
 ```
 
 ```{r}
-ggplot(df, aes(x=Edge.per.part, y=Total.Cost.MWM - Total.Cost.AU)) +
+ggplot(df, aes(x=Edge.per.part, y=100 - ((100 * Total.Cost.AU) / Total.Cost.MWM))) +
   xlab("Number of Vertices per part") +
-  ylab("Difference of Totoal Cost") +
+  ylab("% Difference of Totoal Cost") +
   geom_point() +
   geom_smooth(method='lm', se=TRUE, color='forestgreen') +
-  ggtitle(paste("Difference of Totoal Cost", title_vertices)) +
+  ggtitle(paste("% Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
