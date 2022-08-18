@@ -35,7 +35,7 @@ Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, co
         std::cout << " Finished \nThe matching is: ";
 
         for (int bidder = 0; bidder < n; ++bidder)
-            std::cout << "(" << bidder << "," << assignments[bidder] << "," << (boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, assignments[bidder] + n, graph)).first)) << ")";
+            std::cout << "(" << bidder << "," << assignments[bidder] << "," << (boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, assignments[bidder] + n, graph)).first)) / 10'000.0 << ")";
         std::cout << "\n";
 
         if (*verbose == '1') auction_problem.printProprieties();

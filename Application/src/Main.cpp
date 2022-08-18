@@ -18,10 +18,9 @@ void check_empty_file()
 int main(int argc, const char* argv[])
 {
 	const char* verbose = argv[1];
-	const char* fully_connected = argv[2];
 
-	if ((*verbose != '0' && *verbose!= '1') || (*fully_connected != '0' && *fully_connected != '1'))
-		throw std::invalid_argument("Invalid Option, verbose and fully_connected accept only 0 or 1 values");
+	if (*verbose != '0' && *verbose!= '1')
+		throw std::invalid_argument("Invalid Option, verbose accepts only 0 or 1 values");
 
 	int min, max;
 	std::fstream stream;
@@ -48,8 +47,8 @@ int main(int argc, const char* argv[])
 		Weight total_cost_mwm, total_cost_au;
 		int n_iteration_au = 0;
 
-		Graph graph = generateData(n, fully_connected);
-		if (boost::num_vertices(graph) != 2 * n /* || boost::num_edges(graph) != n * n*/)
+		Graph graph = generateData(n);
+		if (boost::num_vertices(graph) != 2 * n  || boost::num_edges(graph) != n * n)
 			throw std::invalid_argument("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
 
@@ -64,7 +63,7 @@ int main(int argc, const char* argv[])
 		std::cout << "Execution of Maximum Weighted Matching...";
 		total_cost_mwm = perform_mwm(graph, elapsed_mwm);
 		std::cout << std::fixed
-			<< "It took: " << fmt{ elapsed_mwm } << ", with total cost: " << (total_cost_mwm)
+			<< "It took: " << fmt{ elapsed_mwm } << ", with total cost: " << (total_cost_mwm / 10'000.0)
 			<< "\n\n";
 
 
@@ -72,12 +71,12 @@ int main(int argc, const char* argv[])
 		std::cout << "Execution of Auction Algorithm...";
 		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au, verbose);
 		std::cout << std::fixed
-			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au)
+			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au / 10'000.0)
 			<< " and " << n_iteration_au << " iterations" << "\n\n";
 
 
-		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm) << "," <<
-			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au) << "," << n_iteration_au << "," <<
+		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm / 10'000.0) << "," <<
+			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au / 10'000.0) << "," << n_iteration_au << "," <<
 			((elapsed_mwm / 1.0s) == (elapsed_au / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (elapsed_au / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm > total_cost_au) ? "MWM" : "AU") << "\n";
 		

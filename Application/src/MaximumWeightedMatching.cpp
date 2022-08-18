@@ -22,7 +22,7 @@ Weight perform_mwm(const Graph& graph, Duration& elapsed)
 
         for (V v : boost::make_iterator_range(vertices(graph)))
             if (mate[v] != Graph::null_vertex() && v < mate[v])
-                std::cout << "(" << v << "," << (mate[v] - (N / 2)) << "," << (boost::get(boost::edge_weight_t(), graph, (boost::edge(v, mate[v], graph)).first)) << ")";
+                std::cout << "(" << v << "," << (mate[v] - (N / 2)) << "," << (boost::get(boost::edge_weight_t(), graph, (boost::edge(v, mate[v], graph)).first)) / 10'000.0 << ")";
 
         std::cout << "\n";
 

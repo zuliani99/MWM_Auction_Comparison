@@ -109,7 +109,7 @@ ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
 # Lineplots for graphs between 301 and 1000 vertices per part
 ```{r}
 df <- res_301_1000
-title_vertices <- " for 300 - 1000 vertices"
+title_vertices <- " for 301 - 1000 vertices"
 ```
 
 ```{r}
