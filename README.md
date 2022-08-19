@@ -34,9 +34,11 @@ After have inserted the three options, at each random bipartite graph the applic
 And at the end of each algorithm the application will show the actual matching in the following form: **(FROM vertex, TO vertex, WEIGHT)**. In addition in both algorithm we will get the total cost of the matching and only for the Auction Algorithm we will have also the number of iteration for the specific Assignment Porblem.
 
 * VERBOSE mode **OFF**
+
 ![](images/console_2.png)
 
 * VERBOSE mode **ON**
+
 ![](images/console_3.png)
 
 When the benchmark is finished the application generate a *.csv* file stored into the */data* directory. This file is generated in order to have a look on the complete score of all of three algorithm.
