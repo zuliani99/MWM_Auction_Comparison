@@ -4,7 +4,8 @@
 #include <iostream>
 #include <stdexcept>
 
-void check_empty_file()
+
+inline void check_empty_file()
 {
 	std::ifstream file;
 	file.open("../data/results.csv");
@@ -15,30 +16,35 @@ void check_empty_file()
 	}
 }
 
-int main(int argc, const char* argv[])
+void get_input(int& min, int& max, int& verbose)
 {
-	const char* verbose = argv[1];
-
-	if (*verbose != '0' && *verbose!= '1')
-		throw std::invalid_argument("Invalid Option, verbose accepts only 0 or 1 values");
-
-	int min, max;
-	std::fstream stream;
-
-	check_empty_file();
-
-	stream.open("../data/results.csv", std::ios::out | std::ios::app);
-	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,Execution Time AU,Seconds AU,Total Cost AU,Iterations AU,Winner Execution Time,Winner Total Cost\n";
-
 	std::cout << "-------- MAXIMUM WEIGHTED MATCHING - AUCTION ALGORITHM BECHMARK --------\n\n";
+	std::cout << "Do you want to active VERBOSE mode? (1/0) ";
+	std::cin >> verbose;
 	std::cout << "Please specify the starting number of vertices per part: ";
 	std::cin >> min;
 	std::cout << "Please specify the ending number of vertices per part: ";
 	std::cin >> max;
 
-	if (min > max)
-		throw std::invalid_argument("The starting number must be greater or equal to the ending number");
+	if (min > max || (verbose != 0 && verbose != 1))
+		throw std::invalid_argument("Please insert correct input");
 
+}
+
+int main(int argc, const char* argv[])
+{
+
+	int min, max, verbose;
+	std::fstream stream;
+
+	check_empty_file();
+
+	get_input(min, max, verbose);
+
+	stream.open("../data/results.csv", std::ios::out | std::ios::app);
+	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,Execution Time AU,Seconds AU,Total Cost AU,Iterations AU,Winner Execution Time,Winner Total Cost\n";
+
+	
 	for (int n = min; n <= max; ++n)
 	{
 		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " vertices per part: ";
@@ -48,12 +54,12 @@ int main(int argc, const char* argv[])
 		int n_iteration_au = 0;
 
 		Graph graph = generateData(n);
-		if (boost::num_vertices(graph) != 2 * n  || boost::num_edges(graph) != n * n)
+		if (boost::num_vertices(graph) != 2 * static_cast<unsigned long long>(n) || boost::num_edges(graph) != static_cast<unsigned long long>(n) * n)
 			throw std::invalid_argument("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
 
 
-		if (*verbose == '1') {
+		if (verbose) {
 			printGraph(graph);
 			std::cout << "\n";
 		}
@@ -75,6 +81,7 @@ int main(int argc, const char* argv[])
 			<< " and " << n_iteration_au << " iterations" << "\n\n";
 
 
+		//Saving data in .csv file
 		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm / 10'000.0) << "," <<
 			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au / 10'000.0) << "," << n_iteration_au << "," <<
 			((elapsed_mwm / 1.0s) == (elapsed_au / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (elapsed_au / 1.0s) ? "MWM" : "AU") << "," <<

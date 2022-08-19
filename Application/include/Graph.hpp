@@ -13,7 +13,7 @@ static auto now = std::chrono::high_resolution_clock::now;
 using Duration = std::chrono::high_resolution_clock::duration;
 static std::mt19937 prng{ std::random_device{}() };
 
-using Weight = int;
+using Weight = int64_t;
 using EdgeProp = boost::property<boost::edge_weight_t, Weight>;
 using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, EdgeProp>;
 using V = Graph::vertex_descriptor;

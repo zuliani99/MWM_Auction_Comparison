@@ -14,8 +14,6 @@ library(ggplot2)
 Loading .csv
 ```{r}
 res <- read.csv("./results.csv")
-res$Total.Cost.MWM <- res$Total.Cost.MWM / 10000
-res$Total.Cost.AU <- res$Total.Cost.AU / 10000
 ```
 
 
