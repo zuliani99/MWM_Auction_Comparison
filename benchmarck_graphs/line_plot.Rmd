@@ -45,11 +45,14 @@ ggplot(df, aes(Edge.per.part)) +
 ```
 
 ```{r}
-ggplot(df, aes(x=Edge.per.part, y=100 - ((100 * Total.Cost.AU) / Total.Cost.MWM))) +
+x <- df$Edge.per.part
+y <- (100 - ((100 * df$Total.Cost.AU) / df$Total.Cost.MWM))
+
+ggplot(df, aes(x=x, y=y)) +
   xlab("Number of Vertices per part") +
   ylab("% Difference of Totoal Cost") +
   geom_point() +
-  geom_smooth(method='lm', se=TRUE, color='forestgreen') +
+  geom_smooth(formula=y ~ x, method='loess', se=TRUE, color='forestgreen', size=1.5) +
   ggtitle(paste("% Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
@@ -59,7 +62,7 @@ ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
   xlab("Number of Vertices per part") +
   ylab("Iterations") +
   geom_point() +
-  geom_smooth(method='lm', se=TRUE, color='goldenrod') +
+  geom_smooth(method='lm', se=TRUE, color='goldenrod', size=1.5) +
   ggtitle(paste("AU iterations", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
@@ -85,11 +88,14 @@ ggplot(df, aes(Edge.per.part)) +
 ```
 
 ```{r}
-ggplot(df, aes(x=Edge.per.part, y=100 - ((100 * Total.Cost.AU) / Total.Cost.MWM))) +
+x <- df$Edge.per.part
+y <- (100 - ((100 * df$Total.Cost.AU) / df$Total.Cost.MWM))
+
+ggplot(df, aes(x=x, y=y)) +
   xlab("Number of Vertices per part") +
   ylab("% Difference of Totoal Cost") +
   geom_point() +
-  geom_smooth(method='lm', se=TRUE, color='forestgreen') +
+  geom_smooth(formula=y ~ x, method='loess', se=TRUE, color='forestgreen', size=1.5) +
   ggtitle(paste("% Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
@@ -99,7 +105,7 @@ ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
   xlab("Number of Vertices per part") +
   ylab("Iterations") +
   geom_point() +
-  geom_smooth(method='lm', se=TRUE, color='goldenrod') +
+  geom_smooth(method='lm', se=TRUE, color='goldenrod', size=1.5) +
   ggtitle(paste("AU iterations", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
@@ -124,11 +130,14 @@ ggplot(df, aes(Edge.per.part)) +
 ```
 
 ```{r}
-ggplot(df, aes(x=Edge.per.part, y=100 - ((100 * Total.Cost.AU) / Total.Cost.MWM))) +
+x <- df$Edge.per.part
+y <- (100 - ((100 * df$Total.Cost.AU) / df$Total.Cost.MWM))
+
+ggplot(df, aes(x=x, y=y)) +
   xlab("Number of Vertices per part") +
   ylab("% Difference of Totoal Cost") +
   geom_point() +
-  geom_smooth(method='lm', se=TRUE, color='forestgreen') +
+  geom_smooth(formula=y ~ x, method='loess', se=TRUE, color='forestgreen', size=1.5) +
   ggtitle(paste("% Difference of Totoal Cost", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
@@ -138,7 +147,7 @@ ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
   xlab("Number of Vertices per part") +
   ylab("Iterations") +
   geom_point() +
-  geom_smooth(method='lm', se=TRUE, color='goldenrod') +
+  geom_smooth(method='lm', se=TRUE, color='goldenrod', size=1.5) +
   ggtitle(paste("AU iterations", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```

@@ -69,7 +69,7 @@ int main(int argc, const char* argv[])
 		std::cout << "Execution of Maximum Weighted Matching...";
 		total_cost_mwm = perform_mwm(graph, elapsed_mwm);
 		std::cout << std::fixed
-			<< "It took: " << fmt{ elapsed_mwm } << ", with total cost: " << (total_cost_mwm / 10'000.0)
+			<< "It took: " << fmt{ elapsed_mwm } << ", with total cost: " << (total_cost_mwm) // / 10'000.0
 			<< "\n\n";
 
 
@@ -77,13 +77,13 @@ int main(int argc, const char* argv[])
 		std::cout << "Execution of Auction Algorithm...";
 		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au, verbose);
 		std::cout << std::fixed
-			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au / 10'000.0)
+			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au) // / 10'000.0
 			<< " and " << n_iteration_au << " iterations" << "\n\n";
 
 
 		//Saving data in .csv file
-		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm / 10'000.0) << "," <<
-			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au / 10'000.0) << "," << n_iteration_au << "," <<
+		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm) << "," << // / 10'000.0
+			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au) << "," << n_iteration_au << "," << // / 10'000.0
 			((elapsed_mwm / 1.0s) == (elapsed_au / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (elapsed_au / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm > total_cost_au) ? "MWM" : "AU") << "\n";
 		

@@ -46,8 +46,8 @@ class Auction
         int getNIterationAu();
         Type getTotalCost(const Graph& graph);
         void printProprieties();
-        //Type getMaximumEdge(const Graph& graph);
-        //void reset();
+        Type getMaximumEdge(const Graph& graph);
+        void reset();
 
         Auction(int vertices)
         {
@@ -64,8 +64,8 @@ template<typename Graph, typename Type>
 inline int Auction<Graph, Type>::getNIterationAu() { return n_iteration_au; }
 
 
-/*template<typename Graph, typename Type>
-void Auction<Graph, Type>::reset()
+template<typename Graph, typename Type>
+inline void Auction<Graph, Type>::reset()
 {
     this->unassigned_bidder.clear();
     this->assigned_bidder.clear();
@@ -79,7 +79,8 @@ void Auction<Graph, Type>::reset()
 
 
 template<typename Graph, typename Type>
-Type Auction<Graph, Type>::getMaximumEdge(const Graph& graph)
+inline Type Auction<Graph, Type>::getMaximumEdge(const Graph& graph)
+
 {
     Type max = 0;
 
@@ -89,7 +90,7 @@ Type Auction<Graph, Type>::getMaximumEdge(const Graph& graph)
             max = boost::get(boost::edge_weight_t(), graph, *edge_iter);
         
     return max;
-}*/
+}
 
 
 template<typename Graph, typename Type>
@@ -145,7 +146,7 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
 
         for (auto item : boost::make_iterator_range(ai, a_end))
         {
-            double val = (boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, static_cast<int>(item), graph)).first)) // * (vertices))
+            double val = ((boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, static_cast<int>(item), graph)).first)) * (vertices + 1))
                 - item_map[static_cast<int>(item) - vertices].cost;
             if (val > val_item1)
             {
@@ -209,34 +210,37 @@ void Auction<Graph, Type>::auction_algorithm(const Graph& graph, std::vector<int
 
 	vertex_idMap<Graph> V_Map = boost::get(boost::vertex_index, graph);
 
-    /*Type eps = 0;
-    Type k = 0;
-    const Type C = getMaximumEdge(graph);
+    double eps = 0.0;
+    int k = 0;
+    const double C = static_cast<double>(getMaximumEdge(graph) / 10'000);
+
+    std::cout << C;
 
     // HYPERPARAMETERS
-    const Type delta = (C / 5 + C / 2) / 2;
-    const Type theta = 7.0;
+    const double delta = (C / 5.0 + C / 2.0) / 2.0;
+    const double theta = 7.0;
     
-    eps = std::max<Type>(static_cast<Type>(1), delta / std::pow(theta, k));*/
+    eps = std::max<double>(1.0, delta / std::pow(theta, k));
 
-    double eps = static_cast<double>(1.0 / (vertices + 1));
-    //Type eps = 1;
 
-    /*while (eps >= 1)//(eps > 1.0 / vertices)
+    while (eps >= 1.0)
     {
-        reset();*/
+        reset();
 
         while (unassigned_bidder.size() > 0)
         {
-            auctionRound(graph, eps, V_Map);
+            auctionRound(graph, eps * 10'000, V_Map);
 
             n_iteration_au += 1;
         }
 
-        /*k += 1;
+        k += 1;
         eps = (delta / std::pow(theta, k));
         eps *= 0.25;
-    }*/
+    }
+
+    if(k == 2)
+        std::cout << "KKKKKKKKKKKKKKKKK: " << k << std::endl;
 
     for (auto& a : assigned_bidder) ass[a.first] = a.second.best_item;
 
