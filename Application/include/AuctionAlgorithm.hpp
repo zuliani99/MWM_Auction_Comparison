@@ -2,6 +2,7 @@
 #define _AA_H
 
 #include <vector>
+#include <float.h>
 #include <unordered_map>
 #include <boost/graph/adjacency_list.hpp>
 
@@ -21,8 +22,8 @@ class Auction
     private:
         struct Bidder {
             int best_item = -1;
-            double val_first_best_item = -1;
-            double val_second_best_item = -1;
+            double val_first_best_item = -DBL_MIN;
+            double val_second_best_item = -DBL_MIN;
         };
 
         struct Item {
@@ -33,6 +34,7 @@ class Auction
 
         int n_iteration_au = 0;
         int vertices = 0;
+		int scaling_factor = 1;
 
         std::unordered_map<int, Bidder> unassigned_bidder;
         std::unordered_map<int, Bidder> assigned_bidder;
@@ -49,8 +51,9 @@ class Auction
         Type getMaximumEdge(const Graph& graph);
         void reset();
 
-        Auction(int vertices)
+        Auction(int vertices, int scaling_factor = 1)
         {
+			this->scaling_factor = scaling_factor;
             this->vertices = vertices;
             for (int i : boost::irange(0, vertices))
             {
@@ -138,15 +141,15 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
     {
 
         int id_item1 = -1;
-        double val_item1 = -1;
-        double val_item2 = -1;
+        double val_item1 = -DBL_MIN;
+        double val_item2 = -DBL_MIN;
 
         AdjacencyIterator<Graph> ai, a_end;
         boost::tie(ai, a_end) = boost::adjacent_vertices(V_Map[bidder.first], graph);
 
         for (auto item : boost::make_iterator_range(ai, a_end))
         {
-            double val = ((boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, static_cast<int>(item), graph)).first)) * (vertices + 1))
+            double val = ((boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, static_cast<int>(item), graph)).first)) * (vertices  + 1))
                 - item_map[static_cast<int>(item) - vertices].cost;
             if (val > val_item1)
             {
@@ -169,9 +172,16 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
             {
                 item_map[bidder.second.best_item].high_bid = bid;
                 item_map[bidder.second.best_item].high_bidder = bidder.first;
-            }
+			}
+			/*else
+			{
+				std::cout << " a\n";
+			}*/
         }
-
+		/*else
+		{
+			std::cout << " b\n";
+		}*/
     }
 
     for (auto& item : item_map)
@@ -212,7 +222,7 @@ void Auction<Graph, Type>::auction_algorithm(const Graph& graph, std::vector<int
 
     double eps = 0.0;
     int k = 0;
-    const double C = static_cast<double>(getMaximumEdge(graph) / 10'000);
+    const double C = static_cast<double>(getMaximumEdge(graph) / scaling_factor);
 
     std::cout << C;
 
@@ -223,20 +233,19 @@ void Auction<Graph, Type>::auction_algorithm(const Graph& graph, std::vector<int
     eps = std::max<double>(1.0, delta / std::pow(theta, k));
 
 
-    while (eps >= 1.0)
+    while (eps > 1.0)
     {
         reset();
 
         while (unassigned_bidder.size() > 0)
         {
-            auctionRound(graph, eps * 10'000, V_Map);
+            auctionRound(graph, eps * scaling_factor, V_Map);
 
             n_iteration_au += 1;
         }
 
         k += 1;
         eps = (delta / std::pow(theta, k));
-        eps *= 0.25;
     }
 
     if(k == 2)

@@ -1,7 +1,7 @@
 #include "../include/Auction.h"
 #include "../include/BipartiteGraph.h"
 #include "../include/AuctionAlgorithm.hpp"
-
+//#include <float.h>
 
 Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, const int& verbose)
 {
@@ -9,17 +9,20 @@ Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, co
     bool solved = true;
     std::vector<int> assignments(n, -1);
 
-    Auction<Graph, Weight> auction_problem(n);
+    Auction<Graph, Weight> auction_problem(n, 10'000);
     auto t_start = now();
     auction_problem.auction_algorithm(graph, assignments);
     elapsed = now() - t_start;
 
     for (int bidder = 0; bidder < n; ++bidder)
-        if (boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, assignments[bidder] + n, graph)).first) == 0)
+	{
+		if (assignments[bidder] == -1) //|| boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, assignments[bidder] + n, graph)).first) == 0)
         {
             solved = false;
             break;
         }
+	}
+        
 
     if (!solved)
     {
