@@ -3,6 +3,7 @@
 
 #include "Graph.hpp"
 
-Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, const char* verbose);
+//std::pair<std::string, Weight>
+Weight perform_au(const Graph& graph, Duration& elapsed, int& n_iteration_au, const int& verbose);
 
 #endif

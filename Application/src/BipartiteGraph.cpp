@@ -4,7 +4,9 @@ Graph generateData(int N)
 {
     Graph g;
 
-	Distribution<Weight>dist(10'000, 500'000);
+	//Distribution<Weight>dist(1 * 10'000, 100 * 10'000); // 1 - 100
+    Distribution<Weight>dist(1, 10000);
+
     Distribution<int>dist_edge(0, 1);
 
 	for (int bidder = 0; bidder < N; ++bidder)
