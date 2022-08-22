@@ -42,7 +42,7 @@ int main(int argc, const char* argv[])
 	get_input(min, max, verbose);
 
 	stream.open("../data/results.csv", std::ios::out | std::ios::app);
-	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,Execution Time AU,Seconds AU,Total Cost AU,Iterations AU,Auction Winner,Winner Execution Time,Winner Total Cost\n";
+	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,Execution Time AU,Seconds AU,Total Cost AU,Iterations AU,Winner Execution Time,Winner Total Cost\n"; //Auction Winner
 
 	
 	for (int n = min; n <= max; ++n)
@@ -51,7 +51,7 @@ int main(int argc, const char* argv[])
 
 		Duration elapsed_mwm, elapsed_au;
 		Weight total_cost_mwm, total_cost_au;
-		std::string au_winner;
+		//std::string au_winner;
 		int n_iteration_au = 0;
 
 		Graph graph = generateData(n);
@@ -76,17 +76,18 @@ int main(int argc, const char* argv[])
 
 		//AUCTION ALGOROTHM
 		std::cout << "Execution of Auction Algorithm...";
-		auto ret = perform_au(graph, elapsed_au, n_iteration_au, verbose);
+		/*auto ret = perform_au(graph, elapsed_au, n_iteration_au, verbose);
 		au_winner = ret.first;
-		total_cost_au = ret.second;
+		total_cost_au = ret.second;*/
+		total_cost_au = perform_au(graph, elapsed_au, n_iteration_au, verbose);
 		std::cout << std::fixed
 			<< "It took: " << fmt{ elapsed_au } << ", with total cost: " << (total_cost_au) // / 10'000.0
-			<< " and " << n_iteration_au << " iterations" << "       " << au_winner << "\n\n";
+			<< " and " << n_iteration_au << " iterations" /*<< "       " << au_winner <<*/ "\n\n";
 
 
 		//Saving data in .csv file
 		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm) << "," << // / 10'000.0
-			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au) << "," << n_iteration_au << "," << au_winner << "," << // / 10'000.0
+			fmt{ elapsed_au } << "," << (elapsed_au / 1.0s) << "," << (total_cost_au) << "," << n_iteration_au << "," << //au_winner << "," << // / 10'000.0
 			((elapsed_mwm / 1.0s) == (elapsed_au / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (elapsed_au / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == total_cost_au) ? "None" : (total_cost_mwm > total_cost_au) ? "MWM" : "AU") << "\n";
 		
