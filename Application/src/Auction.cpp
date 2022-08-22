@@ -2,16 +2,36 @@
 #include "../include/BipartiteGraph.h"
 #include "../include/AuctionAlgorithm.hpp"
 
+void run_auction(const Graph& graph, const int& verbose, std::string& name, RunAuction<Auction<Graph, Weight>>& runauc)
+{
+	auto t = now();
+	if(name == "naive_auction") runauc.auction.naive_auction(graph, runauc.assignments);
+	else runauc.auction.e_scaling(graph, runauc.assignments);
+    runauc.elapsed = now() - t;
+
+    if (verbose) runauc.auction.printProprieties();
+    runauc.iterations = runauc.auction.getNIterationAu();
+    runauc.cost = runauc.auction.getTotalCost(graph);
+}
 
 //std::pair<std::string, Weight>
 std::pair<std::string, Weight> perform_au(const Graph& graph, std::vector<Weight>& c, std::vector<Duration>& el, std::vector<int>& it, Duration& elapsed, int& n_iteration_au, const int& verbose)
 {
     int n = int(boost::num_vertices(graph) / 2);
+	std::string best;
+	bool solved = true;
     
-    std::vector<std::string> name = { "naive_auction", "e_scaling_no_C", "e_scaling_with_C" };
-	std::vector<std::vector<int>> assignments(3, std::vector(n, -1));
+    //std::vector<std::string> name = { "naive_auction", "e_scaling" };
+	std::map<std::string, RunAuction<Auction<Graph, Weight>>> auction_results;
+	auction_results.insert(std::pair<std::string, RunAuction<Auction<Graph, Weight>>>("naive_auction", RunAuction{ Auction<Graph, Weight>(n), std::vector(n, -1)}));
+	auction_results.insert(std::pair<std::string, RunAuction<Auction<Graph, Weight>>>("e_scaling", RunAuction{ Auction<Graph, Weight>(n), std::vector(n, -1)}));
+
+
+	for(auto& run : auction_results)
+		run_auction(graph, verbose, run.first, run.second);
+
     
-    Auction<Graph, Weight> auction1(n);
+    /*Auction<Graph, Weight> auction1(n);
     auto t = now();
     auction1.naive_auction(graph, assignments[0]);
     el[0] = now() - t;
@@ -25,23 +45,58 @@ std::pair<std::string, Weight> perform_au(const Graph& graph, std::vector<Weight
     el[1] = now() - t;
     if (verbose) auction2.printProprieties();
     it[1] = auction2.getNIterationAu();
-    c[1] = auction2.getTotalCost(graph);
+    c[1] = auction2.getTotalCost(graph);*/
 
-    Auction<Graph, Weight> auction3(n);
-    t = now();
-    auction3.e_scaling_with_C(graph, assignments[2]);
-    el[2] = now() - t;
-    if (verbose) auction3.printProprieties();
-    it[2] = auction3.getNIterationAu();
-    c[2] = auction3.getTotalCost(graph);
 
-    auto max = std::max_element(c.begin(), c.end()) - c.begin();
+    /*auto max = std::max_element(c.begin(), c.end()) - c.begin();
     
     elapsed = el[max];
     n_iteration_au = it[max];
-    return std::pair<std::string, Weight>(name[max], c[max]);
+    return std::pair<std::string, Weight>(name[max], c[max]);*/
 
+	if(auction_results["naive_auction"].cost > auction_results["e_scaling"].cost) best = "naive_auction";
+	else best = "e_scaling";
 
+	if (std::find(auction_results[best].assignments.begin(), auction_results[best].assignments.end(), -1) != auction_results[best].assignments.end()) solved = false;
+
+	if (!solved)
+    {
+        std::cout << " Finished \nNo matching found\n";
+        if (verbose) auction_results[best].auction.printProprieties();
+        n_iteration_au = -1;
+		elapsed = auction_results[best].elapsed;
+        return std::make_pair<std::string, Weight>("none", static_cast<Weight>(-1));
+    }
+    else
+    {
+        /* (FROM vertex, TO vertex, Verex WEIGHT )*/
+        std::cout << " Finished \nThe matching is: ";
+
+        for (int bidder = 0; bidder < n; ++bidder)
+            std::cout << "(" << bidder << "," << auction_results[best].assignments[bidder] << "," << (boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, auction_results[best].assignments[bidder] + n, graph)).first))  << ")"; //* 10'000.0 
+        std::cout << "\n";
+
+        if (verbose) auction_results[best].auction.printProprieties();
+        n_iteration_au = auction_results[best].auction.getNIterationAu();
+        
+        std::cout << auction_results["naive_auction"].auction.getTotalCost(graph) << "     " << auction_results["e_scaling"].auction.getTotalCost(graph) << "\n";
+
+        /*if (auction_problem_1.getTotalCost(graph) > auction_problem_2.getTotalCost(graph))
+        {
+            n_iteration_au = auction_problem_1.getNIterationAu();
+            return std::make_pair<std::string, Weight>("epsilon_scaling", auction_problem_1.getTotalCost(graph));
+        }
+            
+        else
+        {
+            n_iteration_au = auction_problem_2.getNIterationAu();
+            return std::make_pair<std::string, Weight>("standard_auction", auction_problem_2.getTotalCost(graph));
+        }*/
+
+		return auction_results[best].auction.getTotalCost(graph);
+		return std::make_pair<std::string, Weight>(best, auction_results[best].auction.getTotalCost(graph));
+        
+    }
 
     //std::vector<int> assignments_1(n, -1);
     //std::vector<int> assignments_2(n, -1);

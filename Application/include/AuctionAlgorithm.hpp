@@ -45,8 +45,8 @@ class Auction
         
     public:
 		void naive_auction(const Graph& graph, std::vector<int>& ass);
-        void e_scaling_no_C(const Graph& graph, std::vector<int>& ass);
-        void e_scaling_with_C(const Graph& graph, std::vector<int>& ass);
+        void e_scaling(const Graph& graph, std::vector<int>& ass);
+        //void e_scaling_with_C(const Graph& graph, std::vector<int>& ass);
         int getNIterationAu();
         Type getTotalCost(const Graph& graph);
         void printProprieties();
@@ -236,7 +236,7 @@ void Auction<Graph, Type>::naive_auction(const Graph& graph, std::vector<int>& a
 }
 
 
-template<typename Graph, typename Type>
+/*template<typename Graph, typename Type>
 void Auction<Graph, Type>::e_scaling_with_C(const Graph& graph, std::vector<int>& ass)
 {
     if (!is_assignment_problem(graph)) throw("Not an assignment problem");
@@ -260,7 +260,7 @@ void Auction<Graph, Type>::e_scaling_with_C(const Graph& graph, std::vector<int>
 
 		while (unassigned_bidder.size() > 0)
 		{
-			auctionRound(graph, eps, V_Map); /* * scaling_factor*/
+			auctionRound(graph, eps, V_Map);
 
 			n_iteration_au += 1;
 		}
@@ -269,16 +269,16 @@ void Auction<Graph, Type>::e_scaling_with_C(const Graph& graph, std::vector<int>
 		eps = (delta / std::pow(theta, k)); 
 	}
 
-	//if(k > 1) std::cout << " KKKKKKKKKKKKKKKKKKKKKKKK" << k << "\n";
+	if(k > 1) std::cout << " KKKKKKKKKKKKKKKKKKKKKKKK" << k << "\n";
 
     for (auto& a : assigned_bidder) ass[a.first] = a.second.best_item;
 
-}
+}*/
 
 
 
 template<typename Graph, typename Type>
-void Auction<Graph, Type>::e_scaling_no_C(const Graph& graph, std::vector<int>& ass)
+void Auction<Graph, Type>::e_scaling(const Graph& graph, std::vector<int>& ass)
 {
     if (!is_assignment_problem(graph)) throw("Not an assignment problem");
     int k = 0;
@@ -286,7 +286,7 @@ void Auction<Graph, Type>::e_scaling_no_C(const Graph& graph, std::vector<int>& 
 
     double eps = 1.0;
 
-    while (eps > 1.0 / vertices)
+    while (eps >= 1.0 / vertices)
     {
         reset();
 
@@ -297,7 +297,7 @@ void Auction<Graph, Type>::e_scaling_no_C(const Graph& graph, std::vector<int>& 
             n_iteration_au += 1;
         }
 
-        eps = eps * .25;
+        eps = eps * .1;
         k += 1;
     }
 
