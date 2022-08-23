@@ -45,7 +45,7 @@ int main(int argc, const char* argv[])
 
 	stream.open("../data/results.csv", std::ios::out | std::ios::app);
 	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,"
-		"Execution Time AU,Seconds nAU,Total Cost AU,Iterations nAU,"
+		"Execution Time nAU,Seconds nAU,Total Cost nAU,Iterations nAU,"
 		"Execution Time eAU,Seconds eAU,Total Cost eAU,Iterations eAU,"
 		"Auction Winner, Winner Execution Time, Winner Total Cost\n";
 
@@ -96,8 +96,8 @@ int main(int argc, const char* argv[])
 		//Saving data in .csv file
 		stream << n << "," << fmt{ elapsed_mwm } << "," << (elapsed_mwm / 1.0s) << "," << (total_cost_mwm) << "," << // / 10'000.0
 			fmt{ auction_results.at("naive_auction").elapsed} << "," << (auction_results.at("naive_auction").elapsed / 1.0s) << "," << (auction_results.at("naive_auction").cost) << "," << auction_results.at("naive_auction").iterations << "," <<
-			fmt{ auction_results.at("e_scaling").elapsed } << "," << (auction_results.at("e_scaling").elapsed / 1.0s) << "," << (auction_results.at("e_scaling").cost) << "," << auction_results.at("e_scaling").iterations << "," <<
-			fmt{ auction_results.at(best_auction).elapsed } << "," << (auction_results.at(best_auction).elapsed / 1.0s) << "," << (auction_results.at(best_auction).cost) << "," << auction_results.at(best_auction).iterations << "," << best_auction << "," << // / 10'000.0
+			fmt{ auction_results.at("e_scaling").elapsed } << "," << (auction_results.at("e_scaling").elapsed / 1.0s) << "," << (auction_results.at("e_scaling").cost) << "," << auction_results.at("e_scaling").iterations << "," << best_auction << "," <<
+			//fmt{ auction_results.at(best_auction).elapsed } << "," << (auction_results.at(best_auction).elapsed / 1.0s) << "," << (auction_results.at(best_auction).cost) << "," << auction_results.at(best_auction).iterations << "," << best_auction << "," << // / 10'000.0
 			((elapsed_mwm / 1.0s) == (auction_results.at(best_auction).elapsed / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (auction_results.at(best_auction).elapsed / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == auction_results.at(best_auction).cost) ? "None" : (total_cost_mwm > auction_results.at(best_auction).cost) ? "MWM" : "AU") << "\n";
 		

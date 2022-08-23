@@ -11,7 +11,7 @@ void run_auction(const Graph& graph, const int& verbose, const std::string& name
 	else runauc.auction.e_scaling(graph, runauc.assignments);
     runauc.elapsed = now() - t;
 
-    if (verbose) runauc.auction.printProprieties();
+    //if (verbose) runauc.auction.printProprieties();
     runauc.iterations = runauc.auction.getNIterationAu();
     runauc.cost = runauc.auction.getTotalCost(graph);
 }
@@ -28,7 +28,14 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
         if (run.first != "none") { run_auction(graph, verbose, run.first, run.second); }
 
 
-    if (auction_results.at("naive_auction").cost < auction_results.at("e_scaling").cost) { best = "e_scaling"; }
+    if (auction_results.at("naive_auction").cost < auction_results.at("e_scaling").cost) 
+	{ best = "e_scaling"; }
+	else if (auction_results.at("naive_auction").cost == auction_results.at("e_scaling").cost)
+	{
+		if(auction_results.at("naive_auction").elapsed > auction_results.at("e_scaling").elapsed)
+		{ best = "e_scaling"; }
+	}
+	
 
     if (std::find(auction_results.at(best).assignments.begin(), auction_results.at(best).assignments.end(), -1) != auction_results.at(best).assignments.end()) { solved = false; }
 
