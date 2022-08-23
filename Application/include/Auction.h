@@ -2,18 +2,10 @@
 #define _Auction_H
 
 #include "Graph.hpp"
+#include "RunAuction.h"
 
-template <typename Auc>
-struct RunAuction
-{
-    Auc auction;
-    std::vector<int> assignments;
-    Weight cost = 0;
-    int iterations = 0;
-    Duration elapsed;
-};
 
-//std::pair<std::string, Weight>
-std::pair<std::string, Weight> perform_au(const Graph& graph, std::vector<Weight>& c, std::vector<Duration>& el, std::vector<int>& it, Duration& elapsed, int& n_iteration_au, const int& verbose);
+std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& auction_results, const int& verbose);
+void run_auction(const Graph& graph, const int& verbose, const std::string& name, RunAuction& runauc);
 
 #endif

@@ -53,6 +53,8 @@ class Auction
         Type getMaximumEdge(const Graph& graph);
         void reset();
 
+        Auction() { }
+
         Auction(int vertices, int scaling_factor = 1)
         {
 			this->scaling_factor = scaling_factor;
