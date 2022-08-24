@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <numeric>
 
+// Function to check if the results.csv file exists if so clear it
 inline void check_empty_file()
 {
 	std::ifstream file;
@@ -16,6 +17,8 @@ inline void check_empty_file()
 	}
 }
 
+
+// Function that obtain the inputs user
 void get_input(int& min, int& max, int& verbose, int& fully_connected)
 {
 	std::cout << "-------- MAXIMUM WEIGHTED MATCHING - AUCTION ALGORITHM BECHMARK --------\n\n";
@@ -28,7 +31,7 @@ void get_input(int& min, int& max, int& verbose, int& fully_connected)
 	std::cout << "Please specify the ending number of vertices per part: ";
 	std::cin >> max;
 
-	if (min > max || (verbose != 0 && verbose != 1) || (fully_connected != 0 && fully_connected != 1))
+	if (min < 0 || max < 0 || min > max || (verbose != 0 && verbose != 1) || (fully_connected != 0 && fully_connected != 1))
 		throw std::invalid_argument("Please insert correct input");
 
 }

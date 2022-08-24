@@ -1,5 +1,7 @@
 #include "../include/BipartiteGraph.h"
 
+
+// Function to generate a random bipartite graph, complete or non in depends on the user input
 Graph generateData(int N, const int& fully_connected)
 {
 	Graph g;
@@ -12,13 +14,13 @@ Graph generateData(int N, const int& fully_connected)
 	for(int i = 0; i < N; ++i)
 		free_items.push_back(i);
 
-	if (fully_connected)
+	if (fully_connected) // Random complete bipartite graph
 	{
 		for (int bidder = 0; bidder < N; ++bidder)
 			for (int item = 0; item < N; ++item)
 				add_edge(bidder, N + item, dist(prng), g);
 	}
-	else
+	else // Random non complete bipartite graph
 	{
 		for (int bidder = 0; bidder < N; ++bidder)
 		{
@@ -31,13 +33,14 @@ Graph generateData(int N, const int& fully_connected)
 			for (int item = 0; item < N; ++item)
 				if (map_first_conenction[bidder] != item)
 					if (dist_edge(prng)) add_edge(bidder, N + item, dist(prng), g);
-					//else add_edge(bidder, N + item, static_cast<Weight>(0), g);
 		}
 	}
 
 	return g;
 }
 
+
+// Fucntion to print the graph proprieties
 void printGraph(Graph& g)
 {
     boost::dynamic_properties dp;

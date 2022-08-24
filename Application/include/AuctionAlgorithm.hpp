@@ -16,6 +16,8 @@ using vertex_idMap = boost::property_map<T,boost::vertex_index_t>::type;
 template<typename T>
 using edge_iterator = boost::graph_traits<T>::edge_iterator;
 
+
+// Class used to store all the useful information to solve the Assignment Problem
 template<typename Graph, typename Type>
 class Auction
 {
@@ -36,21 +38,19 @@ class Auction
         int vertices = 0;
 		int scaling_factor = 1;
 
-        std::unordered_map<int, Bidder> unassigned_bidder;
-        std::unordered_map<int, Bidder> assigned_bidder;
-        std::unordered_map<int, Item> item_map;
+        std::unordered_map<int, Bidder> unassigned_bidder; // Unordered map that will store all the unassigned bidders
+        std::unordered_map<int, Bidder> assigned_bidder; // Unordered map that will store all the assigned bidders
+        std::unordered_map<int, Item> item_map; // Unordered map that will store all the items
         
         bool is_assignment_problem(const Graph& graph);
         void auctionRound(const Graph& graph, const double& eps, const vertex_idMap<Graph>& V_Map, bool& err);
         
     public:
-		void naive_auction(const Graph& graph, std::vector<int>& ass);
-        void e_scaling(const Graph& graph, std::vector<int>& ass, const double& scaling_factor);
-        //void e_scaling_with_C(const Graph& graph, std::vector<int>& ass);
-        int getNIterationAu();
+		void original_auction(const Graph& graph, std::vector<int>& ass);
+        void e_scaling_auction(const Graph& graph, std::vector<int>& ass, const double& scaling_factor);
         Type getTotalCost(const Graph& graph);
+        int getNIterationAu();
         void printProprieties();
-        Type getMaximumEdge(const Graph& graph);
         void reset();
 
         Auction() { }
@@ -67,10 +67,13 @@ class Auction
         }
 };
 
+
+// Function that return the number of iterations 
 template<typename Graph, typename Type>
 inline int Auction<Graph, Type>::getNIterationAu() { return n_iteration_au; }
 
 
+// Function to reset all the data structure except the cost attribute of all items
 template<typename Graph, typename Type>
 inline void Auction<Graph, Type>::reset()
 {
@@ -85,21 +88,7 @@ inline void Auction<Graph, Type>::reset()
 }
 
 
-template<typename Graph, typename Type>
-inline Type Auction<Graph, Type>::getMaximumEdge(const Graph& graph)
-
-{
-    Type max = 0;
-
-    std::pair<edge_iterator<Graph>, edge_iterator<Graph>> ei = boost::edges(graph);
-    for (edge_iterator<Graph> edge_iter = ei.first; edge_iter != ei.second; ++edge_iter)
-        if (boost::get(boost::edge_weight_t(), graph, *edge_iter) > max)
-            max = boost::get(boost::edge_weight_t(), graph, *edge_iter);
-        
-    return max;
-}
-
-
+// Function taht return the weighted sum of the Assignment Problem solution
 template<typename Graph, typename Type>
 inline Type Auction<Graph, Type>::getTotalCost(const Graph& graph)
 {
@@ -110,6 +99,7 @@ inline Type Auction<Graph, Type>::getTotalCost(const Graph& graph)
 }
 
 
+// Function to check if the given graph satisfy the proprieties of an Assignment Problem
 template<typename Graph, typename Type>
 bool Auction<Graph, Type>::is_assignment_problem(const Graph& graph)
 {
@@ -128,6 +118,7 @@ bool Auction<Graph, Type>::is_assignment_problem(const Graph& graph)
 }
 
 
+// Function that print the proprieties of both items and bidders
 template<typename Graph, typename Type>
 inline void Auction<Graph, Type>::printProprieties()
 {
@@ -138,12 +129,17 @@ inline void Auction<Graph, Type>::printProprieties()
 }
 
 
+// Function that execute a single execution cicle of th Auction Algorithm
 template<typename Graph, typename Type>
 void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, const vertex_idMap<Graph>& V_Map, bool& err)
 {
+
+    // BIDDING PHASE
+
     for (auto& bidder : unassigned_bidder)
     {
 
+        // Temporal variables
         int id_item1 = -1;
         double val_item1 = static_cast<double>(std::numeric_limits<Weight>::min());
         double val_item2 = static_cast<double>(std::numeric_limits<Weight>::min());
@@ -151,8 +147,10 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
         AdjacencyIterator<Graph> ai, a_end;
         boost::tie(ai, a_end) = boost::adjacent_vertices(V_Map[bidder.first], graph);
 
+        // For each adjacent vertices
         for (auto item : boost::make_iterator_range(ai, a_end))
         {
+            // Calculate the difference between the edge weghts and the item costs
             double val = ((boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder.first, static_cast<int>(item), graph)).first)))
                 - item_map[static_cast<int>(item) - vertices].cost;
             if (val > val_item1)
@@ -164,14 +162,17 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
             else if (val > val_item2) val_item2 = val;
         }
 
+        // Update the variables
         bidder.second.best_item = id_item1;
         bidder.second.val_second_best_item = val_item2;
         bidder.second.val_first_best_item = val_item1;
 
+        // Compute the actual bid
         double bid = bidder.second.val_first_best_item - bidder.second.val_second_best_item + eps;
 
         if (item_map.find(bidder.second.best_item) != item_map.end())
         {
+            // Update the item attribute in case the bid is higher than the actual bid
             if (bid > item_map[bidder.second.best_item].high_bid)
             {
                 item_map[bidder.second.best_item].high_bid = bid;
@@ -180,19 +181,27 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
         }
 		else
 		{
+            // Exit the execution since the bidder has not found any item that sute him
             err = true;
             break;
 		}
     }
+
+
     if (!err)
     {
+
+        // ASSIGNMENT PHASE
+
         for (auto& item : item_map)
         {
+            // If the item has not obtained any bid go to the next one
             if (item.second.high_bid == -1) continue;
 
-            item.second.cost += item.second.high_bid;
+            item.second.cost += item.second.high_bid; // Update the item's cost 
             int id_to_remove = -1;
 
+            // Check if any other assigned bidder has that item 
             for (auto& ass_bidr : assigned_bidder)
             {
                 if (ass_bidr.second.best_item == item.first)
@@ -202,12 +211,14 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
                 }
             }
 
+            // In case remove it and reinsert it in the unassigned bidder map
             if (id_to_remove != -1)
             {
                 unassigned_bidder.insert(std::make_pair(id_to_remove, assigned_bidder[id_to_remove]));
                 assigned_bidder.erase(id_to_remove);
             }
 
+            // Assign the examined item to its best bidder
             assigned_bidder.insert(std::make_pair(item.second.high_bidder, unassigned_bidder[item.second.high_bidder]));
             unassigned_bidder.erase(item.second.high_bidder);
 
@@ -217,11 +228,9 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
 }
 
 
-
-
-
+// Function for the original Auction Algorithm
 template<typename Graph, typename Type>
-void Auction<Graph, Type>::naive_auction(const Graph& graph, std::vector<int>& ass)
+void Auction<Graph, Type>::original_auction(const Graph& graph, std::vector<int>& ass)
 {
     if (!is_assignment_problem(graph)) throw("Not an assignment problem");
 
@@ -232,7 +241,7 @@ void Auction<Graph, Type>::naive_auction(const Graph& graph, std::vector<int>& a
 
     while (unassigned_bidder.size() > 0 && !err)
     {
-        auctionRound(graph, eps, V_Map, err); /* * scaling_factor*/
+        auctionRound(graph, eps, V_Map, err);
 
         n_iteration_au += 1;
     }
@@ -245,8 +254,9 @@ void Auction<Graph, Type>::naive_auction(const Graph& graph, std::vector<int>& a
 }
 
 
+// Function for the e-scaling variation of the Auction Algorithm
 template<typename Graph, typename Type>
-void Auction<Graph, Type>::e_scaling(const Graph& graph, std::vector<int>& ass, const double& scaling_factor)
+void Auction<Graph, Type>::e_scaling_auction(const Graph& graph, std::vector<int>& ass, const double& scaling_factor)
 {
     if (!is_assignment_problem(graph)) throw("Not an assignment problem");
     int k = 0;
@@ -261,7 +271,7 @@ void Auction<Graph, Type>::e_scaling(const Graph& graph, std::vector<int>& ass, 
 
         while (unassigned_bidder.size() > 0 && !err)
         {
-            auctionRound(graph, eps, V_Map, err); // * scaling_factor
+            auctionRound(graph, eps, V_Map, err);
 
             n_iteration_au += 1;
         }

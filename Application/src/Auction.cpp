@@ -3,20 +3,20 @@
 #include "../include/RunAuction.h"
 
 
-
+// Fucntion that manage the execution of a particular Auction Algorithm
 void run_auction(const Graph& graph, const int& verbose, const std::string& name, RunAuction& runauc)
 {
 	
     auto t = now();
-    if (name == "naive_auction")
+    if (name == "original_auction")
     {
         std::cout << "Running " << name << "... ";
-        runauc.auction.naive_auction(graph, runauc.assignments);
+        runauc.auction.original_auction(graph, runauc.assignments);
     }  
     else
     {
         std::cout << "Running " << name << " with epsilon: " << runauc.scaling_factor << "... ";
-        runauc.auction.e_scaling(graph, runauc.assignments, runauc.scaling_factor);
+        runauc.auction.e_scaling_auction(graph, runauc.assignments, runauc.scaling_factor);
     }
     
     runauc.elapsed = now() - t;
@@ -42,14 +42,15 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
 {
 
     int n = int(boost::num_vertices(graph) / 2);
-    std::tuple<std::string, Weight, Duration> best ("none", 0, static_cast<Duration>(0));
-    bool solved = true;
+    std::tuple<std::string, Weight, Duration> best ("none", 0, static_cast<Duration>(0)); // Temporal variable to store the best algorithm attributes
 
-    for (auto& run : auction_results)
+    
+    for (auto& run : auction_results) // For every elelmtn in the map
     {
         if (run.first != "none") {
-            run_auction(graph, verbose, run.first, run.second);
+            run_auction(graph, verbose, run.first, run.second); // RUn the specific Auction Algorithm
 
+            // If the performance was better than the previous one update the tuple
             if ((run.second.cost > std::get<1>(best)) || (run.second.cost == std::get<1>(best) && run.second.elapsed < std::get<2>(best)))
             {
                 std::get<0>(best) = run.first;
@@ -59,11 +60,9 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
         }
     }
     
-    std::string best_method_name = std::get<0>(best);
+    std::string best_method_name = std::get<0>(best); // Get the name of the best Auction Algorithm
 	
-    if (std::find(auction_results.at(best_method_name).assignments.begin(), auction_results.at(best_method_name).assignments.end(), -1) != auction_results.at(best_method_name).assignments.end()) { solved = false; }
-
-    if (!solved)
+    if (auction_results.at(best_method_name).cost == static_cast<Weight>(-1)) // If the best algorithm could not solve the assignment problem update the 'none' elemnt of the map
     {
         std::cout << "No matching found\n";
         if (verbose) auction_results.at(best_method_name).auction.printProprieties();
@@ -74,20 +73,18 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
     }
     else
     {
-        /* (FROM vertex, TO vertex, Verex WEIGHT )*/
+        // In case the best algorithm solve the Assignment Problem
+
         std::cout << "The matching is: ";
 
+        // Print the Bidder - Item matchs with the edge weight, in the following form: (FROM vertex, TO vertex, Verex WEIGHT)
         for (int bidder = 0; bidder < n; ++bidder)
             std::cout << "(" << bidder << "," << auction_results.at(best_method_name).assignments[bidder] << "," <<
-				(boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, auction_results.at(best_method_name).assignments[bidder] + n, graph)).first)) << ")"; //* 10'000.0 
+				(boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, auction_results.at(best_method_name).assignments[bidder] + n, graph)).first)) << ")";
         std::cout << "\n";
 
         if (verbose) auction_results.at(best_method_name).auction.printProprieties();
 
-        //std::cout << "naive_auction:" << auction_results.at("naive_auction").auction.getTotalCost(graph) << "\te_scaling: " << auction_results.at("e_scaling").auction.getTotalCost(graph) << "\n";
-
-
-        return best_method_name;
-
+        return best_method_name; // Return the name of the best Auction Algorithm
     }
 }

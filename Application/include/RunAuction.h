@@ -3,6 +3,7 @@
 
 #include "AuctionAlgorithm.hpp"
 
+// Class used to store the a run of a Auction Algorithm (Original or e-Scaling)
 class RunAuction
 {
 public:
@@ -19,4 +20,5 @@ public:
 		this->scaling_factor = (1.0 / scaling_factor); 
     }
 };
+
 #endif
