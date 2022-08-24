@@ -180,8 +180,6 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
         }
 		else
 		{
-			std::cout << "LOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP\n";
-			//throw("loop");
             err = true;
             break;
 		}
@@ -242,7 +240,7 @@ void Auction<Graph, Type>::naive_auction(const Graph& graph, std::vector<int>& a
     if(!err)
         for (auto& a : assigned_bidder) ass[a.first] = a.second.best_item;
     else
-        for (auto& a : ass) ass[a] = -1;
+        for (int i = 0; i < ass.size(); ++i) ass[i] = -1;
 
 }
 
@@ -272,13 +270,10 @@ void Auction<Graph, Type>::e_scaling(const Graph& graph, std::vector<int>& ass, 
         k += 1;
     }
 
-    //if (k > 1)
-        //std::cout << " okokokokokokokokokokokokokokokokokokokokokokokokokokokokokokokokokokokokok " << k << "\n";
-
-    if(!err)
+    if (!err)
         for (auto& a : assigned_bidder) ass[a.first] = a.second.best_item;
     else
-        for (auto& a : ass) ass[a] = -1;
+        for (int i = 0; i < ass.size(); ++i) ass[i] = -1;
 
 }
 #endif

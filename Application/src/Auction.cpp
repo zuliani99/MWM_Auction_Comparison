@@ -20,10 +20,21 @@ void run_auction(const Graph& graph, const int& verbose, const std::string& name
     }
     
     runauc.elapsed = now() - t;
-	std::cout << "Finished\n";
+	
 
-    runauc.iterations = runauc.auction.getNIterationAu();
-    runauc.cost = runauc.auction.getTotalCost(graph);
+    if (std::find(runauc.assignments.begin(), runauc.assignments.end(), -1) == runauc.assignments.end())
+    {
+        runauc.iterations = runauc.auction.getNIterationAu();
+        runauc.cost = runauc.auction.getTotalCost(graph);
+        std::cout << "Finished\n";
+    }
+    else
+    {
+        runauc.iterations = -1;
+        runauc.cost = static_cast<Weight>(-1);
+        std::cout << "Error\n";
+    }
+    
 }
 
 
