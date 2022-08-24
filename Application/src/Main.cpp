@@ -21,7 +21,7 @@ void get_input(int& min, int& max, int& verbose, int& fully_connected)
 	std::cout << "-------- MAXIMUM WEIGHTED MATCHING - AUCTION ALGORITHM BECHMARK --------\n\n";
 	std::cout << "Do you want to active VERBOSE mode? (1/0) ";
 	std::cin >> verbose;
-	std::cout << "On what type of bipartite gaph would you like to work with, compelte (1) or non complete (0): ";
+	std::cout << "On what type of bipartite graph would you like to work with, compelte (1) or non complete (0): ";
 	std::cin >> fully_connected;
 	std::cout << "Please specify the starting number of vertices per part: ";
 	std::cin >> min;
@@ -85,7 +85,7 @@ int main(int argc, const char* argv[])
 
 
 		//AUCTION ALGOROTHM
-		std::cout << "Execution of Auction Algorithm...";
+		std::cout << "Execution of Auction Algorithms...\n";
 		std::string best_auction = perform_au(graph, auction_results, verbose);
 		//total_cost_au = perform_au(graph, elapsed_au, n_iteration_au, verbose);
 		std::cout << std::fixed

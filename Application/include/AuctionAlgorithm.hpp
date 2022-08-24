@@ -178,10 +178,11 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
                 item_map[bidder.second.best_item].high_bidder = bidder.first;
 			}
         }
-		//else
-		//{
-			//std::cout << " loop\n";
-		//}
+		else
+		{
+			std::cout << " loop\n";
+			throw("loop");
+		}
     }
 
     for (auto& item : item_map)
@@ -288,7 +289,7 @@ void Auction<Graph, Type>::e_scaling(const Graph& graph, std::vector<int>& ass)
 
     double eps = 1.0;
 
-    while (eps >= 1.0 / vertices)
+    while (eps > 1.0 / vertices)
     {
         reset();
 

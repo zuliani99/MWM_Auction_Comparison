@@ -6,10 +6,12 @@
 
 void run_auction(const Graph& graph, const int& verbose, const std::string& name, RunAuction& runauc)
 {
+	std::cout << "Running " << name << "... ";
 	auto t = now();
 	if(name == "naive_auction") runauc.auction.naive_auction(graph, runauc.assignments);
 	else runauc.auction.e_scaling(graph, runauc.assignments);
     runauc.elapsed = now() - t;
+	std::cout << "Finished\n";
 
     //if (verbose) runauc.auction.printProprieties();
     runauc.iterations = runauc.auction.getNIterationAu();
@@ -23,6 +25,8 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
     int n = int(boost::num_vertices(graph) / 2);
     std::string best = "naive_auction";
     bool solved = true;
+
+	std::cout << "\n";
 
     for (auto& run : auction_results)
         if (run.first != "none") { run_auction(graph, verbose, run.first, run.second); }
@@ -41,7 +45,7 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
 
     if (!solved)
     {
-        std::cout << " Finished \nNo matching found\n";
+        std::cout << "No matching found\n";
         if (verbose) auction_results.at(best).auction.printProprieties();
         auction_results.at("none").iterations = -1;
         auction_results.at("none").elapsed = static_cast<Duration>(-1);
@@ -52,10 +56,11 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
     else
     {
         /* (FROM vertex, TO vertex, Verex WEIGHT )*/
-        std::cout << " Finished \nThe matching is: ";
+        std::cout << "The matching is: ";
 
         for (int bidder = 0; bidder < n; ++bidder)
-            std::cout << "(" << bidder << "," << auction_results.at(best).assignments[bidder] << "," << (boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, auction_results.at(best).assignments[bidder] + n, graph)).first)) << ")"; //* 10'000.0 
+            std::cout << "(" << bidder << "," << auction_results.at(best).assignments[bidder] << "," << 
+				(boost::get(boost::edge_weight_t(), graph, (boost::edge(bidder, auction_results.at(best).assignments[bidder] + n, graph)).first)) << ")"; //* 10'000.0 
         std::cout << "\n";
 
         if (verbose) auction_results.at(best).auction.printProprieties();
