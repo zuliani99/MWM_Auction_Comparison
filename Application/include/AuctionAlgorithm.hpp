@@ -45,7 +45,7 @@ class Auction
         
     public:
 		void naive_auction(const Graph& graph, std::vector<int>& ass);
-        void e_scaling(const Graph& graph, std::vector<int>& ass);
+        void e_scaling(const Graph& graph, std::vector<int>& ass, const double& scaling_factor);
         //void e_scaling_with_C(const Graph& graph, std::vector<int>& ass);
         int getNIterationAu();
         Type getTotalCost(const Graph& graph);
@@ -239,49 +239,8 @@ void Auction<Graph, Type>::naive_auction(const Graph& graph, std::vector<int>& a
 }
 
 
-/*template<typename Graph, typename Type>
-void Auction<Graph, Type>::e_scaling_with_C(const Graph& graph, std::vector<int>& ass)
-{
-    if (!is_assignment_problem(graph)) throw("Not an assignment problem");
-
-    vertex_idMap<Graph> V_Map = boost::get(boost::vertex_index, graph);
-
-    //double eps = 1.0 / (vertices + 1);
-
-	int k = 0;
-	double eps = 0.0;
-	const double C = static_cast<double>(getMaximumEdge(graph));
-
-	const double delta = (C / 5.0 + C / 2.0) / 2.0;
-	const double theta = 7.0;
-
-	eps = std::max(1.0, delta / std::pow(theta, k));
-
-	while(eps > 1.0)
-	{
-		reset();
-
-		while (unassigned_bidder.size() > 0)
-		{
-			auctionRound(graph, eps, V_Map);
-
-			n_iteration_au += 1;
-		}
-
-		k += 1;
-		eps = (delta / std::pow(theta, k)); 
-	}
-
-	if(k > 1) std::cout << " KKKKKKKKKKKKKKKKKKKKKKKK" << k << "\n";
-
-    for (auto& a : assigned_bidder) ass[a.first] = a.second.best_item;
-
-}*/
-
-
-
 template<typename Graph, typename Type>
-void Auction<Graph, Type>::e_scaling(const Graph& graph, std::vector<int>& ass)
+void Auction<Graph, Type>::e_scaling(const Graph& graph, std::vector<int>& ass, const double& scaling_factor)
 {
     if (!is_assignment_problem(graph)) throw("Not an assignment problem");
     int k = 0;
@@ -300,7 +259,7 @@ void Auction<Graph, Type>::e_scaling(const Graph& graph, std::vector<int>& ass)
             n_iteration_au += 1;
         }
 
-        eps = eps * .1;
+        eps = eps * scaling_factor;
         k += 1;
     }
 
