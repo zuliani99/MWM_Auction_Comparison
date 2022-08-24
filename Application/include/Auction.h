@@ -3,6 +3,7 @@
 
 #include "Graph.hpp"
 #include "RunAuction.h"
+#include <tuple>
 
 
 std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& auction_results, const int& verbose);

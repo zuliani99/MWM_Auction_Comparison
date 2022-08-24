@@ -12,7 +12,7 @@ public:
     int iterations = 0;
 	double scaling_factor;
     Duration elapsed;
-    RunAuction(int n, int scaling_factor = 0)
+    RunAuction(int n, int scaling_factor = 1)
     {
         this->auction = Auction<Graph, Weight>(n);
         this->assignments = std::vector<int>(n, -1);

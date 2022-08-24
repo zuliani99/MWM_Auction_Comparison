@@ -37,7 +37,7 @@ int main(int argc, const char* argv[])
 		std::map<std::string, RunAuction> auction_results;
 		auction_results.insert(std::pair<std::string, RunAuction>("naive_auction", RunAuction(n)));
 		for (int& ep : epsilon)
-			auction_results.insert(std::pair<std::string, RunAuction>("e_scaling" + ep, RunAuction(n, ep)));
+			auction_results.insert(std::pair<std::string, RunAuction>("e_scaling_" + std::to_string(ep), RunAuction(n, ep)));
 		auction_results.insert(std::pair<std::string, RunAuction>("none", RunAuction(0)));
 
 		Graph graph = generateData(n, fully_connected);
