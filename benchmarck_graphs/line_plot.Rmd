@@ -13,19 +13,25 @@ library(ggplot2)
 
 Loading .csv
 ```{r}
-res <- read.csv("./results.csv")
+res_complete <- read.csv("./results_complete.csv")
+res_non_complete <- read.csv("./results_non_complete.csv")
 ```
 
 
 # Data Manipulation
 ```{r}
-res_2_50 <- res[0:49,]
-res_51_300 <- res[50:299,]
-res_301_1000 <- res[300:999,]
+res_C_2_50 <- res_complete[0:49,]
+res_C_51_300 <- res_complete[50:299,]
+res_C_301_1000 <- res_complete[300:999,]
+
+res_NC_2_50 <- res_non_complete[0:49,]
+res_NC_51_300 <- res_non_complete[50:299,]
+res_NC_301_1000 <- res_non_complete[300:999,]
 ```
 
 
-# Lineplots for graphs between 2 and 50 vertices per part
+# Lineplots for Complete Bipartite Graphs
+## From 2 up to 50 vertices per part
 ```{r}
 df <- res_2_50
 title_vertices <- " for 2 - 50 vertices"
@@ -68,7 +74,7 @@ ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
 ```
 
 
-# Lineplots for graphs between 51 and 300 vertices per part
+## From 51 up to 300 vertices per part
 ```{r}
 df <- res_51_300
 title_vertices <- " for 51 - 300 vertices"
@@ -110,7 +116,7 @@ ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
-# Lineplots for graphs between 301 and 1000 vertices per part
+## From 301 up to 1000 vertices per part
 ```{r}
 df <- res_301_1000
 title_vertices <- " for 301 - 1000 vertices"
@@ -153,3 +159,12 @@ ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
 ```
 
 
+
+
+
+
+
+# Lineplots for Non Complete Bipartite Graphs
+## From 2 up to 50 vertices per part
+## From 51 up to 300 vertices per part
+## From 301 up to 1000 vertices per part

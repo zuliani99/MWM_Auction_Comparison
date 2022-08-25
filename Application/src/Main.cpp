@@ -9,8 +9,8 @@ int main(int argc, const char* argv[])
 
 	int min, max, verbose, fully_connected;
 	std::fstream stream;
-	std::vector<int> epsilon(7);
-	std::iota(epsilon.begin(), epsilon.end(), 4);
+	std::vector<int> scaling_factors(7);
+	std::iota(scaling_factors.begin(), scaling_factors.end(), 4);
 
 	check_empty_file(); // Empty the file if exists
 
@@ -20,8 +20,8 @@ int main(int argc, const char* argv[])
 	stream.open("../data/results.csv", std::ios::out | std::ios::app);
 	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,"
 		"Execution Time orAU,Seconds orAU,Total Cost orAU,Iterations orAU,";
-	for(int& ep : epsilon)
-		stream << "Execution Time eAU_" << ep << ",Seconds eAU_" << ep << ",Total Cost eAU_" << ep << ",Iterations eAU_" << ep << ",";
+	for(int& sf : scaling_factors)
+		stream << "Execution Time eAU_" << sf << ",Seconds eAU_" << sf << ",Total Cost eAU_" << sf << ",Iterations eAU_" << sf << ",";
 	stream << "Auction Winner, Winner Execution Time, Winner Total Cost\n";
 
 	
@@ -35,8 +35,8 @@ int main(int argc, const char* argv[])
 		// Map tfor temporal storing of the Auction Algorithms run
 		std::map<std::string, RunAuction> auction_results;
 		auction_results.insert(std::pair<std::string, RunAuction>("original_auction", RunAuction(n)));
-		for (int& ep : epsilon)
-			auction_results.insert(std::pair<std::string, RunAuction>("e_scaling_" + std::to_string(ep), RunAuction(n, ep)));
+		for (int& sf : scaling_factors)
+			auction_results.insert(std::pair<std::string, RunAuction>("e_scaling_" + std::to_string(sf), RunAuction(n, sf)));
 		auction_results.insert(std::pair<std::string, RunAuction>("none", RunAuction(0)));
 
 		Graph graph = generateData(n, fully_connected); // Generation of a random bipartite graph
@@ -47,8 +47,8 @@ int main(int argc, const char* argv[])
 			throw std::invalid_argument("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
 
-
-		if (verbose) {
+		if (verbose)
+		{
 			printGraph(graph);
 			std::cout << "\n";
 		}
@@ -75,7 +75,7 @@ int main(int argc, const char* argv[])
 		for (auto& ar : auction_results)
 			if (ar.first != "none")
 				stream << fmt{ ar.second.elapsed } << "," << (ar.second.elapsed / 1.0s) << "," << (ar.second.cost) << "," << ar.second.iterations << ",";
-		stream << ((elapsed_mwm / 1.0s) == (auction_results.at(best_auction).elapsed / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (auction_results.at(best_auction).elapsed / 1.0s) ? "MWM" : "AU") << "," <<
+		stream << best_auction << ((elapsed_mwm / 1.0s) == (auction_results.at(best_auction).elapsed / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (auction_results.at(best_auction).elapsed / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == auction_results.at(best_auction).cost) ? "None" : (total_cost_mwm > auction_results.at(best_auction).cost) ? "MWM" : "AU") << "\n";
 		
 	}

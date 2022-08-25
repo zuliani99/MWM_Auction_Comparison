@@ -22,13 +22,15 @@ template<typename Graph, typename Type>
 class Auction
 {
     private:
-        struct Bidder {
+        struct Bidder
+        {
             int best_item = -1;
             double val_first_best_item = -1;
             double val_second_best_item = -1;
         };
 
-        struct Item {
+        struct Item
+        {
             double cost = 0;
             int high_bidder = -1;
             double high_bid = -1;

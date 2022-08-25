@@ -47,7 +47,8 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
     
     for (auto& run : auction_results) // For every elelmtn in the map
     {
-        if (run.first != "none") {
+        if (run.first != "none")
+        {
             run_auction(graph, verbose, run.first, run.second); // RUn the specific Auction Algorithm
 
             // If the performance was better than the previous one update the tuple
