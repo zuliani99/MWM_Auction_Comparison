@@ -22,7 +22,7 @@ int main(int argc, const char* argv[])
 		"Execution Time orAU,Seconds orAU,Total Cost orAU,Iterations orAU,";
 	for(int& sf : scaling_factors)
 		stream << "Execution Time eAU_" << sf << ",Seconds eAU_" << sf << ",Total Cost eAU_" << sf << ",Iterations eAU_" << sf << ",";
-	stream << "Auction Winner, Winner Execution Time, Winner Total Cost\n";
+	stream << "Auction Winner,Winner Execution Time,Winner Total Cost\n";
 
 	
 	for (int n = min; n <= max; ++n)
@@ -75,7 +75,7 @@ int main(int argc, const char* argv[])
 		for (auto& ar : auction_results)
 			if (ar.first != "none")
 				stream << fmt{ ar.second.elapsed } << "," << (ar.second.elapsed / 1.0s) << "," << (ar.second.cost) << "," << ar.second.iterations << ",";
-		stream << best_auction << ((elapsed_mwm / 1.0s) == (auction_results.at(best_auction).elapsed / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (auction_results.at(best_auction).elapsed / 1.0s) ? "MWM" : "AU") << "," <<
+		stream << best_auction << "," << ((elapsed_mwm / 1.0s) == (auction_results.at(best_auction).elapsed / 1.0s) ? "None" : (elapsed_mwm / 1.0s) < (auction_results.at(best_auction).elapsed / 1.0s) ? "MWM" : "AU") << "," <<
 			((total_cost_mwm == auction_results.at(best_auction).cost) ? "None" : (total_cost_mwm > auction_results.at(best_auction).cost) ? "MWM" : "AU") << "\n";
 		
 	}
