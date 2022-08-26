@@ -14,26 +14,26 @@ library(ggplot2)
 Loading .csv
 ```{r}
 res_complete <- read.csv("./results_complete.csv")
-res_non_complete <- read.csv("./results_non_complete.csv")
+#res_non_complete <- read.csv("./results_non_complete.csv")
 ```
 
 
 # Data Manipulation
 ```{r}
 res_C_2_50 <- res_complete[0:49,]
-res_C_51_300 <- res_complete[50:299,]
-res_C_301_1000 <- res_complete[300:999,]
+#res_C_51_300 <- res_complete[50:299,]
+#res_C_301_1000 <- res_complete[300:999,]
 
-res_NC_2_50 <- res_non_complete[0:49,]
-res_NC_51_300 <- res_non_complete[50:299,]
-res_NC_301_1000 <- res_non_complete[300:999,]
+#res_NC_2_50 <- res_non_complete[0:49,]
+#res_NC_51_300 <- res_non_complete[50:299,]
+#res_NC_301_1000 <- res_non_complete[300:999,]
 ```
 
 
 # Lineplots for Complete Bipartite Graphs
 ## From 2 up to 50 vertices per part
 ```{r}
-df <- res_2_50
+df <- res_C_2_50
 title_vertices <- " for 2 - 50 vertices"
 ```
 
@@ -42,34 +42,62 @@ ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Seconds") +
   geom_line(aes(y = Seconds.MWM, colour = "MWM"), size=1, alpha=1, linetype=1) + 
-  geom_line(aes(y = Seconds.AU, colour = "AU"), size=1, alpha=1, linetype=1) +
+  geom_line(aes(y = Seconds.orAU, colour = "orAU"), size=1, alpha=1, linetype=1) +
+  geom_line(aes(y = Seconds.eAU_4, colour = "e-AU-1/4"), size=1, alpha=1, linetype=1) +
+  geom_line(aes(y = Seconds.eAU_5, colour = "e-AU-1/5"), size=1, alpha=1, linetype=1) +
+  geom_line(aes(y = Seconds.eAU_6, colour = "e-AU-1/6"), size=1, alpha=1, linetype=1) +
+  geom_line(aes(y = Seconds.eAU_7, colour = "e-AU-1/7"), size=1, alpha=1, linetype=1) +
+  geom_line(aes(y = Seconds.eAU_8, colour = "e-AU-1/8"), size=1, alpha=1, linetype=1) +
+  geom_line(aes(y = Seconds.eAU_9, colour = "e-AU-1/9"), size=1, alpha=1, linetype=1) +
+  geom_line(aes(y = Seconds.eAU_10, colour = "e-AU-1/10"), size=1, alpha=1, linetype=1) +
   scale_colour_manual("", 
-                      breaks = c("MWM", "AU"),
-                      values = c("cornflowerblue", "red")) +
-  ggtitle(paste("MWM & AU execution time", title_vertices)) +
+                      breaks = c("MWM", "orAU", "e-AU-1/4", "e-AU-1/5", "e-AU-1/6", "e-AU-1/7", "e-AU-1/8", "e-AU-1/9", "e-AU-1/10"),
+                      values = c("cornflowerblue", "red", "darkorange", "gold3", "darkslategray1", "darkorchid1", "darkolivegreen4", "azure4", "burlywood4")) +
+  ggtitle(paste("MWM & AUs execution time", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
 ```{r}
 x <- df$Edge.per.part
-y <- (100 - ((100 * df$Total.Cost.AU) / df$Total.Cost.MWM))
+y1 <- (100 - ((100 * df$Total.Cost.orAU) / df$Total.Cost.MWM))
+y2 <- (100 - ((100 * df$Total.Cost.eAU_10) / df$Total.Cost.MWM))
 
-ggplot(df, aes(x=x, y=y)) +
+ggplot(df, aes(x=x, y=y1)) +
   xlab("Number of Vertices per part") +
   ylab("% Difference of Totoal Cost") +
-  geom_point() +
-  geom_smooth(formula=y ~ x, method='loess', se=TRUE, color='forestgreen', size=1.5) +
-  ggtitle(paste("% Difference of Totoal Cost", title_vertices)) +
+  geom_smooth(aes(y = (100 - ((100 * df$Total.Cost.orAU) / df$Total.Cost.MWM)), colour = "orAU"), method='loess',se=FALSE) +
+  geom_smooth(aes(y = (100 - ((100 * df$Total.Cost.eAU_4) / df$Total.Cost.MWM)), colour = "e-AU-1/4"), method='loess', se=FALSE) +
+  geom_smooth(aes(y = (100 - ((100 * df$Total.Cost.eAU_5) / df$Total.Cost.MWM)), colour = "e-AU-1/5"), method='loess', se=FALSE) +
+  geom_smooth(aes(y = (100 - ((100 * df$Total.Cost.eAU_6) / df$Total.Cost.MWM)), colour = "e-AU-1/6"), method='loess', se=FALSE) +
+  geom_smooth(aes(y = (100 - ((100 * df$Total.Cost.eAU_7) / df$Total.Cost.MWM)), colour = "e-AU-1/7"), method='loess', se=FALSE) +
+  geom_smooth(aes(y = (100 - ((100 * df$Total.Cost.eAU_8) / df$Total.Cost.MWM)), colour = "e-AU-1/8"), method='loess', se=FALSE) +
+  geom_smooth(aes(y = (100 - ((100 * df$Total.Cost.eAU_9) / df$Total.Cost.MWM)), colour = "e-AU-1/9"), method='loess', se=FALSE) +
+  geom_smooth(aes(y = (100 - ((100 * df$Total.Cost.eAU_10) / df$Total.Cost.MWM)), colour = "e-AU-1/10"), method='loess', se=FALSE) +
+  scale_colour_manual("", 
+                      breaks = c("orAU", "e-AU-1/4", "e-AU-1/5", "e-AU-1/6", "e-AU-1/7", "e-AU-1/8", "e-AU-1/9", "e-AU-1/10"),
+                      values = c("red", "darkorange", "gold3", "darkslategray1", "darkorchid1", "darkolivegreen4", "azure4", "burlywood4")) +
+  ggtitle(paste("% Difference of Totoal Cost respect MWM", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 
 ```{r}
-ggplot(df, aes(x=Edge.per.part, y=Iterations.AU)) +
+ggplot(df, aes(Edge.per.part)) +
   xlab("Number of Vertices per part") +
   ylab("Iterations") +
-  geom_point() +
-  geom_smooth(method='lm', se=TRUE, color='goldenrod', size=1.5) +
-  ggtitle(paste("AU iterations", title_vertices)) +
+  #geom_point() +
+  #geom_smooth(method='lm', se=TRUE, color='goldenrod', size=1.5) +
+  geom_smooth(aes(y = Iterations.orAU, colour = "orAU"), method='loess',se=FALSE, size=1, alpha=1, linetype=1) +
+  geom_smooth(aes(y = Iterations.eAU_4, colour = "e-AU-1/4"), method='loess',se=FALSE, size=1, alpha=1, linetype=1) +
+  geom_smooth(aes(y = Iterations.eAU_5, colour = "e-AU-1/5"), method='loess',se=FALSE, size=1, alpha=1, linetype=1) +
+  geom_smooth(aes(y = Iterations.eAU_6, colour = "e-AU-1/6"), method='loess',se=FALSE, size=1, alpha=1, linetype=1) +
+  geom_smooth(aes(y = Iterations.eAU_7, colour = "e-AU-1/7"), method='loess',se=FALSE, size=1, alpha=1, linetype=1) +
+  geom_smooth(aes(y = Iterations.eAU_8, colour = "e-AU-1/8"), method='loess',se=FALSE, size=1, alpha=1, linetype=1) +
+  geom_smooth(aes(y = Iterations.eAU_9, colour = "e-AU-1/9"), method='loess',se=FALSE, size=1, alpha=1, linetype=1) +
+  geom_smooth(aes(y = Iterations.eAU_10, colour = "e-AU-1/10"), method='loess',se=FALSE, size=1, alpha=1, linetype=1) +
+  scale_colour_manual("", 
+                      breaks = c("orAU", "e-AU-1/4", "e-AU-1/5", "e-AU-1/6", "e-AU-1/7", "e-AU-1/8", "e-AU-1/9", "e-AU-1/10"),
+                      values = c("red", "darkorange", "gold3", "darkslategray1", "darkorchid1", "darkolivegreen4", "azure4", "burlywood4")) +
+  ggtitle(paste("AUs iterations", title_vertices)) +
   theme(plot.title = element_text(size=20, hjust = 0.5))
 ```
 

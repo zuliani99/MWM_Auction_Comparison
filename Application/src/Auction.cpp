@@ -8,14 +8,14 @@ void run_auction(const Graph& graph, const int& verbose, const std::string& name
 {
 	
     auto t = now();
-    if (name == "original_auction")
+    if (name == "auction_original")
     {
         std::cout << "Running " << name << "... ";
         runauc.auction.original_auction(graph, runauc.assignments);
     }  
     else
     {
-        std::cout << "Running " << name << " with epsilon: " << runauc.scaling_factor << "... ";
+        std::cout << "Running " << name << " with epsilon scaling factor: " << runauc.scaling_factor << "... ";
         runauc.auction.e_scaling_auction(graph, runauc.assignments, runauc.scaling_factor);
     }
     

@@ -11,6 +11,7 @@ int main(int argc, const char* argv[])
 	std::fstream stream;
 	std::vector<int> scaling_factors(7);
 	std::iota(scaling_factors.begin(), scaling_factors.end(), 4);
+	std::reverse(scaling_factors.begin(), scaling_factors.end());
 
 	check_empty_file(); // Empty the file if exists
 
@@ -18,11 +19,10 @@ int main(int argc, const char* argv[])
 
 	// Create the .csv file and writhe the first row
 	stream.open("../data/results.csv", std::ios::out | std::ios::app);
-	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,"
-		"Execution Time orAU,Seconds orAU,Total Cost orAU,Iterations orAU,";
+	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,";
 	for(int& sf : scaling_factors)
 		stream << "Execution Time eAU_" << sf << ",Seconds eAU_" << sf << ",Total Cost eAU_" << sf << ",Iterations eAU_" << sf << ",";
-	stream << "Auction Winner,Winner Execution Time,Winner Total Cost\n";
+	stream << "Execution Time orAU,Seconds orAU,Total Cost orAU,Iterations orAU,Auction Winner,Winner Execution Time,Winner Total Cost\n";
 
 	
 	for (int n = min; n <= max; ++n)
@@ -32,11 +32,19 @@ int main(int argc, const char* argv[])
 		Weight total_cost_mwm = 0;
 		Duration elapsed_mwm;
 		
-		// Map tfor temporal storing of the Auction Algorithms run
+		// Map for temporal storing of the Auction Algorithms run
 		std::map<std::string, RunAuction> auction_results;
-		auction_results.insert(std::pair<std::string, RunAuction>("original_auction", RunAuction(n)));
+		auction_results.insert(std::pair<std::string, RunAuction>("auction_original", RunAuction(n)));
+
+
 		for (int& sf : scaling_factors)
-			auction_results.insert(std::pair<std::string, RunAuction>("e_scaling_" + std::to_string(sf), RunAuction(n, sf)));
+		{
+			std::ostringstream string_sf;
+			string_sf.precision(3);
+			string_sf << std::fixed << (round((1.0 / sf) * 1000.0) / 1000.0);
+			auction_results.insert(std::pair<std::string, RunAuction>("auction_e_scaling_" + string_sf.str(), RunAuction(n, sf)));
+		}
+			
 		auction_results.insert(std::pair<std::string, RunAuction>("none", RunAuction(0)));
 
 		Graph graph = generateData(n, fully_connected); // Generation of a random bipartite graph
@@ -46,6 +54,7 @@ int main(int argc, const char* argv[])
 			|| (!fully_connected && boost::num_vertices(graph) != 2 * static_cast<unsigned long long>(n)))
 			throw std::invalid_argument("Number of vertices or edges not correct");
 		std::cout << "done\n\n";
+
 
 		if (verbose)
 		{
@@ -82,5 +91,5 @@ int main(int argc, const char* argv[])
 
 	std::cout << "\n";
 
-	return 0;
+	return EXIT_SUCCESS;
 }

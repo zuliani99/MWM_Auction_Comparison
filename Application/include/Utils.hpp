@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <numeric>
+#include <algorithm>
 
 // Function to check if the results.csv file exists if so clear it
 inline void check_empty_file()
@@ -35,5 +36,6 @@ void get_input(int& min, int& max, int& verbose, int& fully_connected)
 		throw std::invalid_argument("Please insert correct input");
 
 }
+
 
 #endif
