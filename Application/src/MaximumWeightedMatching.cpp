@@ -3,11 +3,11 @@
 
 Weight perform_mwm(const Graph& graph, Duration& elapsed)
 {
-    auto const N = num_vertices(graph);
+    auto const N = boost::num_vertices(graph);
     std::vector<V> mate(N);
 
     auto t_start = now();
-    maximum_weighted_matching(graph, &mate[0]); // Execution of the Maximum Weighted Matching
+    boost::maximum_weighted_matching(graph, &mate[0]); // Execution of the Maximum Weighted Matching
     elapsed = now() - t_start;    
 
     if (std::find(mate.begin(), mate.end(), Graph::null_vertex()) != mate.end())

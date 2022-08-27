@@ -19,10 +19,10 @@ int main(int argc, const char* argv[])
 
 	// Create the .csv file and writhe the first row
 	stream.open("../data/results.csv", std::ios::out | std::ios::app);
-	stream << "Edge per part,Execution Time MWM,Seconds MWM,Total Cost MWM,";
+	stream << "Edges_per_part,Execution_Time_MWM,Seconds_MWM,Total_Cost_MWM,";
 	for(int& sf : scaling_factors)
-		stream << "Execution Time eAU_" << sf << ",Seconds eAU_" << sf << ",Total Cost eAU_" << sf << ",Iterations eAU_" << sf << ",";
-	stream << "Execution Time orAU,Seconds orAU,Total Cost orAU,Iterations orAU,Auction Winner,Winner Execution Time,Winner Total Cost\n";
+		stream << "Execution_Time_eAU_" << sf << ",Seconds_eAU_" << sf << ",Total_Cost_eAU_" << sf << ",Iterations_eAU_" << sf << ",";
+	stream << "Execution_Time_orAU,Seconds_orAU,Total_Cost_orAU,Iterations_orAU,Auction_Winner,Winner_Execution_Time,Winner_Total_Cost\n";
 
 	
 	for (int n = min; n <= max; ++n)
