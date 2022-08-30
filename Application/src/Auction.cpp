@@ -1,6 +1,6 @@
 #include "../include/Auction.h"
 #include "../include/BipartiteGraph.h"
-#include "../include/RunAuction.h"
+#include "../include/RunAuction.hpp"
 
 
 // Fucntion that manage the execution of a particular Auction Algorithm
