@@ -18,7 +18,7 @@ Graph generateData(int N, const int& fully_connected)
 	{
 		for (int bidder = 0; bidder < N; ++bidder)
 			for (int item = 0; item < N; ++item)
-				add_edge(bidder, N + item, dist(prng), g);
+				boost::add_edge(bidder, N + item, dist(prng), g);
 	}
 	else // Random non complete bipartite graph
 	{
@@ -26,13 +26,13 @@ Graph generateData(int N, const int& fully_connected)
 		{
 			Distribution<int> random_first_connection(0, static_cast<int>(free_items.size()) - 1);
 			int pos = random_first_connection(prng);
-			add_edge(bidder, N + free_items[pos], dist(prng), g);
+			boost::add_edge(bidder, N + free_items[pos], dist(prng), g);
 			map_first_conenction.insert(std::make_pair(bidder, free_items[pos]));
 			free_items.erase(std::find(free_items.begin(), free_items.end(), free_items[pos]));
 
 			for (int item = 0; item < N; ++item)
 				if (map_first_conenction[bidder] != item)
-					if (dist_edge(prng)) add_edge(bidder, N + item, dist(prng), g);
+					if (dist_edge(prng)) boost::add_edge(bidder, N + item, dist(prng), g);
 		}
 	}
 

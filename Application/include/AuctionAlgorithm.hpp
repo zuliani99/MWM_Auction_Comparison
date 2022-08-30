@@ -261,7 +261,6 @@ template<typename Graph, typename Type>
 void Auction<Graph, Type>::e_scaling_auction(const Graph& graph, std::vector<int>& ass, const double& scaling_factor)
 {
     if (!is_assignment_problem(graph)) throw("Not an assignment problem");
-    int k = 0;
     vertex_idMap<Graph> V_Map = boost::get(boost::vertex_index, graph);
 
     double eps = 1.0;
@@ -279,7 +278,6 @@ void Auction<Graph, Type>::e_scaling_auction(const Graph& graph, std::vector<int
         }
 
         eps = eps * scaling_factor;
-        k += 1;
     }
 
     if (!err)
