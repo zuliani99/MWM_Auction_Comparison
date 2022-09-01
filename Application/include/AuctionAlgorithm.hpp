@@ -24,9 +24,9 @@ class Auction
     private:
         struct Bidder
         {
-            int best_item = -1;
-            double val_first_best_item = -1;
-            double val_second_best_item = -1;
+            int best_item;
+            double val_first_best_item;
+            double val_second_best_item;
         };
 
         struct Item
