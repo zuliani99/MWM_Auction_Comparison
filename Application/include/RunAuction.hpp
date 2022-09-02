@@ -3,7 +3,7 @@
 
 #include "AuctionAlgorithm.hpp"
 
-// Class used to store the a run of a Auction Algorithm (Original or e-Scaling)
+// Class used to store the a run of a Auction Algorithm (Original version or e-Scaling versions)
 class RunAuction
 {
 public:

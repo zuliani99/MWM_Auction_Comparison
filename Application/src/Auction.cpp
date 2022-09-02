@@ -45,14 +45,14 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
     std::tuple<std::string, Weight, Duration> best ("none", 0, static_cast<Duration>(0)); // Temporal variable to store the best algorithm attributes
 
     
-    for (auto& run : auction_results) // For every elelmtn in the map
+    for (auto& run : auction_results) // For every element of the map
     {
         if (run.first != "none")
         {
-            run_auction(graph, verbose, run.first, run.second); // RUn the specific Auction Algorithm
+            run_auction(graph, verbose, run.first, run.second); // Run the specific Auction Algorithm
 
             // If the performance was better than the previous one update the tuple
-            if ((run.second.cost > std::get<1>(best)) || (run.second.cost == std::get<1>(best) && run.second.elapsed < std::get<2>(best)))
+            if ((run.second.cost > std::get<1>(best)) || (run.second.cost == std::get<1>(best) && run.second.elapsed <std::get<2>(best)))
             {
                 std::get<0>(best) = run.first;
                 std::get<1>(best) = run.second.cost;
@@ -63,7 +63,7 @@ std::string perform_au(const Graph& graph, std::map<std::string, RunAuction>& au
     
     std::string best_method_name = std::get<0>(best); // Get the name of the best Auction Algorithm
 	
-    if (auction_results.at(best_method_name).cost == static_cast<Weight>(-1)) // If the best algorithm could not solve the assignment problem update the 'none' elemnt of the map
+    if (auction_results.at(best_method_name).cost == static_cast<Weight>(-1)) // If the best algorithm could not solve the assignment problem update the 'none' element of the map
     {
         std::cout << "No matching found\n";
         if (verbose) auction_results.at(best_method_name).auction.printProprieties();

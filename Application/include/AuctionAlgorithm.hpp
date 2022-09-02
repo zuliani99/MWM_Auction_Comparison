@@ -90,7 +90,7 @@ inline void Auction<Graph, Type>::reset()
 }
 
 
-// Function taht return the weighted sum of the Assignment Problem solution
+// Function that return the weighted sum of the Assignment Problem solution
 template<typename Graph, typename Type>
 inline Type Auction<Graph, Type>::getTotalCost(const Graph& graph)
 {
@@ -131,7 +131,7 @@ inline void Auction<Graph, Type>::printProprieties()
 }
 
 
-// Function that execute a single execution cicle of th Auction Algorithm
+// Function that execute a single execution cicle of the Auction Algorithm
 template<typename Graph, typename Type>
 void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, const vertex_idMap<Graph>& V_Map, bool& err)
 {
@@ -230,7 +230,7 @@ void Auction<Graph, Type>::auctionRound(const Graph& graph, const double& eps, c
 }
 
 
-// Function for the original Auction Algorithm
+// Original Auction Algorithm
 template<typename Graph, typename Type>
 void Auction<Graph, Type>::original_auction(const Graph& graph, std::vector<int>& ass)
 {
@@ -256,7 +256,7 @@ void Auction<Graph, Type>::original_auction(const Graph& graph, std::vector<int>
 }
 
 
-// Function for the e-scaling variation of the Auction Algorithm
+// e-scaling variation of the Auction Algorithm
 template<typename Graph, typename Type>
 void Auction<Graph, Type>::e_scaling_auction(const Graph& graph, std::vector<int>& ass, const double& scaling_factor)
 {

@@ -1,7 +1,7 @@
 #include "../include/BipartiteGraph.h"
 
 
-// Function to generate a random bipartite graph, complete or non in depends on the user input
+// Function to generate a random bipartite graph, complete or non complete, depending on the user input
 Graph generateData(int N, const int& fully_connected)
 {
 	Graph g;

@@ -17,7 +17,7 @@ int main(int argc, const char* argv[])
 
 	get_input(min, max, verbose, fully_connected); // Obtaining the user inputs
 
-	// Create the .csv file and writhe the first row
+	// Create the .csv file and write the first row composed by the column names
 	stream.open("../data/results.csv", std::ios::out | std::ios::app);
 	stream << "Edges_per_part,Execution_Time_MWM,Seconds_MWM,Total_Cost_MWM,";
 	for(int& sf : scaling_factors)
@@ -27,12 +27,11 @@ int main(int argc, const char* argv[])
 	
 	for (int n = min; n <= max; ++n)
 	{
-		std::cout << "\n\n\nGeneration of a Bipartite Graph with " << n << " vertices per part: ";
 
 		Weight total_cost_mwm = 0;
 		Duration elapsed_mwm;
 		
-		// Map for temporal storing of the Auction Algorithms run
+		// Map for temporal storing of the Auction Algorithms runs
 		std::map<std::string, RunAuction> auction_results;
 		auction_results.insert(std::pair<std::string, RunAuction>("auction_original", RunAuction(n)));
 
@@ -46,6 +45,9 @@ int main(int argc, const char* argv[])
 		}
 			
 		auction_results.insert(std::pair<std::string, RunAuction>("none", RunAuction(0)));
+
+		if (fully_connected) std::cout << "\n\n\nGeneration of a Complete Bipartite Graph with " << n << " vertices per part: ";
+		else std::cout << "\n\n\nGeneration of a Non Complete Bipartite Graph with " << n << " vertices per part: ";
 
 		Graph graph = generateData(n, fully_connected); // Generation of a random bipartite graph
 
