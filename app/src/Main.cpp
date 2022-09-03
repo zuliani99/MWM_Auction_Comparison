@@ -18,7 +18,7 @@ int main(int argc, const char* argv[])
 
 	// Creation of the .csv file name
 	std::time_t time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-	csv_file_name << "../data/results_" << ((fully_connected) ? "complete_" : "nonComplete_") << min << "_" << max << "_" << std::ctime(&time) << ".csv";
+	csv_file_name << "../results/" << ((fully_connected) ? "complete_" : "nonComplete_") << min << "_" << max << "_" << std::ctime(&time) << ".csv";
 
 	// Create the .csv file and write the first row composed by the column names
 	stream.open(csv_file_name.str(), std::ios::out | std::ios::app);
