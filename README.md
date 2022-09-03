@@ -10,7 +10,7 @@ sudo apt install build-essential
 sudo apt-get install libboost-all-dev
 ```
 
-After that, to compile the project, you have to jump into the */src* folder and type the following line in your console:
+After that, to compile the project, you have to jump into the */app/src* folder and type the following line in your console:
 
 ```
 g++ -std=c++2a -o ../bin/app BipartiteGraph.cpp MaximumWeightedMatching.cpp Auction.cpp Main.cpp
