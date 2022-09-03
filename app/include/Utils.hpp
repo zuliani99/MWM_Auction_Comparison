@@ -5,18 +5,8 @@
 #include <stdexcept>
 #include <numeric>
 #include <algorithm>
-
-// Function to check if the results.csv file exists if so clear it
-inline void check_empty_file()
-{
-	std::ifstream file;
-	file.open("../data/results.csv");
-	if (file) {
-		std::ofstream ofs;
-		ofs.open("../data/results.csv", std::ofstream::out | std::ofstream::trunc);
-		ofs.close();
-	}
-}
+#include <ctime>
+#include <sstream>
 
 
 // Function that obtain the user inputs
@@ -32,7 +22,7 @@ void get_input(int& min, int& max, int& verbose, int& fully_connected)
 	std::cout << "Please specify the ending number of vertices per part: ";
 	std::cin >> max;
 
-	if (min < 0 || max < 0 || min > max || (verbose != 0 && verbose != 1) || (fully_connected != 0 && fully_connected != 1))
+	if (min <= 0 || max <= 0 || min > max || (verbose != 0 && verbose != 1) || (fully_connected != 0 && fully_connected != 1))
 		throw std::invalid_argument("Please insert correct input");
 
 }

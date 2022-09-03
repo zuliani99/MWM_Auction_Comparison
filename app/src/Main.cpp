@@ -12,13 +12,16 @@ int main(int argc, const char* argv[])
 	std::vector<int> scaling_factors(7);
 	std::iota(scaling_factors.begin(), scaling_factors.end(), 4);
 	std::reverse(scaling_factors.begin(), scaling_factors.end());
-
-	check_empty_file(); // Empty the file if exists
+	std::stringstream csv_file_name;
 
 	get_input(min, max, verbose, fully_connected); // Obtaining the user inputs
 
+	// Creation of the .csv file name
+	std::time_t time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	csv_file_name << "../data/results_" << ((fully_connected) ? "complete_" : "nonComplete_") << min << "_" << max << "_" << std::ctime(&time) << ".csv";
+
 	// Create the .csv file and write the first row composed by the column names
-	stream.open("../data/results.csv", std::ios::out | std::ios::app);
+	stream.open(csv_file_name.str(), std::ios::out | std::ios::app);
 	stream << "Edges_per_part,Execution_Time_MWM,Seconds_MWM,Total_Cost_MWM,";
 	for(int& sf : scaling_factors)
 		stream << "Execution_Time_eAU_" << sf << ",Seconds_eAU_" << sf << ",Total_Cost_eAU_" << sf << ",Iterations_eAU_" << sf << ",";
