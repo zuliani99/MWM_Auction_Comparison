@@ -1,6 +1,6 @@
 
 # Maximum Weighted Matching & Auction Algorithm Comparison 
-Project based on the comparison of an implementation of [Auction Algorithm](https://web.mit.edu/dimitrib/www/Auction_Trans.pdf) and the [Maximum Weighted Maching](https://www.boost.org/doc/libs/1_79_0/libs/graph/doc/maximum_weighted_matching.html) from Boost Library
+Project based on the comparison of an implementation of [Auction Algorithm](https://web.mit.edu/dimitrib/www/Auction_Trans.pdf) and the [Maximum Weighted Matching](https://www.boost.org/doc/libs/1_79_0/libs/graph/doc/maximum_weighted_matching.html) from the Boost Library
 
 ## Startup
 In order to run the benchmark you have to run these command in your console:
@@ -39,9 +39,9 @@ After have inserted these four options, at each random bipartite graph the appli
 	* _Original Auction Algorithm_
 	* _Auction Algorithms with e-scaling from scaling factor 1/4 to 1/10_
 
-During the bechmark the application at the end of execution of Maximum Weighted Matching and only for the best Auction Algorithm il will show the solution of the Assignment Problme in the following form: **(FROM vertex, TO vertex, WEIGHT)**.
+During the benchmark the application at the end of execution of Maximum Weighted Matching and only for the best Auction Algorithm will show the solution of the Assignment Problem in the following form: **(FROM vertex, TO vertex, WEIGHT)**.
 
-In addition in both strategies we will get the total cost of the matching and execution time. But only for the best Auction Algorithm we will have also the number of iteration for the specific Assignment Porblem.
+In addition, in both strategies we will get the total cost of the matching and execution time. But only for the best Auction Algorithm we will also have the number of iteration for the specific Assignment Problem.
 
 
 * VERBOSE mode **OFF**
@@ -52,4 +52,4 @@ In addition in both strategies we will get the total cost of the matching and ex
 
 	![](images/console_3.png)
 
-When the benchmark is finished the application generate a *.csv* file stored into the */data* directory. This file is generated in order to have a look on the complete score of all the algorithms.
+When the benchmark is finished the application generates a *.csv* file stored into the */data* directory. This file is generated in order to have a look at the complete score of all the algorithms.
