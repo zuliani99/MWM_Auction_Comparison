@@ -31,7 +31,7 @@ Start the application by typing ```./app```. Next you have to specify:
 * The **ending number** of vertices per part of the bipartite graph
 
 
-![](images/console_1.png)
+![](screenshots/console_1.png)
 
 After have inserted these four options, at each random bipartite graph the application will execute:
 * **Maximum Weighted Matching**
