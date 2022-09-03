@@ -46,10 +46,10 @@ In addition, in both strategies we will get the total cost of the matching and e
 
 * VERBOSE mode **OFF**
 
-	![](images/console_2.png)
+	![](screenshots/console_2.png)
 
 * VERBOSE mode **ON**
 
-	![](images/console_3.png)
+	![](screenshots/console_3.png)
 
 When the benchmark is finished the application generates a *.csv* file stored into the */data* directory. This file is generated in order to have a look at the complete score of all the algorithms.
