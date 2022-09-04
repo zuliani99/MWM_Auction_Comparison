@@ -1,6 +1,6 @@
 
 # Maximum Weighted Matching & Auction Algorithm Comparison 
-Project based on the comparison of an implementation of [Auction Algorithm](https://web.mit.edu/dimitrib/www/Auction_Trans.pdf) and the [Maximum Weighted Matching](https://www.boost.org/doc/libs/1_79_0/libs/graph/doc/maximum_weighted_matching.html) from the Boost Library
+Project based on the comparison of an implementation of [Auction Algorithm](https://web.mit.edu/dimitrib/www/Auction_Trans.pdf) and the [Maximum Weighted Matching](https://www.boost.org/doc/libs/1_79_0/libs/graph/doc/maximum_weighted_matching.html) from the Boost Graph Library
 
 ## Startup
 In order to run the benchmark you have to run these command in your console:
