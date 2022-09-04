@@ -13,9 +13,9 @@
 void get_input(int& min, int& max, int& verbose, int& fully_connected)
 {
 	std::cout << "-------- MAXIMUM WEIGHTED MATCHING - AUCTION ALGORITHM BECHMARK --------\n\n";
-	std::cout << "Do you want to activate VERBOSE mode? (1/0) ";
+	std::cout << "Do you want to activate VERBOSE mode? (0/1) ";
 	std::cin >> verbose;
-	std::cout << "On what type of bipartite graph would you like to work with, complete (1) or incomplete (0): ";
+	std::cout << "On what type of bipartite graph would you like to work with, incomplete (0) or complete (1): ";
 	std::cin >> fully_connected;
 	std::cout << "Please specify the starting number of vertices per part: ";
 	std::cin >> min;
