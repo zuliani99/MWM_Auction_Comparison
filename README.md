@@ -26,7 +26,7 @@ The *.exe* file will be inserted into the */app/bin* directory.
 ## Usage
 Start the application by typing ```./app```. Next you have to specify:
 * The **VERBOSE mode**, _0_ or _1_
-* The **type of Bipartite Graph** to take into examination,   _Non Complete (0)_ or _Complete (1)_
+* The **type of Bipartite Graph** to take into examination,   _Incomplete (0)_ or _Complete (1)_
 * The **starting number** of vertices per part of the bipartite graph
 * The **ending number** of vertices per part of the bipartite graph
 

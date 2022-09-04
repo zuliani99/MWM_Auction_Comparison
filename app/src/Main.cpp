@@ -18,7 +18,7 @@ int main(int argc, const char* argv[])
 
 	// Creation of the .csv file name
 	std::time_t time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-	csv_file_name << "../results/" << ((fully_connected) ? "complete_" : "nonComplete_") << min << "_" << max << "_" << std::ctime(&time) << ".csv";
+	csv_file_name << "../results/" << ((fully_connected) ? "complete_" : "incomplete_") << min << "_" << max << "_" << std::ctime(&time) << ".csv";
 
 	// Create the .csv file and write the first row composed by the column names
 	stream.open(csv_file_name.str(), std::ios::out | std::ios::app);
@@ -50,7 +50,7 @@ int main(int argc, const char* argv[])
 		auction_results.insert(std::pair<std::string, RunAuction>("none", RunAuction(0)));
 
 		if (fully_connected) std::cout << "\n\n\nGeneration of a Complete Bipartite Graph with " << n << " vertices per part: ";
-		else std::cout << "\n\n\nGeneration of a Non Complete Bipartite Graph with " << n << " vertices per part: ";
+		else std::cout << "\n\n\nGeneration of a Incomplete Bipartite Graph with " << n << " vertices per part: ";
 
 		Graph graph = generateData(n, fully_connected); // Generation of a random bipartite graph
 

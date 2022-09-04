@@ -1,7 +1,7 @@
 #include "../include/BipartiteGraph.h"
 
 
-// Function to generate a random bipartite graph, complete or non complete, depending on the user input
+// Function to generate a random bipartite graph, complete or incomplete, depending on the user input
 Graph generateData(int N, const int& fully_connected)
 {
 	Graph g;
@@ -20,7 +20,7 @@ Graph generateData(int N, const int& fully_connected)
 			for (int item = 0; item < N; ++item)
 				boost::add_edge(bidder, N + item, dist(prng), g);
 	}
-	else // Random non complete bipartite graph
+	else // Random incomplete bipartite graph
 	{
 		for (int bidder = 0; bidder < N; ++bidder)
 		{
