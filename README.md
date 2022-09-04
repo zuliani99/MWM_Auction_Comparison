@@ -21,7 +21,7 @@ For compier optimization instead type:
 g++ -std=c++2a -Ofast -o ../bin/app BipartiteGraph.cpp MaximumWeightedMatching.cpp Auction.cpp Main.cpp
 ```
 
-The *.exe* file will be inserted into the */bin* directory.
+The *.exe* file will be inserted into the */app/bin* directory.
 
 ## Usage
 Start the application by typing ```./app```. Next you have to specify:
